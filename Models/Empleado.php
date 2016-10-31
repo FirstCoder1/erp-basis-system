@@ -107,7 +107,7 @@ require_once "Conexion.php"; //----------------QUITAR
 		}
 		
 		public function insert(){
-			$sql = "INSERT INTO `Sprint1`.`Empleados` 
+			$sql = "INSERT INTO ".DBNAME.".`Empleados` 
 			(`idEmpleado`, 
 			`nombre`, 
 			`apPaterno`, 
@@ -151,7 +151,7 @@ require_once "Conexion.php"; //----------------QUITAR
 		}
 
 		public function update(){
-			$sql = "UPDATE `Sprint1`.`Empleados` SET 
+			$sql = "UPDATE ".DBNAME.".`Empleados` SET 
 			`nombre` = '{$this->nombre}',
 			`apPaterno` = '{$this->apPaterno}', 
 			`apMaterno` = '{$this->apMaterno}', 
@@ -170,7 +170,7 @@ require_once "Conexion.php"; //----------------QUITAR
 			`email` = '{$this->email}', 
 			`fechaAlta` = '{$this->fechaAlta}',
 			`activo` = '{$this->activo}' 
-			WHERE `empleados`.`idEmpleado` = '{$this->idEmpleado}'";
+			WHERE `Empleados`.`idEmpleado` = '{$this->idEmpleado}'";
 
 			return $this->con->consultaSimple($sql);
 		}

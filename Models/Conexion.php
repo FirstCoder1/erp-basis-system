@@ -3,7 +3,7 @@
 	class Conexion{
 
 		private $datos = array(
-			"host" => HOST,
+			"host" => DBHOST,
 			"user" => DBUSER,
 			"pass" => DBPASS,
 			"db" => DBNAME

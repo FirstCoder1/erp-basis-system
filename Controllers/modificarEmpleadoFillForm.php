@@ -1,9 +1,9 @@
 <?php 
 	require_once "../Config/Constantes.php";   //Inclusión de las constantes y funciones globales
-	require_once "../Config/Autoload.php"; 	//Inclusión de archivo para Autoload de las clases 
-	Config\Autoload::run();					//Arranca Autoload
+	require_once "../Autoload.php"; 	//Inclusión de archivo para Autoload de las clases 
+	APP\Autoload::run();					//Arranca Autoload
 
-	$empleado = new \Models\Empleado();		//Creando objeto empleado
+	$empleado = new \APP\Models\Empleado();		//Creando objeto empleado
 	$empleado->set("idEmpleado",$_POST["idEmpleado"]);
 
 	if(!$empleado->selectone()){			//Haciendo consulta

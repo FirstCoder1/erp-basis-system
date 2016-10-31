@@ -9,7 +9,7 @@
 	$empleado->set("idEmpleado",$_SESSION["idEmpleado"]);
 
 	if(!$empleado->selectone()){			//Cargando datos de empleado según id
-		header("Location: /index.php");		//Redirecciona en caso de no encontrar al empleado
+		header("Location: ./index.php");		//Redirecciona en caso de no encontrar al empleado
 	}
 
  ?>

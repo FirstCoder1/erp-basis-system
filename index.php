@@ -51,6 +51,7 @@
 	</head>
 
 	<body>
+		<h1>Login</h1>
 		<form action="index.php" method="post" autocomplete="off">
 	  	Usuario: <input type="text" name="userName" placeholder="Tu nombre de usuario" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required autofocus >
 	  	Contraseña: <input type="password" name="password" placeholder="Tu contraseña" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required >
