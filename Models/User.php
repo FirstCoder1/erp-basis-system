@@ -1,6 +1,6 @@
 <?php namespace APP\Models;
 
-	class Users{
+	class User{
 
 		private $idEmpleado;
 		private $userName;

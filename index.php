@@ -13,31 +13,6 @@
 		header("Location: ./home.php");		//Redireciona
 	}
 
-	$error = "";							//Variable de manejo de error, Datos incorrectos
-
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {	//si se llama al index a través de un POST
-		$userName = $password = "";
-		$userName = \APP\Config\Sanitize::sanitizeInput($_POST["userName"]);	//Se limpia la entrada TODO-Validación
-		$password = \APP\Config\Sanitize::sanitizeInput($_POST["password"]);
-
-		$user = new \APP\Models\Users();			//Creación de objeto User a través de los datos
-		$user->set("userName", $userName);
-		$user->set("password", $password);
-
-		if($user->check()){					//Validación de usuario existente
-											//Se inicia sesión con id del empleado
-			$_SESSION["idEmpleado"] = $user->get('idEmpleado');
-			
-			$_SESSION["timelast"] = time(); //Se asigna la hora de la última operación 
-			
-			header("Location: ./home.php");	//Redireciona
-
-		}else{
-			$error = "Datos incorrectos.";	//Genera alerta de error
-		}
-
-	}
-
  ?>
 
  <!DOCTYPE html>
@@ -48,15 +23,57 @@
 		<meta name="keywords" content="keywords">
 		<meta name="author" content="Oscar Camacho Urriolagoitia">
 		<title>NombreDelSistema - Login </title>
+
+		<script>
+			
+		function login() {
+												//Mete los valores del form al post		
+			var formElements=document.getElementById("login");    
+			var params="";
+												//Iteramos por cada elemento del form
+			for (var i=0; i<formElements.length; i++){
+												//We dont want to include the submit-buttom
+			    if (formElements[i].type!="submit"){	
+			    	
+			    	params+=formElements[i].name+"="+formElements[i].value+"&";
+			    	
+			    }	
+			        
+			}
+
+			xmlhttp = new XMLHttpRequest();		//AJAX
+
+			xmlhttp.onreadystatechange = function() {
+												//Este If maneja que hacer con la respuesta
+	            if (this.readyState == 4 && this.status == 200) {
+	            								//Si la inserción es exitosa
+	                if(this.responseText == 1){	
+	                	
+	                	window.top.location.href = "home.php";
+
+			        }else{						//En caso de error, mensaje de error
+			        	
+	                	document.getElementById("error").innerHTML = "Datos incorrectos.";
+
+			        }
+	            }
+	        };
+	        									//Datos de envío de consulta
+	        xmlhttp.open("POST","./Controllers/login.php",true);
+	        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	        xmlhttp.send(params); 
+	    }
+
+		</script>
 	</head>
 
 	<body>
 		<h1>Login</h1>
-		<form action="index.php" method="post" autocomplete="off">
+		<form id="login" autocomplete="off" onsubmit="login(); return false;">
 	  	Usuario: <input type="text" name="userName" placeholder="Tu nombre de usuario" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required autofocus >
 	  	Contraseña: <input type="password" name="password" placeholder="Tu contraseña" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required >
 	  	<input type="submit" value="Iniciar sesión">
-	  	<span class="error"><?php echo $error ?></span>
+	  	<span id="error"></span>
 		</form>
 	</body>
 
@@ -64,8 +81,6 @@
 
 <!--
 COMENTARIOS GENERALES:
-
-- ERROR MAYUSCULAS MINUSCULAS USERNAME AND PASS
 
 - Faltan validaciones y sanitización de los datos.
 - Estilo class error.
