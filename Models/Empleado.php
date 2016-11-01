@@ -22,7 +22,7 @@ require_once "Conexion.php"; //----------------QUITAR
 		private $curp;
 		private $email;
 		private $fechaAlta;
-		private $activo;
+		private $estado;
 
 		private $con;
 
@@ -69,7 +69,7 @@ require_once "Conexion.php"; //----------------QUITAR
 				$this->curp = $row["curp"];
 				$this->email = $row["email"];
 				$this->fechaAlta = $row["fechaAlta"];
-				$this->activo = $row["activo"];
+				$this->estado = $row["estado"];
 
 				return true;
 
@@ -98,7 +98,7 @@ require_once "Conexion.php"; //----------------QUITAR
 			`curp` LIKE '{$this->curp}' AND 
 			`email` LIKE '{$this->email}' AND 
 			`fechaAlta` LIKE '{$this->fechaAlta}' AND 
-			`activo` LIKE '{$this->activo}'
+			`estado` LIKE '{$this->estado}'
 			ORDER BY `Empleados`.`idEmpleado` DESC";
 
 			$datos = $this->con->consultaRetorno($sql);
@@ -126,7 +126,7 @@ require_once "Conexion.php"; //----------------QUITAR
 			`curp`, 
 			`email`, 
 			`fechaAlta`, 
-			`activo`) 
+			`estado`) 
 			VALUES (NULL,
 			'{$this->nombre}',
 			'{$this->apPaterno}',
@@ -145,7 +145,7 @@ require_once "Conexion.php"; //----------------QUITAR
 			'{$this->curp}',
 			'{$this->email}',
 			CURRENT_TIMESTAMP,
-			'{$this->activo}')";
+			'{$this->estado}')";
 
 			return $this->con->consultaSimple($sql);
 		}
@@ -169,7 +169,7 @@ require_once "Conexion.php"; //----------------QUITAR
 			`curp` = '{$this->curp}', 
 			`email` = '{$this->email}', 
 			`fechaAlta` = '{$this->fechaAlta}',
-			`activo` = '{$this->activo}' 
+			`estado` = '{$this->estado}' 
 			WHERE `Empleados`.`idEmpleado` = '{$this->idEmpleado}'";
 
 			return $this->con->consultaSimple($sql);

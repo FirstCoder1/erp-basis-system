@@ -31,7 +31,7 @@
 		$resultado .= ',curp: "'.$empleado->get("curp").'"';
 		$resultado .= ',email: "'.$empleado->get("email").'"';
 		$resultado .= ',fechaAlta: "'.str_replace(" ","T",$empleado->get("fechaAlta")).'"';
-		$resultado .= ',activo: "'.$empleado->get("activo").'"';
+		$resultado .= ',estado: "'.$empleado->get("estado").'"';
 
 		echo $resultado."}";				//Enviando objeto
 	}

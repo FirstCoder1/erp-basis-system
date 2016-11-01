@@ -21,7 +21,7 @@
 	$empleado->set("estadoCivil",$_POST["estadoCivil"]);
 	$empleado->set("curp",$_POST["curp"]);
 	$empleado->set("email",$_POST["email"]);
-	$empleado->set("activo",$_POST["activo"]);
+	$empleado->set("estado",$_POST["estado"]);
 
 	if($empleado->insert()){				//Realizando inserción
 		echo "1";							//Éxito manda 1, error manda 0

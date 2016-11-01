@@ -145,7 +145,7 @@
 						document.getElementById("modificarEmpleadoForm").elements.namedItem("curp").value = arregloDatos["curp"];
 						document.getElementById("modificarEmpleadoForm").elements.namedItem("email").value = arregloDatos["email"];
 						document.getElementById("modificarEmpleadoForm").elements.namedItem("fechaAlta").value = arregloDatos["fechaAlta"];
-						document.getElementById("modificarEmpleadoForm").elements.namedItem("activo").value = arregloDatos["activo"];
+						document.getElementById("modificarEmpleadoForm").elements.namedItem("estado").value = arregloDatos["estado"];
 
 												//Habilitamos form
 						document.getElementById("modificarEmpleadoFieldset").disabled = false;
@@ -257,8 +257,8 @@
 
   		Email: <input type="email" name="email" placeholder="xxxxx@yyyyy.zzz" maxlength="128" required>
 
-  		Estado: <input type="radio" name="activo" value="1" required> Activo
-  				<input type="radio" name="activo" value="0"> Inactivo
+  		Estado: <input type="radio" name="estado" value="1" required> Activo
+  				<input type="radio" name="estado" value="0"> Inactivo
 
 	  	<input type="reset" value="Borrar Todo">
 	  	<input type="submit" value="Agregar Empleado">
@@ -331,8 +331,8 @@
 
   		Fecha de Alta: <input type="datetime-local" step=1 name="fechaAlta"  >
 
-  		Estado: <input type="radio" name="activo" value="1" > Activo
-  				<input type="radio" name="activo" value="0"> Inactivo
+  		Estado: <input type="radio" name="estado" value="1" > Activo
+  				<input type="radio" name="estado" value="0"> Inactivo
 
 	  	<input type="reset" value="Borrar Todo" >
 	  	<input type="submit" value="Agregar Empleado" id="boton" style="visibility: hidden;">
@@ -407,8 +407,8 @@
 
   		Fecha de Alta: <input type="datetime-local" step=1 name="fechaAlta" required  >
 
-  		Estado: <input type="radio" name="activo" value="1" required > Activo
-  				<input type="radio" name="activo" value="0" > Inactivo
+  		Estado: <input type="radio" name="estado" value="1" required > Activo
+  				<input type="radio" name="estado" value="0" > Inactivo
 
 	  	<input type="submit" value="Modificar Empleado">
 	  	<span id="exitoErrorModificarEmpleadoForm" class="error"></span>

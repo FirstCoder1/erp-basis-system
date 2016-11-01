@@ -32,10 +32,10 @@
 	$empleado->set("curp","%".$_POST["curp"]."%");
 	$empleado->set("email","%".$_POST["email"]."%");
 	$empleado->set("fechaAlta",str_replace("T", " ", $_POST["fechaAlta"])."%");
-	if (isset($_POST["activo"])) {
-		$empleado->set("activo",$_POST["activo"]."%");
+	if (isset($_POST["estado"])) {
+		$empleado->set("estado",$_POST["estado"]."%");
 	}else{
-		$empleado->set("activo","%");
+		$empleado->set("estado","%");
 	}
 
 	$datos = $empleado->selectallvalues();		//Se realiza la consulta
@@ -90,7 +90,7 @@
 	        "</td><td>".$row["curp"].
 	        "</td><td>".$row["email"].
 	        "</td><td>".$row["fechaAlta"].
-	        "</td><td>".$row["activo"].
+	        "</td><td>".$row["estado"].
 	        "</td>";
 	    }
 

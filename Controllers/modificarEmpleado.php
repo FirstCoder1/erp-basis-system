@@ -22,7 +22,7 @@
 	$empleado->set("curp",$_POST["curp"]);
 	$empleado->set("email",$_POST["email"]);
 	$empleado->set("fechaAlta",str_replace("T", " ", $_POST["fechaAlta"]));
-	$empleado->set("activo",$_POST["activo"]);
+	$empleado->set("estado",$_POST["estado"]);
 
 	if($empleado->update()){				//Hacendo consulta 
 		echo "1";							//En caso de exito se mando un 1
