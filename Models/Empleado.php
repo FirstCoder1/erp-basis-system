@@ -1,85 +1,67 @@
 <?php namespace APP\Models;
 
-require_once "Conexion.php"; //----------------QUITAR
 
-	class Empleado{
+class Empleado extends BaseModel
+{
 
-		private $idEmpleado;
-		private $nombre;
-		private $apPaterno;
-		private $apMaterno;
-		private $fechaDeNacimiento;
-		private $calleNumeroDomicilio;
-		private $coloniaDomicilio;
-		private $delegacionMunicipioDomicilio;
-		private $codigoPostalDomicilio;
-		private $ciudadDomicilio;
-		private $telefonoLocal;
-		private $telefonoMovil;
-		private $genero;
-		private $estaturaM;
-		private $estadoCivil;
-		private $curp;
-		private $email;
-		private $fechaAlta;
-		private $estado;
+    protected $_tableName = "Empleados";
+    private   $idEmpleado;
+    private   $nombre;
+    private   $apPaterno;
+    private   $apMaterno;
+    private   $fechaDeNacimiento;
+    private   $calleNumeroDomicilio;
+    private   $coloniaDomicilio;
+    private   $delegacionMunicipioDomicilio;
+    private   $codigoPostalDomicilio;
+    private   $ciudadDomicilio;
+    private   $telefonoLocal;
+    private   $telefonoMovil;
+    private   $genero;
+    private   $estaturaM;
+    private   $estadoCivil;
+    private   $curp;
+    private   $email;
+    private   $fechaAlta;
+    private   $estado;
 
-		private $con;
+    public function selectone()
+    {
+        $sql   = "SELECT * FROM Empleados WHERE idEmpleado = {$this->idEmpleado}";
+        $datos = $this->con->consultaRetorno($sql);
 
-		public function __construct(){
-			$this->con = new \APP\Models\Conexion();
-		}
+        if (mysqli_num_rows($datos) > 0) {
 
-		public function set($atributo, $contenido){
-			$this->$atributo = $contenido;
-		}
+            $row                                = mysqli_fetch_assoc($datos);
+            $this->nombre                       = $row["nombre"];
+            $this->apPaterno                    = $row["apPaterno"];
+            $this->apMaterno                    = $row["apMaterno"];
+            $this->fechaDeNacimiento            = $row["fechaDeNacimiento"];
+            $this->calleNumeroDomicilio         = $row["calleNumeroDomicilio"];
+            $this->coloniaDomicilio             = $row["coloniaDomicilio"];
+            $this->delegacionMunicipioDomicilio = $row["delegacionMunicipioDomicilio"];
+            $this->codigoPostalDomicilio        = $row["codigoPostalDomicilio"];
+            $this->ciudadDomicilio              = $row["ciudadDomicilio"];
+            $this->telefonoLocal                = $row["telefonoLocal"];
+            $this->telefonoMovil                = $row["telefonoMovil"];
+            $this->genero                       = $row["genero"];
+            $this->estaturaM                    = $row["estaturaM"];
+            $this->estadoCivil                  = $row["estadoCivil"];
+            $this->curp                         = $row["curp"];
+            $this->email                        = $row["email"];
+            $this->fechaAlta                    = $row["fechaAlta"];
+            $this->estado                       = $row["estado"];
 
-		public function get($atributo){
-			return $this->$atributo;
-		}
+            return true;
 
-		public function selectall(){
+        } else {
+            return false;
+        }
+    }
 
-			$sql = "SELECT * FROM Empleados";
-			$datos = $this->con->consultaRetorno($sql);
-			return $datos;
-		}
-
-		public function selectone(){
-			$sql = "SELECT * FROM Empleados WHERE idEmpleado = {$this->idEmpleado}";
-			$datos = $this->con->consultaRetorno($sql);
-			
-			if (mysqli_num_rows($datos)>0) {
-				
-				$row = mysqli_fetch_assoc($datos);
-				$this->nombre = $row["nombre"];
-				$this->apPaterno = $row["apPaterno"];
-				$this->apMaterno = $row["apMaterno"];
-				$this->fechaDeNacimiento = $row["fechaDeNacimiento"];
-				$this->calleNumeroDomicilio = $row["calleNumeroDomicilio"];
-				$this->coloniaDomicilio = $row["coloniaDomicilio"];
-				$this->delegacionMunicipioDomicilio = $row["delegacionMunicipioDomicilio"];
-				$this->codigoPostalDomicilio = $row["codigoPostalDomicilio"];
-				$this->ciudadDomicilio = $row["ciudadDomicilio"];
-				$this->telefonoLocal = $row["telefonoLocal"];
-				$this->telefonoMovil = $row["telefonoMovil"];
-				$this->genero = $row["genero"];
-				$this->estaturaM = $row["estaturaM"];
-				$this->estadoCivil = $row["estadoCivil"];
-				$this->curp = $row["curp"];
-				$this->email = $row["email"];
-				$this->fechaAlta = $row["fechaAlta"];
-				$this->estado = $row["estado"];
-
-				return true;
-
-			}else{
-				return false;
-			}
-		}
-
-		public function selectallvalues(){
-			$sql = "SELECT *  FROM `Empleados` WHERE 
+    public function selectallvalues()
+    {
+        $sql = "SELECT *  FROM `Empleados` WHERE 
 			`idEmpleado` LIKE '{$this->idEmpleado}' AND 
 			`nombre` LIKE '{$this->nombre}' AND 
 			`apPaterno` LIKE '{$this->apPaterno}' AND 
@@ -101,13 +83,14 @@ require_once "Conexion.php"; //----------------QUITAR
 			`estado` LIKE '{$this->estado}'
 			ORDER BY `Empleados`.`idEmpleado` DESC";
 
-			$datos = $this->con->consultaRetorno($sql);
-			
-			return $datos;
-		}
-		
-		public function insert(){
-			$sql = "INSERT INTO ".DBNAME.".`Empleados` 
+        $datos = $this->con->consultaRetorno($sql);
+
+        return $datos;
+    }
+
+    public function insert()
+    {
+        $sql = "INSERT INTO ".DBNAME.".`Empleados` 
 			(`idEmpleado`, 
 			`nombre`, 
 			`apPaterno`, 
@@ -147,11 +130,12 @@ require_once "Conexion.php"; //----------------QUITAR
 			CURRENT_TIMESTAMP,
 			'{$this->estado}')";
 
-			return $this->con->consultaSimple($sql);
-		}
+        return $this->con->consultaSimple($sql);
+    }
 
-		public function update(){
-			$sql = "UPDATE ".DBNAME.".`Empleados` SET 
+    public function update()
+    {
+        $sql = "UPDATE ".DBNAME.".`Empleados` SET 
 			`nombre` = '{$this->nombre}',
 			`apPaterno` = '{$this->apPaterno}', 
 			`apMaterno` = '{$this->apMaterno}', 
@@ -172,16 +156,18 @@ require_once "Conexion.php"; //----------------QUITAR
 			`estado` = '{$this->estado}' 
 			WHERE `Empleados`.`idEmpleado` = '{$this->idEmpleado}'";
 
-			return $this->con->consultaSimple($sql);
-		}
+        return $this->con->consultaSimple($sql);
+    }
 
-		public function delete(){
-			$sql = "DELETE FROM `Sprint1`.`Empleados` WHERE `empleados`.`idEmpleado` = '{$this->idEmpleado}'";
-			$this->con->consultaSimple($sql);
-		}
+    public function delete()
+    {
+        $sql = "DELETE FROM `Sprint1`.`Empleados` WHERE `empleados`.`idEmpleado` = '{$this->idEmpleado}'";
+        $this->con->consultaSimple($sql);
+    }
 
 
-	}
+}
+
 /*
 COMENTARIOS GENERALES:
 

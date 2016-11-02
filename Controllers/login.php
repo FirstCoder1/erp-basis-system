@@ -8,6 +8,7 @@ require_once __DIR__."/../Autoload.php";        //Inclusión de archivo para Aut
 \APP\Autoload::run();                        //Arranca Autoload
 
 use APP\Config\Sanitize;
+use APP\Models\User;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través de un POST
@@ -15,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través 
     $userName     = Sanitize::sanitizeInput($_POST["userName"]);    //Se limpia la entrada TODO-Validación
     $password     = Sanitize::sanitizeInput($_POST["password"]);
 
-		$user = new \APP\Models\User();			//Creación de objeto User a través de los datos
+		$user = new User();			//Creación de objeto User a través de los datos
 		$user->set("userName", $userName);
 		$user->set("password", $password);
 
