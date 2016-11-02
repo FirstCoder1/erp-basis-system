@@ -1,5 +1,7 @@
 <?php namespace APP\Models;
- 
+
+//TODO Read it http://php.net/manual/es/book.pdo.php
+//http://php.net/manual/es/pdo.connections.php
 	class Conexion{
 
 		private $datos = array(
