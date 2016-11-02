@@ -4,9 +4,9 @@ class User extends BaseModel
 {
 
     protected $_tableName = "Users";
-    private $idEmpleado;
-    private $userName;
-    private $password;
+    protected $idEmpleado;
+    protected $userName;
+    protected $password;
 
     public function selectone()
     {

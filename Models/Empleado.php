@@ -5,25 +5,25 @@ class Empleado extends BaseModel
 {
 
     protected $_tableName = "Empleados";
-    private   $idEmpleado;
-    private   $nombre;
-    private   $apPaterno;
-    private   $apMaterno;
-    private   $fechaDeNacimiento;
-    private   $calleNumeroDomicilio;
-    private   $coloniaDomicilio;
-    private   $delegacionMunicipioDomicilio;
-    private   $codigoPostalDomicilio;
-    private   $ciudadDomicilio;
-    private   $telefonoLocal;
-    private   $telefonoMovil;
-    private   $genero;
-    private   $estaturaM;
-    private   $estadoCivil;
-    private   $curp;
-    private   $email;
-    private   $fechaAlta;
-    private   $estado;
+    protected   $idEmpleado;
+    protected   $nombre;
+    protected   $apPaterno;
+    protected   $apMaterno;
+    protected   $fechaDeNacimiento;
+    protected   $calleNumeroDomicilio;
+    protected   $coloniaDomicilio;
+    protected   $delegacionMunicipioDomicilio;
+    protected   $codigoPostalDomicilio;
+    protected   $ciudadDomicilio;
+    protected   $telefonoLocal;
+    protected   $telefonoMovil;
+    protected   $genero;
+    protected   $estaturaM;
+    protected   $estadoCivil;
+    protected   $curp;
+    protected   $email;
+    protected   $fechaAlta;
+    protected   $estado;
 
     public function selectone()
     {

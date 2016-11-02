@@ -14,7 +14,7 @@ class Autoload
             $class    = str_replace("\\", DIRECTORY_SEPARATOR, $class).".php";
             $filePath = __DIR__.DIRECTORY_SEPARATOR.$class;
 
-            Log::error($filePath);
+            //Log::error($filePath);
 
             if (file_exists($filePath) && is_readable($filePath)) {
                 require_once $filePath;

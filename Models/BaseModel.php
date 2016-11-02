@@ -8,6 +8,7 @@
 
 namespace APP\Models;
 
+use App\Utils\Log;
 
 class BaseModel
 {
@@ -21,6 +22,7 @@ class BaseModel
 
     public function set($atributo, $contenido)
     {
+        Log::error($atributo);
         $this->$atributo = $contenido;
     }
 
