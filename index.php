@@ -23,53 +23,39 @@
 		<meta name="keywords" content="keywords">
 		<meta name="author" content="Oscar Camacho Urriolagoitia">
 		<title>NombreDelSistema - Login </title>
-
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
 		<script>
-			
-		function login() {
-												//Mete los valores del form al post		
-			var formElements=document.getElementById("login");    
-			var params="";
-												//Iteramos por cada elemento del form
-			for (var i=0; i<formElements.length; i++){
-												//We dont want to include the submit-buttom
-			    if (formElements[i].type!="submit"){	
-			    	
-			    	params+=formElements[i].name+"="+formElements[i].value+"&";
-			    	
-			    }	
-			        
-			}
-
-			xmlhttp = new XMLHttpRequest();		//AJAX
-
-			xmlhttp.onreadystatechange = function() {
-												//Este If maneja que hacer con la respuesta
-	            if (this.readyState == 4 && this.status == 200) {
-	            								//Si la inserción es exitosa
-	                if(this.responseText == 1){	
-	                	
-	                	window.top.location.href = "home.php";
-
-			        }else{						//En caso de error, mensaje de error
-			        	
-	                	document.getElementById("error").innerHTML = "Datos incorrectos.";
-
-			        }
-	            }
-	        };
-	        									//Datos de envío de consulta
-	        xmlhttp.open("POST","./Controllers/login.php",true);
-	        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	        xmlhttp.send(params); 
-	    }
+            $(document).ready(function () {
+                $("#login").submit(function (evt) {
+                    evt.preventDefault();
+                    $.ajax({
+                               url     : "./Controllers/login.php",
+                               type    : 'POST',
+                               dataType: 'json',
+                               data    : {
+                                   userName: $('input[name="userName"]').val(),
+                                   password: $('input[name="password"]').val()
+                               }
+                           }).done(function (data) {
+                        console.log(data);
+                        if (data.success) {
+                            window.top.location.href = "home.php";
+                        } else {						//En caso de error, mensaje de error
+                            document.getElementById("error").innerHTML = "Datos incorrectos.";
+                        }
+                    });
+                    return false;
+                });
+            });
 
 		</script>
 	</head>
 
 	<body>
 		<h1>Login</h1>
-		<form id="login" autocomplete="off" onsubmit="login(); return false;">
+        <form id="login" autocomplete="off">
 	  	Usuario: <input type="text" name="userName" placeholder="Tu nombre de usuario" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required autofocus >
 	  	Contraseña: <input type="password" name="password" placeholder="Tu contraseña" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required >
 	  	<input type="submit" value="Iniciar sesión">

@@ -19,11 +19,11 @@
 			$_SESSION["idEmpleado"] = $user->get('idEmpleado');
 			
 			$_SESSION["timelast"] = time(); //Se asigna la hora de la última operación 
-			
-			echo 1;
+
+            echo json_encode(['success' => true]);
 
 		}else{
-			echo 0;
+            echo json_encode(['success' => false]);
 		}
 
 	}
