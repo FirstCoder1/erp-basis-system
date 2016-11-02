@@ -1,7 +1,9 @@
 <?php
 
-	require_once "../Config/Constantes.php";   	//Inclusión de las constantes y funciones globales
-	require_once "../Autoload.php"; 		//Inclusión de archivo para Autoload de las clases 
+//TODO Usar __DIR__ al principio de los require o cada que se incluye un script dentro de otro
+require_once __DIR__."/../Config/Constantes.php";    //Inclusión de las constantes y funciones globales
+require_once __DIR__."/../Autoload.php";        //Inclusión de archivo para Autoload de las clases
+
 	\APP\Autoload::run();						//Arranca Autoload
 
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {	//si se llama al index a través de un POST

@@ -1,26 +1,30 @@
-<?php namespace APP; 
+<?php namespace APP;
 
-	class Autoload{
+require_once __DIR__."/Utils/Log.php";
 
-		public static function run(){
-			spl_autoload_register(function($class){
-				$ruta = str_replace("APP\\", "", $class);
-				$ruta = str_replace("\\", "/", $ruta) .".php";
+use App\Utils\Log;
 
-				if (is_file($ruta)){
-					require_once $ruta;
-					file_put_contents('php://stderr', print_r(date("h:i:sa")."SI SI SI se encuentra :: ".$ruta, TRUE));
-				}else{
+class Autoload
+{
 
-					//$ruta = $ruta;
+    public static function run()
+    {
+        spl_autoload_register(function ($class) {
+            $class    = str_replace("APP\\", "", $class);
+            $class    = str_replace("\\", DIRECTORY_SEPARATOR, $class).".php";
+            $filePath = __DIR__.DIRECTORY_SEPARATOR.$class;
 
-					require_once $ruta;
+            Log::error($filePath);
 
-					file_put_contents('php://stderr', print_r(date("h:i:sa")."NO se encuentra :: ".$ruta, TRUE));
-				}
-			});
-		}
+            if (file_exists($filePath) && is_readable($filePath)) {
+                require_once $filePath;
+                Log::error("SI SI SI se encuentra :: ".$class);
+            } else {
+                Log::error("NO se encuentra :: ".$class);
 
-	}
+                throw new \RuntimeException('Class not found!! '.$class);
+            }
+        });
+    }
 
- ?>
+}
