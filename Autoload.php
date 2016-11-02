@@ -18,10 +18,7 @@ class Autoload
 
             if (file_exists($filePath) && is_readable($filePath)) {
                 require_once $filePath;
-                Log::error("SI SI SI se encuentra :: ".$class);
             } else {
-                Log::error("NO se encuentra :: ".$class);
-
                 throw new \RuntimeException('Class not found!! '.$class);
             }
         });
