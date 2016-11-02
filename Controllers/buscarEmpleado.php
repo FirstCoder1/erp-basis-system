@@ -66,8 +66,7 @@
 				'<th>Estado en el sistema</th>'. 
 			'</tr>';
 
-		
-
+        //TODO también puedes usar fetch_object(Empleado::class)
 	    while($row = $datos->fetch_assoc()) {	//Itera cada fila
 	        $respuesta .= "<tr><td>".			
 	        									//Agrega un botón con el idEMpleado en caso de querer modificar ese Empleado
