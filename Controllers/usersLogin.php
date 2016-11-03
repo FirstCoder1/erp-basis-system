@@ -1,6 +1,4 @@
-<?php
-
-//TODO Usar __DIR__ al principio de los require o cada que se incluye un script dentro de otro
+<?php namespace APP\Controllers;
 
 require_once __DIR__."/../Config/Constantes.php";    //Inclusión de las constantes y funciones globales
 require_once __DIR__."/../Autoload.php";        //Inclusión de archivo para Autoload de las clases
@@ -12,9 +10,9 @@ use APP\Models\User;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través de un POST
-		$userName = $password = "";
-    $userName     = Sanitize::sanitizeInput($_POST["userName"]);    //Se limpia la entrada TODO-Validación
-    $password     = Sanitize::sanitizeInput($_POST["password"]);
+    $userName = $password = "";
+    $userName     = Sanitize::sanitizeInput($_POST["userName"]);    //Se limpia la entrada
+    $password     = crypt(Sanitize::sanitizeInput($_POST["password"]),'crypt'); //cr0k5jrG2AvAQ
 
 		$user = new User();			//Creación de objeto User a través de los datos
 		$user->set("userName", $userName);
@@ -30,7 +28,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través 
             echo json_encode(['success' => true]);
 
 		}else{
-            echo json_encode(['success' => false]);
+            echo json_encode(['success' => false, 'error' => 'Datos incorrectos.']);
 		}
 
-	}
+	} else {
+
+    json_encode(['success' => false, 'error' => 'HTTP Request Method.']);
+
+}
+
+//TODO - cifrar la contraseña bien.

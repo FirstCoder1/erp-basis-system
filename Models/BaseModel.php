@@ -1,14 +1,4 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: cuculcan
- * Date: 01/11/2016
- * Time: 11:25 PM
- */
-
-namespace APP\Models;
-
-use App\Utils\Log;
+<?php namespace APP\Models;
 
 class BaseModel
 {
@@ -22,7 +12,6 @@ class BaseModel
 
     public function set($atributo, $contenido)
     {
-        Log::error($atributo);
         $this->$atributo = $contenido;
     }
 

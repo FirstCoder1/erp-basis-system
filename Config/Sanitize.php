@@ -17,6 +17,4 @@ class Sanitize
 /*
 COMENTARIOS GENERALES:
 
-$data = mysqli_real_escape_string($data);
-
 */

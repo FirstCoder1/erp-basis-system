@@ -1,16 +1,13 @@
 <?php namespace Config; 
-	
-	define("CONSTANTE", "Hello world.");
 
 	define("DBHOST", "mysql1002.mochahost.com");
-//define("HOST", "mocha3014.mochahost.com");
 	define("DBUSER", "shoatm15_Sprint1");
-//define("DBUSER", "shoatm15");
 	define("DBPASS", "Sprint1");
-//define("DBPASS", "cuo1577");
 	define("DBNAME", "shoatm15_Sprint1");
 
 	define("SESSIONTIMEOUT", "30"); 				//En minutos
+
+	define("APPNAME", "Nombre del sistema");               //TODO - Nombre del sistema.
 
 /*
 COMENTARIOS GENERALES:

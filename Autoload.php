@@ -19,7 +19,7 @@ class Autoload
             if (file_exists($filePath) && is_readable($filePath)) {
                 require_once $filePath;
             } else {
-                throw new \RuntimeException('Class not found!! '.$class);
+                throw new \RuntimeException('Class not found!! :: '.$class);
             }
         });
     }

@@ -8,7 +8,32 @@ class User extends BaseModel
     protected $userName;
     protected $password;
 
-    public function selectone()
+    public function check()
+    {
+        $sql   = "SELECT * FROM ".$this->_tableName." WHERE 
+			BINARY userName LIKE '{$this->userName}' AND 
+			BINARY password LIKE '{$this->password}'";
+        $resultado = $this->con->consultaRetorno($sql);
+
+
+        if ($resultado->rowCount() == 1) {
+
+            $resultado = $resultado->fetchAll(\PDO::FETCH_CLASS, "\\APP\\Models\\User");
+            $user = $resultado[0];
+
+            $this->idEmpleado = $user->get("idEmpleado");
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
+    }
+
+    /*public function selectone()
     {
         $sql   = "SELECT * FROM Users WHERE idEmpleado = '{$this->idEmpleado}'";
         $datos = $this->con->consultaRetorno($sql);
@@ -52,30 +77,7 @@ class User extends BaseModel
 			`password` = '{$this->password}',
 			WHERE `Users`.`idEmpleado` = '{$this->idEmpleado}'";
         $this->con->consultaSimple($sql);
-    }
+    }*/
 
-
-    public function check()
-    {
-        $sql   = "SELECT * FROM Users WHERE 
-			BINARY userName LIKE '{$this->userName}' AND 
-			BINARY password LIKE '{$this->password}'";
-        $datos = $this->con->consultaRetorno($sql);
-
-        if (mysqli_num_rows($datos) > 0) {
-
-            $row              = mysqli_fetch_assoc($datos);
-            $this->idEmpleado = $row["idEmpleado"];
-
-            return true;
-
-        } else {
-            return false;
-        }
-
-    }
 
 }
-
-
-?>

@@ -1,36 +1,54 @@
 <?php namespace APP\Models;
 
-//TODO Read it http://php.net/manual/es/book.pdo.php
-//http://php.net/manual/es/pdo.connections.php
-	class Conexion{
+use \PDO;
 
-		private $datos = array(
-			"host" => DBHOST,
-			"user" => DBUSER,
-			"pass" => DBPASS,
-			"db" => DBNAME
-		);
+	class Conexion{
 
 		private $con;
 
 		public function __construct(){
-			$this->con = new \mysqli(
-				$this->datos['host'],
-				$this->datos['user'],
-				$this->datos['pass'],
-				$this->datos['db']
-				);
-			$this->con->set_charset("utf8");		//utf8 para evitar diamentes "?"
+            try {
+                $this->con = new PDO("mysql:host=".DBHOST.";dbname=".DBNAME.";charset=utf8", DBUSER, DBPASS, array (PDO::ATTR_PERSISTENT => true)); //utf8 para evitar diamantes "?"
+                // set the PDO error mode to exception
+                $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            }
+            catch(PDOException $e)
+            {
+                \APP\Utils\Log::error("Database connection failed: " . $e->getMessage());
+            }
+
 		}
 
 		public function consultaSimple($sql){
+
+
 			$resultado = $this->con->query($sql);
-			return $resultado;
+
+            if($resultado->errorCode() != 0000){
+
+                \APP\Utils\Log::error("Query error: " . $resultado->errorInfo());
+
+            }else{
+
+                return $resultado;
+
+            }
 		}
 
 		public function consultaRetorno($sql){
-			$datos = $this->con->query($sql);
-			return $datos;
+
+            $resultado = $this->con->query($sql);
+
+            if($resultado->errorCode() != 0000){
+
+                \APP\Utils\Log::error("Query error: " . $resultado->errorInfo());
+
+            }else{
+
+                return $resultado;
+
+            }
+
 		}
 
 	}
@@ -38,7 +56,6 @@
 /*
 COMENTARIOS GENERALES:
 
-
+//TODO - prepare statement
 
 */
- ?>
