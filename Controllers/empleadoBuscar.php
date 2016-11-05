@@ -7,7 +7,6 @@ require_once __DIR__."/../Autoload.php"; 	//Inclusión de archivo para Autoload 
 use APP\Config\Sanitize;
 use APP\Models\Empleado;
 
-
 $empleado = new Empleado();			//Creando objeto empleado
                                             //Llenando objeto a partir de POST
 $empleado->set("idEmpleado",Sanitize::sanitizeInput($_POST["idEmpleado"]."%"));
@@ -34,9 +33,7 @@ $resultado = $empleado->selectallvalues();		//Se realiza la consulta
 
 if ($resultado->rowCount() > 0) {			//Si tiene respuesta genera tabla con ellas
 
-    $resultado = $resultado->fetchAll();
-
-    $resultado['success'] = true;
+    $resultado = $resultado->fetchAll(\PDO::FETCH_ASSOC);
 
     echo json_encode($resultado);
 

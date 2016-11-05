@@ -20,7 +20,7 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 	</head>
 
 	<body>
-		<h4>Control de Empleados</h4>
+		<h4>Control de empleados</h4>
 
 		<h5>Agregar Empleado:</h5>
 		<form id="agregarEmpleadoForm" autocomplete="off">
@@ -63,42 +63,42 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 		</form>
 
 
-		<h5>Buscar, modificar y desactivar empleado:</h5>
+		<h5>Buscar, modificar y activar/desactivar empleado:</h5>
 
 		<form id="buscarEmpleadoForm" autocomplete="off">
 		<fieldset>
-		ID de Empleado: 		<input type="number" name="idEmpleadoBus" min="0" step="1" placeholder="0">
-	  	Nombre: 				<input type="text" name="nombreBus" placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." autofocus >
-	  	Apellido Paterno: 		<input type="text" name="apPaternoBus" placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
-	  	Apellido Materno: 		<input type="text" name="apMaternoBus" placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
-	  	Fecha de Nacimiento: 	<input type="date" name="fechaDeNacimientoBus"  >
-	  	Calle y número: 		<input type="text" name="calleNumeroDomicilioBus" placeholder="Xxxxx YYY" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9- ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." >
-	  	Colonia: 				<input type="text" name="coloniaDomicilioBus" placeholder="Xxxxxxxxx" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9- ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." >
-	  	Delegación o Municipio: <input type="text" name="delegacionMunicipioDomicilioBus" placeholder="Xxxxxxxxxxxx" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9-  ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." >
-	  	Código Postal: 			<input type="text" name="codigoPostalDomicilioBus" placeholder="XXXXXX" maxlength="8" style="text-transform: uppercase;" pattern="[a-zA-Z0-9-]{0,8}" title="Solo letras y números (no signos), 6 - 8 caracteres." >
-	  	Ciudad: 				<input type="text" name="ciudadDomicilioBus" placeholder="Xxxxx" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9- ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 2 - 70 caracteres." >
-	  	Teléfono Local: 		<input type="tel" name="telefonoLocalBus" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-|+|(|)]{0,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres." >
-	  	Teléfono Movil: 		<input type="tel" name="telefonoMovilBus" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-|+|(|)]{0,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres." >
-	  	Género: 				<select name="generoBus" required>
+		ID de Empleado: 		<input type="number" id="idEmpleadoBus" min="0" step="1" placeholder="0">
+	  	Nombre: 				<input type="text" id="nombreBus" placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." autofocus >
+	  	Apellido Paterno: 		<input type="text" id="apPaternoBus" placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
+	  	Apellido Materno: 		<input type="text" id="apMaternoBus" placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
+	  	Fecha de Nacimiento: 	<input type="date" id="fechaDeNacimientoBus"  >
+	  	Calle y número: 		<input type="text" id="calleNumeroDomicilioBus" placeholder="Xxxxx YYY" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9- ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." >
+	  	Colonia: 				<input type="text" id="coloniaDomicilioBus" placeholder="Xxxxxxxxx" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9- ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." >
+	  	Delegación o Municipio: <input type="text" id="delegacionMunicipioDomicilioBus" placeholder="Xxxxxxxxxxxx" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9-  ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." >
+	  	Código Postal: 			<input type="text" id="codigoPostalDomicilioBus" placeholder="XXXXXX" maxlength="8" style="text-transform: uppercase;" pattern="[a-zA-Z0-9-]{0,8}" title="Solo letras y números (no signos), 6 - 8 caracteres." >
+	  	Ciudad: 				<input type="text" id="ciudadDomicilioBus" placeholder="Xxxxx" maxlength="70" style="text-transform: capitalize;" pattern="[a-zA-Z0-9- ñáéíóú]{0,70}" title="Solo letras,espacios y números (no signos), 2 - 70 caracteres." >
+	  	Teléfono Local: 		<input type="tel" id="telefonoLocalBus" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-|+|(|)]{0,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres." >
+	  	Teléfono Movil: 		<input type="tel" id="telefonoMovilBus" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-|+|(|)]{0,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres." >
+	  	Género: 				<select id="generoBus" required>
 									<option></option>
-									<option value"Hombre">Hombre</option>
-									<option value"Mujer">Mujer</option>
+									<option value="Hombre">Hombre</option>
+									<option value="Mujer">Mujer</option>
 								</select>
-	  	Estatura: 				<input type="number" name="estaturaMBus" min="0.50" max="2.50" step=".01" placeholder="1.65" > metros
-	  	Estado Civil: 			<select name="estadoCivilBus" required>
+	  	Estatura: 				<input type="number" id="estaturaMBus" min="0.50" max="2.50" step=".01" placeholder="1.65" > metros
+	  	Estado Civil: 			<select id="estadoCivilBus" required>
 									<option></option>
-									<option value"Casado">Casado</option>
-									<option value"Soltero">Soltero</option>
-									<option value"Divorciado">Divorciado</option>
-									<option value"Otro">Otro</option>
+									<option value="Casado">Casado</option>
+									<option value="Soltero">Soltero</option>
+									<option value="Divorciado">Divorciado</option>
+									<option value="Otro">Otro</option>
 								</select>
-  		CURP: 					<input type="text" name="curpBus" placeholder="XXXXXXXXXXXXXXXXXX" maxlength="18" style="text-transform: uppercase;" pattern="[A-Z0-9-]{0,18}" title="Solo letras y números (no signos), 18 caracteres." >
-  		Email: 					<input type="test" name="emailBus" placeholder="xxxxx@yyyyy.zzz" maxlength="128" style="text-transform: lowercase;" >
-  		Fecha de Alta: 			<input type="datetime-local" step=1 name="fechaAltaBus"  >
-  		Estado: 				<select name="estadoBus" required>
+  		CURP: 					<input type="text" id="curpBus" placeholder="XXXXXXXXXXXXXXXXXX" maxlength="18" style="text-transform: uppercase;" pattern="[A-Z0-9-]{0,18}" title="Solo letras y números (no signos), 18 caracteres." >
+  		Email: 					<input type="test" id="emailBus" placeholder="xxxxx@yyyyy.zzz" maxlength="128" style="text-transform: lowercase;" >
+  		Fecha de Alta: 			<input type="datetime-local" step=1 id="fechaAltaBus"  >
+  		Estado: 				<select id="estadoBus" required>
 									<option></option>
-									<option value"1">Activo</option>
-									<option value"0">Inactivo</option>
+									<option value="1">Activo</option>
+									<option value="0">Inactivo</option>
 								</select>
 			<input type="reset" value="Borrar Todo" >
 			<input type="submit" value="Agregar Empleado" id="boton" style="visibility: hidden;">
@@ -154,29 +154,31 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 					type: 'POST',
 					dataType: 'json',
 					data: {
-						idEmpleado: $('input[name="idEmpleadoBus"]').val(),
-						nombre: $('input[name="nombreBus"]').val(),
-						apPaterno: $('input[name="apPaternoBus"]').val(),
-						apMaterno: $('input[name="apMaternoBus"]').val(),
-						fechaDeNacimiento: $('input[name="fechaDeNacimientoBus"]').val(),
-						calleNumeroDomicilio: $('input[name="calleNumeroDomicilioBus"]').val(),
-						coloniaDomicilio: $('input[name="coloniaDomicilioBus"]').val(),
-						delegacionMunicipioDomicilio: $('input[name="delegacionMunicipioDomicilioBus"]').val(),
-						codigoPostalDomicilio: $('input[name="codigoPostalDomicilioBus"]').val(),
-						ciudadDomicilio: $('input[name="ciudadDomicilioBus"]').val(),
-						telefonoLocal: $('input[name="telefonoLocalBus"]').val(),
-						telefonoMovil: $('input[name="telefonoMovilBus"]').val(),
-						genero: $('select[name="generoBus"] option:selected').text(),
-						estaturaM: $('input[name="estaturaMBus"]').val(),
-						estadoCivil: $('select[name="estadoCivilBus"] option:selected').text(),
-						curp: $('input[name="curpBus"]').val(),
-						email: $('input[name="emailBus"]').val(),
-						fechaAlta: $('input[name="fechaAltaBus"]').val(),
-						estado: $('select[name="estadoBus"] option:selected').text()
+						idEmpleado: $('#idEmpleadoBus').val(),
+						nombre: $('#nombreBus').val(),
+						apPaterno: $('#apPaternoBus').val(),
+						apMaterno: $('#apMaternoBus').val(),
+						fechaDeNacimiento: $('#fechaDeNacimientoBus').val(),
+						calleNumeroDomicilio: $('#calleNumeroDomicilioBus').val(),
+						coloniaDomicilio: $('#coloniaDomicilioBus').val(),
+						delegacionMunicipioDomicilio: $('#delegacionMunicipioDomicilioBus').val(),
+						codigoPostalDomicilio: $('#codigoPostalDomicilioBus').val(),
+						ciudadDomicilio: $('#ciudadDomicilioBus').val(),
+						telefonoLocal: $('#telefonoLocalBus').val(),
+						telefonoMovil: $('#telefonoMovilBus').val(),
+						genero: $('#generoBus option:selected').val(),
+						estaturaM: $('#estaturaMBus').val(),
+						estadoCivil: $('#estadoCivilBus option:selected').val(),
+						curp: $('#curpBus').val(),
+						email: $('#emailBus').val(),
+						fechaAlta: $('#fechaAltaBus').val(),
+						estado: $('#estadoBus option:selected').val()
 					}
 				}).done(function (data) {
 
-					if (data.success) {
+					console.log(data);
+
+					if (data.success != false) {
 						var tabla = '<table>'+
 						'<tr>'+
 						'<td>Opciones</th>'+
@@ -201,32 +203,31 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 						'<th>Estado en el sistema</th>'+
 						'</tr>';
 
-						var arr = $.map(data, function(el) { return el });
-						for (var i = 0; i < arr.length-1; i++){
+						$.each(data, function(i, empleado) {
 							tabla+= "<tr><td>"+
-								"<button type=\"button\" onclick=\"modificarEmpleadoFillForm("+arr[i].idEmpleado+");\">Modificar</button>"+
-								"</td><td>"+arr[i].idEmpleado+
-								"</td><td>"+arr[i].nombre+
-								"</td><td>"+arr[i].apPaterno+
-								"</td><td>"+arr[i].apMaterno+
-								"</td><td>"+arr[i].fechaDeNacimiento+
-								"</td><td>"+arr[i].calleNumeroDomicilio+
-								"</td><td>"+arr[i].coloniaDomicilio+
-								"</td><td>"+arr[i].delegacionMunicipioDomicilio+
-								"</td><td>"+arr[i].codigoPostalDomicilio+
-								"</td><td>"+arr[i].ciudadDomicilio+
-								"</td><td>"+arr[i].telefonoLocal+
-								"</td><td>"+arr[i].telefonoMovil+
-								"</td><td>"+arr[i].genero+
-								"</td><td>"+arr[i].estaturaM+
-								"</td><td>"+arr[i].estadoCivil+
-								"</td><td>"+arr[i].curp+
-								"</td><td>"+arr[i].email+
-								"</td><td>"+arr[i].fechaAlta+
-								"</td><td>"+arr[i].estado+
+								"<button type=\"button\" onclick=\"modificarEmpleadoFillForm("+empleado.idEmpleado+");\">Modificar</button>"+
+								"</td><td>"+empleado.idEmpleado+
+								"</td><td>"+empleado.nombre+
+								"</td><td>"+empleado.apPaterno+
+								"</td><td>"+empleado.apMaterno+
+								"</td><td>"+empleado.fechaDeNacimiento+
+								"</td><td>"+empleado.calleNumeroDomicilio+
+								"</td><td>"+empleado.coloniaDomicilio+
+								"</td><td>"+empleado.delegacionMunicipioDomicilio+
+								"</td><td>"+empleado.codigoPostalDomicilio+
+								"</td><td>"+empleado.ciudadDomicilio+
+								"</td><td>"+empleado.telefonoLocal+
+								"</td><td>"+empleado.telefonoMovil+
+								"</td><td>"+empleado.genero+
+								"</td><td>"+empleado.estaturaM+
+								"</td><td>"+empleado.estadoCivil+
+								"</td><td>"+empleado.curp+
+								"</td><td>"+empleado.email+
+								"</td><td>"+empleado.fechaAlta+
+								"</td><td>"+empleado.estado+
 								"</td>";
+						});
 
-						}
 						tabla += "</table>";
 
 						document.getElementById("respuestaBuscarEmpleado").innerHTML = tabla;
@@ -345,7 +346,7 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 				xmlhttp.open("POST","../Controllers/modificarEmpleadoFillForm.php",true);
 				xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 				xmlhttp.send(params);
-			}
+			} //TODO - aquí me quede !!!!!
 
 			function modificarEmpleado() {
 

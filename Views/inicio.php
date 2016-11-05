@@ -23,7 +23,7 @@
 	<body>
 		<h4>Inicio</h4>
 		<h5>Bienvenido a la aplicación</h5>
-		<p>Por el momento la aplicación continua creciendo y no hay mucha información por mostrar aquí, sin embargo se te hacemos las siguientes sugerencias:</p>
+		<p>Por el momento la aplicación continua creciendo y no hay m|ucha información por mostrar aquí, sin embargo se te hacemos las siguientes sugerencias:</p>
 		<ul>
 			<li>Ocupa Google Chrome.</li>
 			
