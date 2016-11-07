@@ -34,8 +34,8 @@
 		<h3>Sesión de: <?php echo $empleado->get("nombre") ." ". $empleado->get("apPaterno") ?></h3>
 		<a href="./Views/inicio.php" target="modulo">Inicio</a>
 		<a href="./Views/controlDeEmpleados.php" target="modulo">Control de empleados</a>
-		<!--<a href="./Views/controlDeAccesos.php" target="modulo">Control de accesos</a>
-		<a href="./Views/registros.php" target="modulo">Registros</a>
+		<a href="./Views/controlDeAccesos.php" target="modulo">Control de accesos</a>
+		<!--<a href="./Views/registros.php" target="modulo">Registros</a>
 		<a href="./Views/controlDeModulos.php" target="modulo">Control de Módulos</a>
 		<a href="./Views/controlDeClientes.php" target="modulo">Control de Clientes</a>-->
 		<a href="./Views/cerrarsesion.php" >Cerrar sesión</a>

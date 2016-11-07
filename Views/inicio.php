@@ -44,7 +44,6 @@
 				}
 
 				function resetTimer() {
-					$(this).parents().css('background-color', '#000000');
 					clearInterval(timer);
 					timer = setInterval(redirect, timeOut);
 				}

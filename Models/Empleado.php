@@ -140,7 +140,7 @@ class Empleado extends BaseModel
 
     public function update()
     {
-        $sql = "UPDATE ".DBNAME.".`Empleados` SET 
+        $sql = "UPDATE ".DBNAME.".`".$this->_tableName."` SET 
 			`nombre` = '{$this->nombre}',
 			`apPaterno` = '{$this->apPaterno}', 
 			`apMaterno` = '{$this->apMaterno}', 
@@ -159,16 +159,16 @@ class Empleado extends BaseModel
 			`email` = '{$this->email}', 
 			`fechaAlta` = '{$this->fechaAlta}',
 			`estado` = '{$this->estado}' 
-			WHERE `Empleados`.`idEmpleado` = '{$this->idEmpleado}'";
+			WHERE `".$this->_tableName."`.`idEmpleado` = '{$this->idEmpleado}'";
 
         return $this->con->consultaSimple($sql);
     }
 
-    public function delete()
+    /*public function delete()
     {
         $sql = "DELETE FROM `Sprint1`.`Empleados` WHERE `empleados`.`idEmpleado` = '{$this->idEmpleado}'";
         $this->con->consultaSimple($sql);
-    }
+    }*/
 
 
 }

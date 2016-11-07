@@ -1,14 +1,16 @@
 <?php namespace APP\Controllers;
 
+
 require_once __DIR__."/../Config/Constantes.php";   //Inclusión de las constantes y funciones globales
 require_once __DIR__."/../Autoload.php"; 	//Inclusión de archivo para Autoload de las clases
 \APP\Autoload::run();					//Arranca Autoload
 
-use APP\Config\Sanitize;
+use APP\Config\Sanitize; //TODO ---- sanitize
 use APP\Models\Empleado;
 
-$empleado = new Empleado();		//Creando objeto empleado
-                                        //Llenando objeto a partir del POST
+
+$empleado = new Empleado();		//Creando objeto empleado a partir de POST
+$empleado->set("idEmpleado",Sanitize::sanitizeInput($_POST["idEmpleado"]));
 $empleado->set("nombre",Sanitize::sanitizeInput($_POST["nombre"]));
 $empleado->set("apPaterno",Sanitize::sanitizeInput($_POST["apPaterno"]));
 $empleado->set("apMaterno",Sanitize::sanitizeInput($_POST["apMaterno"]));
@@ -25,17 +27,18 @@ $empleado->set("estaturaM",Sanitize::sanitizeInput($_POST["estaturaM"]));
 $empleado->set("estadoCivil",Sanitize::sanitizeInput($_POST["estadoCivil"]));
 $empleado->set("curp",Sanitize::sanitizeInput($_POST["curp"]));
 $empleado->set("email",Sanitize::sanitizeInput($_POST["email"]));
-$empleado->set("estado",Sanitize::sanitizeInput("testing"));
+$empleado->set("fechaAlta",str_replace("T", " ", Sanitize::sanitizeInput($_POST["fechaAlta"])));
+$empleado->set("estado",Sanitize::sanitizeInput($_POST["estado"]));
 
-if($empleado->insert()){				//Realizando inserción
+if($empleado->update()){				//Hacendo consulta
     echo json_encode(['success' => true]);
 }else{
-    echo json_encode(['success' => false, 'error' => 'Error agregando empleado.']);
+    echo json_encode(['success' => false, 'error' => 'Error modificando empleado.']);
 }
 
 /*
 COMENTARIOS GENERALES:
 
-- Aquí no se revisa la sesión.
+- Aqui no se revisa la sesion.
 
 */
