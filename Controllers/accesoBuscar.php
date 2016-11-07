@@ -7,46 +7,44 @@ require_once __DIR__."/../Autoload.php"; 	//Inclusión de archivo para Autoload 
 use APP\Config\Sanitize;
 use APP\Models\Empleado;
 use APP\Models\User;
+use APP\Models\Conexion;
 
 $empleado = new Empleado();			//Creando objeto empleado
-$user = new User();			//Creando objeto empleado
+$user = new User();			//Creando objeto user
+$con = new Conexion();			//Creando objeto conexión
+
+$conn = $con->getConnection();
                                             //Llenando objeto a partir de POST
-$empleado->set("idEmpleado",Sanitize::sanitizeInput($_POST["idEmpleado"]."%"));
-$empleado->set("nombre","%".Sanitize::sanitizeInput($_POST["nombre"]."%"));
-$empleado->set("apPaterno","%".Sanitize::sanitizeInput($_POST["apPaterno"]."%"));
-$empleado->set("apMaterno","%".Sanitize::sanitizeInput($_POST["apMaterno"]."%"));
+$idEmpleado = Sanitize::sanitizeInput($_POST["idEmpleado"]."%");
+$nombre = Sanitize::sanitizeInput($_POST["nombre"]."%");
+$apPaterno = Sanitize::sanitizeInput($_POST["apPaterno"]."%");
+$apMaterno = Sanitize::sanitizeInput($_POST["apMaterno"]."%");
 
-$user->set("userName","%".Sanitize::sanitizeInput($_POST["userName"]."%"));
+$sql = "SELECT Empleados.idEmpleado ,".
+            "Empleados.nombre  ,".
+            "Empleados.apPaterno  ,".
+            "Empleados.apMaterno  ,".
+            "Users.userName ".
+            "FROM ".$empleado->get("_tableName")." as Empleados LEFT JOIN ".$user->get("_tableName")." as Users ".
+            "ON Empleados.`idEmpleado` = Users.`idEmpleado` ".
+            "WHERE ".
+            "Empleados.`idEmpleado` LIKE :idEmpleado AND ".
+            "Empleados.`nombre` LIKE :nombre AND ".
+            "Empleados.`apPaterno` LIKE :apPaterno AND ".
+            "Empleados.`apMaterno` LIKE :apMaterno  ";
 
-$sql = "SELECT *  FROM ".$empleado->." WHERE 
-			`idEmpleado` LIKE '{$this->idEmpleado}' AND 
-			`nombre` LIKE '{$this->nombre}' AND 
-			`apPaterno` LIKE '{$this->apPaterno}' AND 
-			`apMaterno` LIKE '{$this->apMaterno}' AND 
-			`fechaDeNacimiento` LIKE '{$this->fechaDeNacimiento}' AND 
-			`calleNumeroDomicilio` LIKE '{$this->calleNumeroDomicilio}' AND 
-			`coloniaDomicilio` LIKE '{$this->coloniaDomicilio}' AND 
-			`delegacionMunicipioDomicilio` LIKE '{$this->delegacionMunicipioDomicilio}' AND 
-			`codigoPostalDomicilio` LIKE '{$this->codigoPostalDomicilio}' AND 
-			`ciudadDomicilio` LIKE '{$this->ciudadDomicilio}' AND 
-			`telefonoLocal` LIKE '{$this->telefonoLocal}' AND 
-			`telefonoMovil` LIKE '{$this->telefonoMovil}' AND 
-			`genero` LIKE '{$this->genero}' AND 
-			`estaturaM` LIKE '{$this->estaturaM}' AND 
-			`estadoCivil` LIKE '{$this->estadoCivil}' AND 
-			`curp` LIKE '{$this->curp}' AND 
-			`email` LIKE '{$this->email}' AND 
-			`fechaAlta` LIKE '{$this->fechaAlta}' AND 
-			`estado` LIKE '{$this->estado}'
-			ORDER BY ".$this->_tableName.".`idEmpleado` DESC";
+$stmt = $conn->prepare($sql);
 
-$resultado = $empleado->selectallvalues();		//Se realiza la consulta
+$stmt->bindParam(':idEmpleado', $idEmpleado);
+$stmt->bindParam(':nombre', $nombre);
+$stmt->bindParam(':apPaterno', $apPaterno);
+$stmt->bindParam(':apMaterno', $apMaterno);
 
-if ($resultado->rowCount() > 0) {			//Si tiene respuesta genera tabla con ellas
+$stmt->execute();
 
-    $resultado = $resultado->fetchAll();
+if ($stmt->rowCount() > 0) {			//Si tiene respuesta genera tabla con ellas
 
-    $resultado['success'] = true;
+    $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     echo json_encode($resultado);
 

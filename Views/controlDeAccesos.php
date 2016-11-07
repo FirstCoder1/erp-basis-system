@@ -23,103 +23,167 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 		<h4>Control de accesos</h4>
 
 		<h5>Navegación accesos:</h5>
-
-		<form id="buscarEmpleadoForm" autocomplete="off">
+		<form id="navegarAccesoForm" autocomplete="off">
 		<fieldset>
-		ID de Empleado: 		<input type="number" name="idEmpleadoBus" min="0" step="1" placeholder="0">
-	  	Nombre: 				<input type="text" name="nombreBus" placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." autofocus >
-	  	Apellido Paterno: 		<input type="text" name="apPaternoBus" placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
-	  	Apellido Materno: 		<input type="text" name="apMaternoBus" placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
-	  	Nomber de Usuario: 		<input type="text" name="userNameBus" placeholder="vvvvv" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." >
-
+		ID de Empleado: 		<input type="number" 	class="idEmpleado" min="0" step="1" placeholder="0">
+	  	Nombre: 				<input type="text" 		class="nombre" placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." autofocus >
+	  	Apellido Paterno: 		<input type="text" 		class="apPaterno" placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
+	  	Apellido Materno: 		<input type="text" 		class="apMaterno" placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
 			<input type="reset" value="Borrar Todo" >
-			<input type="submit" value="Agregar Empleado" id="boton" style="visibility: hidden;">
+			<input type="submit" value="Buscar Acceso" style="visibility: hidden;">
 		</fieldset>
 		</form>
-
 		<br>Resultado de la busqueda:<br>
+		<span id="respuestaNavegarAcceso"></span>
 
-		<table>
-			<tbody>
-			<tr>
-				<td>Opciones</td>
 
-				<th>ID</th>
-
-				<th>Nombre</th>
-				<th>Ap. Paterno</th>
-				<th>Ap. Materno</th>
-				<th>Nonmbre de Usuario</th>
-
-			</tr>
-			<tr><td><button type="button" onclick="modificarEmpleadoFillForm(55);">Modificar</button></td>
-				<td>55</td>
-				<td>Alan</td>
-				<td>De</td>
-				<td>De</td>
-				<td>qqqqq</td>
-
-			</tr><tr><td><button type="button" onclick="modificarEmpleadoFillForm(54);">Modificar</button></td>
-				<td>54</td>
-				<td>zzzzzxF</td>
-				<td>yyyyyy</td>
-				<td>xxxxxx</td>
-				<td></td>
-
-			</tr><tr><td><button type="button" onclick="modificarEmpleadoFillForm(53);">Modificar</button></td>
-				<td>53</td>
-				<td>Bbbbuu</td>
-				<td>Bbbbb</td>
-				<td>Ccccc</td>
-				<td></td>
-
-			</tr><tr><td><button type="button" onclick="modificarEmpleadoFillForm(3);">Modificar</button></td>
-				<td>3</td>
-				<td>Beatriz </td>
-				<td>Urriolagoitia</td>
-				<td>Sosa</td>
-				<td>bebebe</td>
-
-			</tr><tr><td><button type="button" onclick="modificarEmpleadoFillForm(2);">Modificar</button></td>
-				<td>2</td>
-				<td>María Fernanda</td>
-				<td>Picazo</td>
-				<td>Chavez</td>
-				<td>faffe</td>
-
-			</tr><tr><td><button type="button" onclick="modificarEmpleadoFillForm(1);">Modificar</button></td>
-				<td>1</td>
-				<td>Oscar</td>
-				<td>Camacho</td>
-				<td>Urriolagoitia</td>
-				<td>orcar</td>
-
-			</tr></tbody></table>
-		
-		<span id="respuestaBuscarEmpleado"></span>
-
-		<h5>Modificar Empleado:</h5>
-	  	<span id="exitoErrorModificarEmpleadoFillForm" class="error"></span>
-
-		<form id="buscarEmpleadoForm" autocomplete="off">
-			<fieldset>
-				ID de Empleado: 		<input type="number" name="idEmpleadoBus" min="0" step="1" placeholder="0">
-				Nombre: 				<input type="text" name="nombreBus" placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." autofocus >
-				Apellido Paterno: 		<input type="text" name="apPaternoBus" placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
-				Apellido Materno: 		<input type="text" name="apMaternoBus" placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
-				Nomber de Usuario: 		<input type="text" name="userNameBus" placeholder="vvvvv" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." >
-				Contraseña: 		<input type="text" name="userNameBus" placeholder="vvvvv" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." >
-
-				<input type="reset" value="Borrar Todo" >
-				<input type="submit" value="Aceptar" id="boton">
+		<h5>Modificar Acceso:</h5>
+		<form id="modificarAccesoForm" autocomplete="off">
+			<fieldset id="modificarAccesoFieldset" >
+				ID de Empleado: 	<input type="number" 	class="idEmpleado" min="0" step="1" placeholder="0" disabled >
+				Nombre: 			<input type="text" 		class="nombre" 		placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." disabled >
+				Apellido Paterno: 	<input type="text" 		class="apPaterno" 	placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." disabled >
+				Apellido Materno: 	<input type="text" 		class="apMaterno" 	placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." disabled >
+				Usuario: 			<input type="text" 		class="userName" 	placeholder="Nuevo username" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required autofocus disabled >
+				Contraseña: 		<input type="password" 	class="password" 	placeholder="Nueva contraseña" 		maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required disabled >
+				<input type="submit" class="submit" value="Modificar Acceso" disabled>
+				<span id="exitoErrorModificarAccesoForm" class="error"></span>
 			</fieldset>
 		</form>
 
 
-		<span id="testing"></span>
+		<script>
 
+			var timeOut = (<?php echo SESSIONTIMEOUT ?>*60+1)*1000;
+			var timer = setInterval(redirect, timeOut);
 
+			window.onload = resetTimer;
+			document.onmousemove = resetTimer;
+			document.onkeypress = resetTimer;
 
+			function redirect() {
+				window.top.location.href = "../index.php";
+			}
+
+			function resetTimer() {
+				clearInterval(timer);
+				timer = setInterval(redirect, timeOut);
+			}
+
+			function buscarAcceso() {
+				$.ajax({
+					url: "../Controllers/accesoBuscar.php",
+					type: 'POST',
+					dataType: 'json',
+					data: {
+						idEmpleado:	$('#navegarAccesoForm .idEmpleado').val(),
+						nombre: 	$('#navegarAccesoForm .nombre').val(),
+						apPaterno: 	$('#navegarAccesoForm .apPaterno').val(),
+						apMaterno: 	$('#navegarAccesoForm .apMaterno').val(),
+					}
+				}).done(function (data) {
+					if (data.success != false) {
+						var tabla = '<table>'+
+							'<tr>'+
+							'<td>Opciones</th>'+
+							'<th>ID</th>'+
+							'<th>Nombre</th>'+
+							'<th>Ap. Paterno</th>'+
+							'<th>Ap. Materno</th>'+
+							'<th>Nombre de Usuario</th>';
+
+						$.each(data, function(i, acceso) {
+							tabla+= "<tr><td>"+
+								"<button class=\"modificarAccesoFillForm\""+
+								"idEmpleado = \""+acceso.idEmpleado+"\""+
+								"nombre = \""+acceso.nombre+"\""+
+								"apPaterno = \""+acceso.apPaterno+"\""+
+								"apMaterno = \""+acceso.apMaterno+"\""+
+								"userName = \""+((acceso.userName == null)?"":acceso.userName)+"\""+
+								">Modificar</button>"+
+								"</td><td>"+acceso.idEmpleado+
+								"</td><td>"+acceso.nombre+
+								"</td><td>"+acceso.apPaterno+
+								"</td><td>"+acceso.apMaterno+
+								"</td><td>"+((acceso.userName == null)?"-":acceso.userName)+
+								"</td>";
+						});
+						tabla += "</table>";
+						$("#respuestaNavegarAcceso").empty().append(tabla);
+
+					} else {						//En caso de error, mensaje de error
+						$("#respuestaNavegarAcceso").empty().text("No se encontraron coincidencias con la búsqueda.");
+					}
+
+				});
+
+			}
+
+			$(document).ready(function () {
+
+				buscarAcceso();
+
+				$("#navegarAccesoForm").on( 'submit change keyup', function (evt) {
+					evt.preventDefault();
+					buscarAcceso();
+					return false;
+				});
+
+				$("#navegarAccesoForm").on( 'reset ', function (evt) {
+					buscarAcceso();
+				});
+
+				$("#respuestaNavegarAcceso").on( 'click', '.modificarAccesoFillForm', function (evt) {  //TODO ----- aqui me quede!!!!!
+					evt.preventDefault();
+
+					var e = document.getElementById("exitoErrorModificarAccesoFillForm");
+					if (!!e && e.scrollIntoView) {
+						e.scrollIntoView();
+					}
+
+					$('#modificarAccesoForm .idEmpleado').val($(this).attr("idEmpleado"));
+					$('#modificarAccesoForm .nombre').val($(this).attr("nombre"));
+					$('#modificarAccesoForm .apPaterno').val($(this).attr("apPaterno"));
+					$('#modificarAccesoForm .apMaterno').val($(this).attr("apMaterno"));
+					$('#modificarAccesoForm .userName').val($(this).attr("userName"));
+
+					$('#modificarAccesoForm .userName').prop('disabled', false);
+					$('#modificarAccesoForm .password').prop('disabled', false);
+					$('#modificarAccesoForm .submit').prop('disabled', false);
+					$('#exitoErrorModificarAccesoForm').text("");
+
+					return false;
+				});
+
+				$("#modificarAccesoForm").submit( function (evt) {
+					evt.preventDefault();
+					$.ajax({
+						url: "../Controllers/accesoModificar.php",
+						type: 'POST',
+						dataType: 'json',
+						data: {
+							idEmpleado: $('#modificarAccesoForm .idEmpleado').val(),
+							userName: 	$('#modificarAccesoForm .userName').val(),
+							password:	$('#modificarAccesoForm .password').val(),
+						}
+					}).done(function (data) {
+						if (data.success) {
+							$('#modificarAccesoForm .userName').prop('disabled', true);
+							$('#modificarAccesoForm .password').prop('disabled', true);
+							$('#modificarAccesoForm .submit').prop('disabled', true);
+							document.getElementById("modificarAccesoForm").reset();
+							buscarAcceso();
+							document.getElementById("exitoErrorModificarAccesoForm").innerHTML = "Acceso modificado con éxito.";
+						} else {						//En caso de error, mensaje de error
+							document.getElementById("exitoErrorModificarAccesoForm").innerHTML = "Error modificando acceso.";
+						}
+					});
+					return false;
+				});
+
+			});
+
+		</script>
 
 
 	</body>

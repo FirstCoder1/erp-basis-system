@@ -50,5 +50,7 @@
 COMENTARIOS GENERALES
 
 - Falta refrescar la pantalla con un timer del fin de sesion.
+- Revisar que el usuario este activo
+-al refrescar la pag, mantenerse en el mismo módulo.
 
 -->

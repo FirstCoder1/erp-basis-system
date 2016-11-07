@@ -62,6 +62,7 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 	  	</fieldset>
 		</form>
 
+
 		<h5>Buscar, modificar y activar/desactivar empleado:</h5>
 		<form id="buscarEmpleadoForm" autocomplete="off">
 		<fieldset>
@@ -99,15 +100,14 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 									<option value="0">Inactivo</option>
 								</select>
 			<input type="reset" value="Borrar Todo" >
-			<input type="submit" value="Agregar Empleado" id="boton" style="visibility: hidden;">
+			<input type="submit" value="Buscar Empleado" style="visibility: hidden;">
 		</fieldset>
 		</form>
-
 		<br>Resultado de la busqueda:<br>
 		<span id="respuestaBuscarEmpleado"></span>
 
+
 		<h5>Modificar Empleado:</h5>
-	  	<span id="exitoErrorModificarEmpleadoFillForm" class="error"></span>
 		<form id="modificarEmpleadoForm" autocomplete="off" >
 		<fieldset id="modificarEmpleadoFieldset" disabled>
 
@@ -321,7 +321,7 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 					return false;
 				});
 
-				$("#buscarEmpleadoForm").on( 'submit change keyup ', function (evt) {
+				$("#buscarEmpleadoForm").on( 'submit change keyup', function (evt) {
 					evt.preventDefault();
 					buscarEmpleado();
 					return false;
@@ -422,8 +422,5 @@ COMENTARIOS GENERALES:
 
 
 -Registro de acciones
-
-- Más validaciones de campos con patterns
-- Formatear el texto al escribir para acomodarlo al pattern
 
 -->

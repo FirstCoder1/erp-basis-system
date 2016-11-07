@@ -12,7 +12,7 @@ use APP\Models\User;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través de un POST
     $userName = $password = "";
     $userName     = Sanitize::sanitizeInput($_POST["userName"]);    //Se limpia la entrada
-    $password     = crypt(Sanitize::sanitizeInput($_POST["password"]),'crypt'); //cr0k5jrG2AvAQ
+    $password     = crypt(Sanitize::sanitizeInput($_POST["password"]),CRYPTKEY); //cr0k5jrG2AvAQ
 
 		$user = new User();			//Creación de objeto User a través de los datos
 		$user->set("userName", $userName);

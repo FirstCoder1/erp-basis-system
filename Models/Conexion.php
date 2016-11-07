@@ -52,6 +52,12 @@ use \PDO;
 
 		}
 
+        public function getConnection() {
+
+            return $this->con;
+
+        }
+
 	}
 	
 /*
