@@ -65,5 +65,6 @@ COMENTARIOS GENERALES:
 - Estilo class error.
 - Descripción del sistema.
 - Keywords del sistema.
+- Revisar estado.
 
 -->

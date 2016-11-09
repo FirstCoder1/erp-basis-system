@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once __DIR__."/../Config/Constantes.php";	//Inclusión de las constantes y funciones globales
 require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload de las clases
@@ -7,11 +7,11 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
  ?>
 
  <!DOCTYPE html>
-<html> 
+<html>
 	<head>
 		<meta charset="UTF-8">
-		<meta name="description" content="descripcionControlEmpleados">
-		<meta name="keywords" content="keywordsControlEmpleados">
+		<meta name="description" content="descripcionControlAcesos">
+		<meta name="keywords" content="keywordsControlAcesos">
 		<meta name="author" content="Oscar Camacho Urriolagoitia">
 		<title><?php echo APPNAME ?> - Control de accesos </title>
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -26,9 +26,9 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 		<form id="navegarAccesoForm" autocomplete="off">
 		<fieldset>
 		ID de Empleado: 		<input type="number" 	class="idEmpleado" min="0" step="1" placeholder="0">
-	  	Nombre: 				<input type="text" 		class="nombre" placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." autofocus >
-	  	Apellido Paterno: 		<input type="text" 		class="apPaterno" placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
-	  	Apellido Materno: 		<input type="text" 		class="apMaterno" placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
+	  	Nombre: 				<input type="text" 		class="nombre"      placeholder="Xxxxx" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." autofocus >
+	  	Apellido Paterno: 		<input type="text" 		class="apPaterno"   placeholder="Yyyyy" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
+	  	Apellido Materno: 		<input type="text" 		class="apMaterno"   placeholder="Zzzzz" maxlength="35" style="text-transform: capitalize;" pattern="[a-zA-Z ñáéíóú]{0,35}" title="Solo letras y espacios, 2 - 35 caracteres." >
 			<input type="reset" value="Borrar Todo" >
 			<input type="submit" value="Buscar Acceso" style="visibility: hidden;">
 		</fieldset>

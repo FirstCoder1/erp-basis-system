@@ -16,7 +16,7 @@
 
 
 <!DOCTYPE html>
-<html> 
+<html>
 	<head>
 		<meta charset="UTF-8">
 		<meta name="description" content="descripcionHome">
@@ -35,9 +35,9 @@
 		<a href="./Views/inicio.php" target="modulo">Inicio</a>
 		<a href="./Views/controlDeEmpleados.php" target="modulo">Control de empleados</a>
 		<a href="./Views/controlDeAccesos.php" target="modulo">Control de accesos</a>
-		<!--<a href="./Views/registros.php" target="modulo">Registros</a>
-		<a href="./Views/controlDeModulos.php" target="modulo">Control de Módulos</a>
-		<a href="./Views/controlDeClientes.php" target="modulo">Control de Clientes</a>-->
+		<a href="./Views/registros.php" target="modulo">Registros</a>
+        <!--<a href="./Views/controlDeModulos.php" target="modulo">Control de Módulos</a>
+        <a href="./Views/controlDeClientes.php" target="modulo">Control de Clientes</a>-->
 		<a href="./Views/cerrarsesion.php" >Cerrar sesión</a>
 		<br>
 		<iframe  height="4000px" width="100%"src="./Views/inicio.php" name="modulo"></iframe>
@@ -49,7 +49,7 @@
 <!--
 COMENTARIOS GENERALES
 
-- Falta refrescar la pantalla con un timer del fin de sesion.
+- Falta refrescar la pantalla con un timer del fin de sesión.
 - Revisar que el usuario este activo
 -al refrescar la pag, mantenerse en el mismo módulo.
 
