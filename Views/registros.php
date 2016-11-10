@@ -92,7 +92,7 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
                         "</td><td>"+acceso.apPaterno+
                         "</td><td>"+acceso.tipo+
                         "</td><td>"+acceso.fecha+
-                        "</td><td>"+acceso.descripcion+
+                        "</td><td><pre>"+acceso.descripcion+"</pre>"+
                         "</td>";
                 });
                 tabla += "</table>";

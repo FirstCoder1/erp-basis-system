@@ -28,6 +28,20 @@ $empleado->set("email",Sanitize::sanitizeInput($_POST["email"]));
 $empleado->set("estado",Sanitize::sanitizeInput("testing"));
 
 if($empleado->insert()){				//Realizando inserción
+
+    $con = new \APP\Models\Conexion();			//Creando objeto conexión
+    $conn = $con->getConnection();
+
+    $registro = new \APP\Models\Registro();
+    session_start();
+    $registro->set("idEmpleado", $_SESSION["idEmpleado"] );
+    $registro->set("tipo", "Empleados" );
+    $registro->set("descripcion",
+"Empleado agregado:
+Nombre: ".$empleado->get("nombre")." ".$empleado->get("apPaterno")." ".$empleado->get("apMaterno"));
+
+    $registro->insert($conn);
+
     echo json_encode(['success' => true]);
 }else{
     echo json_encode(['success' => false, 'error' => 'Error agregando empleado.']);

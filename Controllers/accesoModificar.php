@@ -33,6 +33,16 @@ $stmt->bindParam(':passwordUp', $password);
 
 if ($stmt->execute()) {			//Si tiene respuesta genera tabla con ellas
 
+    $registro = new \APP\Models\Registro();
+    session_start();
+    $registro->set("idEmpleado", $_SESSION["idEmpleado"] );
+    $registro->set("tipo", "Accesos" );
+    $registro->set("descripcion",
+"Acceso modificado:
+idEmpleado: ".$idEmpleado." ,userName: ".$userName);
+
+    $registro->insert($conn);
+
     echo json_encode(['success' => true]);
 
 }else{										//Caso de no haber coincidencias manda mensaje.

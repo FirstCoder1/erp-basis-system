@@ -38,7 +38,7 @@
 		<a href="./Views/registros.php" target="modulo">Registros</a>
         <!--<a href="./Views/controlDeModulos.php" target="modulo">Control de Módulos</a>
         <a href="./Views/controlDeClientes.php" target="modulo">Control de Clientes</a>-->
-		<a href="./Views/cerrarsesion.php" >Cerrar sesión</a>
+		<a href="./Controllers/usersLogout.php" >Cerrar sesión</a>
 		<br>
 		<iframe  height="4000px" width="100%"src="./Views/inicio.php" name="modulo"></iframe>
 

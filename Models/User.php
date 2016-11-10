@@ -1,6 +1,6 @@
 <?php namespace APP\Models;
 
-class User extends BaseModel
+class User extends BaseModelPDO
 {
 
     protected $_tableName = "Users";
@@ -8,30 +8,6 @@ class User extends BaseModel
     protected $userName;
     protected $password;
 
-    public function check()
-    {
-        $sql   = "SELECT * FROM ".$this->_tableName." WHERE 
-			BINARY userName LIKE '{$this->userName}' AND 
-			BINARY password LIKE '{$this->password}'";
-        $resultado = $this->con->consultaRetorno($sql);
-
-
-        if ($resultado->rowCount() == 1) {
-
-            $resultado = $resultado->fetchAll(\PDO::FETCH_CLASS, "\\APP\\Models\\User");
-            $user = $resultado[0];
-
-            $this->idEmpleado = $user->get("idEmpleado");
-
-            return true;
-
-        } else {
-
-            return false;
-
-        }
-
-    }
 
     /*public function selectone()
     {

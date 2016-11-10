@@ -23,7 +23,7 @@ $nombre = Sanitize::sanitizeInput($_POST["nombre"]."%");
 $apPaterno = Sanitize::sanitizeInput($_POST["apPaterno"]."%");
 $tipo = Sanitize::sanitizeInput($_POST["tipo"]."%");
 $fecha = Sanitize::sanitizeInput($_POST["fecha"]."%");
-$descripcion = Sanitize::sanitizeInput($_POST["descripcion"]."%");
+$descripcion = Sanitize::sanitizeInput("%".$_POST["descripcion"]."%");
 
 $sql = "SELECT Registros.idRegistro, ".
             "Registros.idEmpleado, ".
@@ -43,7 +43,8 @@ $sql = "SELECT Registros.idRegistro, ".
             "Empleados.`apPaterno` LIKE :apPaterno AND ".
             "Registros.`tipo` LIKE :tipo  AND ".
             "Registros.`fecha` LIKE :fecha  AND ".
-            "Registros.`descripcion` LIKE :descripcion ";
+            "Registros.`descripcion` LIKE :descripcion ".
+            "ORDER BY Registros.idRegistro DESC";
 
 $stmt = $conn->prepare($sql);
 
