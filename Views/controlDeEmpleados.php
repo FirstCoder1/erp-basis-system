@@ -331,7 +331,7 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 					buscarEmpleado();
 				});
 
-				$("#respuestaBuscarEmpleado").on( 'click', '.modificarEmpleadoFillForm', function (evt) {  //TODO ----- aqui me quede!!!!!
+				$("#respuestaBuscarEmpleado").on( 'click', '.modificarEmpleadoFillForm', function (evt) {
 					evt.preventDefault();
 
 					var e = document.getElementById("exitoErrorModificarEmpleadoFillForm");
