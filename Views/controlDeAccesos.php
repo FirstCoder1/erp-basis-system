@@ -133,7 +133,7 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 					buscarAcceso();
 				});
 
-				$("#respuestaNavegarAcceso").on( 'click', '.modificarAccesoFillForm', function (evt) {  //TODO ----- aqui me quede!!!!!
+				$("#respuestaNavegarAcceso").on( 'click', '.modificarAccesoFillForm', function (evt) {
 					evt.preventDefault();
 
 					var e = document.getElementById("exitoErrorModificarAccesoFillForm");

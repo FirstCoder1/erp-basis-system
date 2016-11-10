@@ -36,9 +36,9 @@ if($cliente->update()){				//Hacendo consulta
     $registro = new \APP\Models\Registro();
     session_start();
     $registro->set("idEmpleado", $_SESSION["idEmpleado"] );
-    $registro->set("tipo", "Empleados" );
+    $registro->set("tipo", "Cliente" );
     $registro->set("descripcion",
-"Empleado modificado:
+"Cliente modificado:
 ID: ".$cliente->get("id")." Nombre: ".$cliente->get("nombre")." ".$cliente->get("apPaterno")." ".$cliente->get("apMaterno"));
 
     $registro->insert($conn);
