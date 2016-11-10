@@ -72,39 +72,35 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
                 descripcion:    $('#navegarForm .descripcion').val()
             }
         }).done(function (data) {
-            console.log(data);
-            /*if (data.success != false) {
+            if (data.success != false) {
                 var tabla = '<table>'+
                     '<tr>'+
-                    '<td>Opciones</th>'+
-                    '<th>ID</th>'+
+                    '<th>ID Registro</th>'+
+                    '<th>ID Empleado</th>'+
                     '<th>Nombre</th>'+
                     '<th>Ap. Paterno</th>'+
-                    '<th>Ap. Materno</th>'+
-                    '<th>Nombre de Usuario</th>';
+                    '<th>Tipo</th>'+
+                    '<th>Fecha</th>'+
+                    '<th>Descripción</th>'+
+					'</tr>';
 
                 $.each(data, function(i, acceso) {
-                    tabla+= "<tr><td>"+
-                        "<button class=\"modificarAccesoFillForm\""+
-                        "idEmpleado = \""+acceso.idEmpleado+"\""+
-                        "nombre = \""+acceso.nombre+"\""+
-                        "apPaterno = \""+acceso.apPaterno+"\""+
-                        "apMaterno = \""+acceso.apMaterno+"\""+
-                        "userName = \""+((acceso.userName == null)?"":acceso.userName)+"\""+
-                        ">Modificar</button>"+
+                    tabla+= "<tr>"+
+                        "<td>"+acceso.idRegistro+
                         "</td><td>"+acceso.idEmpleado+
                         "</td><td>"+acceso.nombre+
                         "</td><td>"+acceso.apPaterno+
-                        "</td><td>"+acceso.apMaterno+
-                        "</td><td>"+((acceso.userName == null)?"-":acceso.userName)+
+                        "</td><td>"+acceso.tipo+
+                        "</td><td>"+acceso.fecha+
+                        "</td><td>"+acceso.descripcion+
                         "</td>";
                 });
                 tabla += "</table>";
-                $("#respuestaNavegarAcceso").empty().append(tabla);
+                $("#respuestaNavegar").empty().append(tabla);
 
             } else {						//En caso de error, mensaje de error
-                $("#respuestaNavegarAcceso").empty().text("No se encontraron coincidencias con la búsqueda.");
-            }*/
+                $("#respuestaNavegar").empty().text("No se encontraron coincidencias con la búsqueda.");
+            }
 
         });
 
@@ -122,54 +118,6 @@ require_once __DIR__."/../Autoload.php"; 		//Inclusión de archivo para Autoload
 
         $("#navegarForm").on( 'reset ', function (evt) {
             buscar();
-        });
-
-        $("#respuestaNavegarAcceso").on( 'click', '.modificarAccesoFillForm', function (evt) {  //TODO ----- aqui me quede!!!!!
-            evt.preventDefault();
-
-            var e = document.getElementById("exitoErrorModificarAccesoFillForm");
-            if (!!e && e.scrollIntoView) {
-                e.scrollIntoView();
-            }
-
-            $('#modificarAccesoForm .idEmpleado').val($(this).attr("idEmpleado"));
-            $('#modificarAccesoForm .nombre').val($(this).attr("nombre"));
-            $('#modificarAccesoForm .apPaterno').val($(this).attr("apPaterno"));
-            $('#modificarAccesoForm .apMaterno').val($(this).attr("apMaterno"));
-            $('#modificarAccesoForm .userName').val($(this).attr("userName"));
-
-            $('#modificarAccesoForm .userName').prop('disabled', false);
-            $('#modificarAccesoForm .password').prop('disabled', false);
-            $('#modificarAccesoForm .submit').prop('disabled', false);
-            $('#exitoErrorModificarAccesoForm').text("");
-
-            return false;
-        });
-
-        $("#modificarAccesoForm").submit( function (evt) {
-            evt.preventDefault();
-            $.ajax({
-                url: "../Controllers/accesoModificar.php",
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    idEmpleado: $('#modificarAccesoForm .idEmpleado').val(),
-                    userName: 	$('#modificarAccesoForm .userName').val(),
-                    password:	$('#modificarAccesoForm .password').val(),
-                }
-            }).done(function (data) {
-                if (data.success) {
-                    $('#modificarAccesoForm .userName').prop('disabled', true);
-                    $('#modificarAccesoForm .password').prop('disabled', true);
-                    $('#modificarAccesoForm .submit').prop('disabled', true);
-                    document.getElementById("modificarAccesoForm").reset();
-                    buscar();
-                    document.getElementById("exitoErrorModificarAccesoForm").innerHTML = "Acceso modificado con éxito.";
-                } else {						//En caso de error, mensaje de error
-                    document.getElementById("exitoErrorModificarAccesoForm").innerHTML = "Error modificando acceso.";
-                }
-            });
-            return false;
         });
 
     });

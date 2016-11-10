@@ -22,8 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través 
 											//Se inicia sesión con id del empleado
 			session_start();						//Revisar si hay un sesión activa actualmente
 			$_SESSION["idEmpleado"] = $user->get('idEmpleado');
-			
-			$_SESSION["timelast"] = time(); //Se asigna la hora de la última operación 
+			$_SESSION["timelast"] = time(); //Se asigna la hora de la última operación
+
+
 
             echo json_encode(['success' => true]);
 

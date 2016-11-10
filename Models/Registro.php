@@ -4,7 +4,7 @@ class Registro extends BaseModelPDO
 {
 
     protected $_tableName = "Registros";
-    protected $idRegistros;
+    protected $idRegistro;
     protected $idEmpleado;
     protected $tipo;
     protected $fecha;

@@ -1,6 +1,6 @@
 <?php namespace APP\Models;
 
-class BaseModel
+class BaseModelPDO
 {
     protected $_tableName = null;
 
