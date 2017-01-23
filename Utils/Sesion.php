@@ -1,4 +1,4 @@
-<?php namespace APP\Config;
+<?php namespace APP\Utils;
 
 
 class Sesion
@@ -12,7 +12,7 @@ class Sesion
                 echo "<script type='text/javascript'>window.top.location.href = \"./index.php\";</script>";
                 //Redireciona si no hay sesión activa
             }
-            echo "<script type='text/javascript'>window.top.location.href = \"./home.php\";</script>";
+            //echo "<script type='text/javascript'>window.top.location.href = \"./home.php\";</script>";
             //Redireciona si hay sesión activa
         }
     }

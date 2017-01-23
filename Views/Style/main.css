@@ -1,0 +1,44 @@
+
+*{
+    font-family: Futura, Helvetica;
+}
+.background-morado {
+    background-color: #4f41a3;
+}
+
+.background-negro {
+    background-color: #222222;
+}
+
+.color-blanco{
+    color: #ffffff;
+}
+
+.color-negro{
+    color: #222222;
+}
+
+.borde-amarillo{
+    border: 1px solid yellow;
+}
+
+#loginDiv{
+    margin-top: 13%;
+}
+
+.alert{
+    margin-top: 15px;
+}
+
+@media screen and (max-width: 767px) {
+    #main{
+        margin-top: 104px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    #main{
+        margin-top: 51px;
+    }
+}
+

@@ -5,7 +5,8 @@ require_once __DIR__."/../Autoload.php";        //Inclusión de archivo para Aut
 
 \APP\Autoload::run();                        //Arranca Autoload
 
-use APP\Config\Sanitize;
+use APP\Utils\Sanitize;
+
 use APP\Models\User;
 use APP\Models\Empleado;
 use APP\Models\Conexion;
@@ -13,7 +14,6 @@ use APP\Models\Registro;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través de un POST
-    $userName = $password = "";
     $userName     = Sanitize::sanitizeInput($_POST["userName"]);    //Se limpia la entrada
     $password     = crypt(Sanitize::sanitizeInput($_POST["password"]),CRYPTKEY); //cr0k5jrG2AvAQ
 
@@ -47,21 +47,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través 
 
             $registro = new Registro();
             $registro->set("idEmpleado", $resultado[0]["idEmpleado"] );
-            //$registro->set("idEmpleado", $_SESSION["idEmpleado"] );
             $registro->set("tipo", "Login" );
             $registro->set("descripcion", "Inicio de sesión." );
 
             $registro->insert($conn);
 
 
-			session_start();						//Revisar si hay un sesión activa actualmente
+			session_start();
 			$_SESSION["idEmpleado"] = $resultado[0]["idEmpleado"];
 			$_SESSION["timelast"] = time(); //Se asigna la hora de la última operación
 
-            echo json_encode(['success' => true]);
+            ob_start(); // begin collecting output
+            include __DIR__.'/../Views/home.php';
+            $homeGenerated = ob_get_clean(); // retrieve output from myfile.php, stop buffering
+
+            echo json_encode(['success' => true,
+                              'home' => $homeGenerated]);
 
 		}else{
-            echo json_encode(['success' => false, 'error' => 'Datos incorrectos.']);
+            echo json_encode(['success' => false, 'error' => 'Datos incorrectos']);
 		}
 
 	} else {

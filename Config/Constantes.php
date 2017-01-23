@@ -7,9 +7,9 @@
 
 	define("SESSIONTIMEOUT", "30"); 				//En minutos
 
-	define("APPNAME", "Nombre del sistema");               //TODO - Nombre del sistema.
+	define("APPNAME", "Sistema");               //TODO - Nombre del sistema.
 
-    define("CRYPTKEY", "crypt");               //TODO - Nombre del sistema.
+    define("CRYPTKEY", "crypt");               //TODO - Buena llave.
 
 /*
 COMENTARIOS GENERALES:

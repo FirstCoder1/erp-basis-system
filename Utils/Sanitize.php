@@ -1,4 +1,4 @@
-<?php namespace APP\Config;
+<?php namespace APP\Utils;
 
 class Sanitize
 {

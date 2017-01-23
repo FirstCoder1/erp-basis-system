@@ -3,7 +3,7 @@
 	require_once __DIR__."/Config/Constantes.php";   //Inclusión de las constantes y funciones globales
 	require_once __DIR__."/Autoload.php"; 	//Inclusión de archivo para Autoload de las clases
 	\APP\Autoload::run();					//Arranca Autoload
-	\APP\Config\Sesion::checkOnHome();
+	\APP\Utils\Sesion::checkOnHome();
 
 	$empleado = new \APP\Models\Empleado();		//Creando objeto empleado
 	$empleado->set("idEmpleado",$_SESSION["idEmpleado"]);
