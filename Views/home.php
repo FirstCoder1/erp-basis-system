@@ -7,23 +7,32 @@ require_once __DIR__."/../Autoload.php";        //Inclusión de archivo para Aut
 
 ?>
 
-<header class="navbar navbar-inverse navbar-fixed-top">
+<header id="headerDiv" class="navbar navbar-inverse navbar-fixed-top">			 <!--Contendor Header-->
     <div class="container-fluid">
         <ul class="nav navbar-nav">
-            <li class="active"><a href="#"><img src="Views/Images/home.png" alt="inicio logo" height="17px"> | Inicio</a></li>
+            <li class="active">
+                <a href="#">
+                    <span class="glyphicon glyphicon-home"></span> | Inicio
+                </a>
+            </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span> Nombre Usuario <span class="caret"></span></a>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <span class="glyphicon glyphicon-user"></span> Nombre Usuario <span class="caret"></span>
+                </a>
                 <ul class="dropdown-menu">
-                    <li><a href="#">Cerrar sesión</a></li>
+                    <li>
+                        <a href="#">Cerrar sesión</a>
+                    </li>
                 </ul>
             </li>
         </ul>
     </div>
-</header>
+</header>    		            <!--Contenedor Header-->
 
-<div id="main" class="container borde-amarillo">
+<div id="mainDiv" class="container borde-amarillo"> 								              <!--Contenedor Main-->
     test
-</div>
+</div>                                            <!--Contenedor Main-->
 
 

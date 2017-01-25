@@ -22,22 +22,26 @@
     border: 1px solid yellow;
 }
 
+.margen-arriba{
+    margin-top: 15px;
+}
+
+.hiden{
+    display: none;
+}
+
 #loginDiv{
     margin-top: 13%;
 }
 
-.alert{
-    margin-top: 15px;
-}
-
 @media screen and (max-width: 767px) {
-    #main{
+    #mainDiv{
         margin-top: 104px;
     }
 }
 
 @media screen and (min-width: 768px) {
-    #main{
+    #mainDiv{
         margin-top: 51px;
     }
 }

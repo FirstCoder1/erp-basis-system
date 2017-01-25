@@ -4,22 +4,29 @@ use \PDO;
 
 	class Conexion{
 
-		private $con;
+        protected static $con;
 
 		public function __construct(){
             try {
-                $this->con = new PDO("mysql:host=".DBHOST.";dbname=".DBNAME.";charset=utf8", DBUSER, DBPASS); //utf8 para evitar diamantes "?"
+                self::$con = new PDO("mysql:host=".DBHOST.";dbname=".DBNAME.";charset=utf8", DBUSER, DBPASS); //utf8 para evitar diamantes "?"
                 // set the PDO error mode to exception
-                $this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $this->con->setAttribute(PDO::ATTR_PERSISTENT, true);
+                self::$con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                self::$con->setAttribute(PDO::ATTR_PERSISTENT, true);
             }
             catch(PDOException $e)
             {
-                \APP\Utils\Log::error("Database connection failed: " . $e->getMessage());
+                Log::error("Database connection failed: " . $e->getMessage());
             }
-
 		}
 
+        public static function getConnection()
+        {
+            if (!self::$con) {                                                                  //new connection object.
+                new Conexion();
+            }
+            return self::$con;
+        }
+/*
 		public function consultaSimple($sql){
 
 
@@ -50,13 +57,7 @@ use \PDO;
 
             }
 
-		}
-
-        public function getConnection() {
-
-            return $this->con;
-
-        }
+		}*/
 
 	}
 	

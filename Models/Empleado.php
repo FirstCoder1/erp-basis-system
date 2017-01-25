@@ -1,5 +1,6 @@
 <?php namespace APP\Models;
 
+use App\Utils\Log;
 
 class Empleado extends BaseModel
 {
@@ -24,8 +25,10 @@ class Empleado extends BaseModel
     protected   $email;
     protected   $fechaAlta;
     protected   $estado;
+    protected   $userName;
+    protected   $password;
 
-    public function selectone()
+    /*public function selectone()
     {
         $sql   = "SELECT * FROM ".$this->_tableName." WHERE idEmpleado = {$this->idEmpleado}";
         $resultado = $this->con->consultaRetorno($sql);
@@ -162,7 +165,7 @@ class Empleado extends BaseModel
 			WHERE `".$this->_tableName."`.`idEmpleado` = '{$this->idEmpleado}'";
 
         return $this->con->consultaSimple($sql);
-    }
+    }*/
 
     /*public function delete()
     {
