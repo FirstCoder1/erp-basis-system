@@ -25,7 +25,8 @@ class BaseModel
 
         $stmt->execute();
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_CLASS, get_class($this));
+
     }
 
     public function fillEmptyWithWildcard(){

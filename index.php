@@ -4,7 +4,7 @@
 	require_once __DIR__."/Autoload.php"; 			//Inclusión de archivo para Autoload de las clases
 	\APP\Autoload::run();							//Arranca Autoload
 
-	\APP\Utils\Sesion::checkOnIndex();				//TODO - por ahora no hay sesión
+	\APP\Utils\Sesion::checkOnIndex();
 
  ?>
 
@@ -66,7 +66,7 @@
                         </button>
                         <div id="errorLogin"
                              class="alert alert-danger alert-dismissable fade out margen-arriba text-left">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <a class="close fadeDadOut">×</a>
                             <strong>Error! - </strong><span id="errorLoginMensaje"></span>
                         </div>
                     </form>
@@ -76,41 +76,7 @@
 			</div>
 		</div> 								 <!--Contenedor del Login-->
 
-
-		<script>
-			$(document).ready(function () {
-
-				$("#loginForm").submit(function (evt) {                                           /*Accion Boton Login*/
-					evt.preventDefault();
-					$.ajax({                                                                       /*Se envia peticion*/
-						url     : "./Controllers/baseController.php",
-						type    : 'POST',
-						dataType: 'json',
-						data    : {
-                            action: "empleadoLogin",
-							userName: $("#loginFormUserName").val(),
-							password: $("#loginFormPassword").val()
-						}
-					}).done(function (data) {/*Se recibe respuesta*/ //TODO
-
-					console.log(data);
-
-                    if (data.success) {
-                        $("#loginDiv").remove();
-                        //$(data.home).prependTo("body");
-
-                        //window.top.location.href = "home.php";
-                    } else {						//En caso de error, mensaje de error
-                        $("#errorLoginMensaje").html(data.error);
-                        $("#errorLogin").toggleClass('in out');
-                        //document.getElementById("errorLogin").innerHTML = ; //carga varias vece el main, lo agrega mas de una vez (uns funcion que solo se llame una vez)
-                    }
-					});
-					return false;
-				});
-
-			});
-		</script>
+		<script src="./Views/Js/index.js"></script>
 
 	</body>
 
@@ -118,7 +84,4 @@
 
 <!--
 COMENTARIOS GENERALES:
-
-
-
 -->

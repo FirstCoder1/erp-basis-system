@@ -13,24 +13,44 @@ class Empleados {
 
         $miEmpleado = new Empleado();
         $miEmpleado->set( "userName", $userName);
-        $miEmpleado->set( "password", $password);
 
         $empleados = $miEmpleado->buscar();
-        $salida = array();
 
+
+        $salida = array();
         if ($empleados){
-            $salida["success"] = true ; //TODO
+            $miEmpleado = $empleados[0];
+
+            //$miEmpleado->set( "password", password_hash($password,PASSWORD_DEFAULT));      //asi se hashea el password
+            if (password_verify($password,$miEmpleado->get("password"))){                         //El password coincide
+
+                if ($miEmpleado->get("estado")){                                                        //Revisar estado
+                    $salida["success"] = true ;
+
+                    session_start();                                                //Se asigna la sesion en el servidor
+                    $_SESSION["idEmpleado"] = $miEmpleado->get("idEmpleado");
+                    $_SESSION["timelast"] = time();
+
+                }else{
+                    $salida["success"] = false;
+                    $salida["error"] = "Empleado desativado.";
+                }
+
+            }else{
+                $salida["success"] = false;
+                $salida["error"] = "Contraseña incorrecta.";
+            }
+
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Datos incorrectos";
+            $salida["error"] = "Nombre de usuario no existe.";
         }
 
-        return $salida; //TODO
+        return $salida;
+
     }
 }
 
 /*
 COMENTARIOS GENERALES:
-- TODO - revisar cifrado
-- TODO - Revisar estado.
 */
