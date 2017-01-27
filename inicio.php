@@ -41,7 +41,7 @@
 
 </head>																						            <!-- head-->
 
-<body class="background-morado color-blanco">
+<body class="background-morado color-blanco paddingBotom50">
 
     <div id="headerDiv" class="navbar-inverse navbar-fixed-top">			             <!--Contendor Header-->
         <div class="container-fluid">
@@ -70,7 +70,7 @@
     </div>    		                    <!--Contenedor Header-->
 
 
-    <div id="mainDiv" class="container"> 								                          <!--Contenedor Main-->
+    <div id="mainDiv" class="container collapse"> 								                          <!--Contenedor Main-->
         <div class="row ">
 
 
@@ -177,6 +177,22 @@
 
     </div>                                                       <!--Contenedor Main-->
 
+
+    <div id="empleadosDiv" class="container"> 								                          <!--Contenedor Main-->
+        <div class="row ">
+
+
+            <div class="col-xs-12 col-sm-12 control borde-amarillo">                            <!--Control Empleados-->
+
+                Contro Empleados
+
+            </div>                         <!--Control Empleados-->
+
+
+        </div>
+
+    </div>                                                       <!--Contenedor Main-->
+
 <script src="./Views/Js/inicio.js"></script>
 
 </body>
@@ -185,6 +201,9 @@
 
 <!--
 COMENTARIOS GENERALES:
+
+- tengo que hacer que cuando de clic en el icono, desaparezca el main y quede el empleadosDiv y al inicio no exista empleados Div en lo absoluto, collpase TODO
+
 -->
 
 

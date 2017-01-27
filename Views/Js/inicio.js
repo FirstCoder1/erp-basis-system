@@ -8,19 +8,23 @@ $(document).ready(function () {
         cerrarSesion();
     });                                                   /*Cerrar sesion*/
 
+
+
     $(".fadeDadOut").click( function (evt) {
 
         $(this).parent().removeClass('in');
         $(this).parent().addClass('out');
 
     });                                                 /*Replegar al padre*/
-    
+
+
+
     function irAInicio() {
         alert("Ir al inicio.");
     }
     
     function cerrarSesion() {
-        alert("Cerrar sesión..");
+        window.location.href = "./cerrarsesion.php";
     }
 
 });

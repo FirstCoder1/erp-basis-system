@@ -2,6 +2,10 @@ $(document).ready(function () {
 
     $("#loginForm").submit(function (evt) {                                                       /*Accion Boton Login*/
         evt.preventDefault();
+
+        $("#loadingLogin").removeClass('out');
+        $("#loadingLogin").addClass('in');
+
         $.ajax({                                                                       /*Se envia peticion*/
             url     : "./Controllers/baseController.php",
             type    : 'POST',
@@ -19,8 +23,12 @@ $(document).ready(function () {
                 window.top.location.href = "./inicio.php";
 
             } else {						                                        //En caso de error, mensaje de error
+
+                $("#loadingLogin").removeClass('in');
+                $("#loadingLogin").addClass('out');
+
                 $("#errorLoginMensaje").html(data.error);
-                $("#errorLogin").removeClass('out');                  //carga varias vece el main, lo agrega mas de una vez (uns funcion que solo se llame una vez) //TODO
+                $("#errorLogin").removeClass('out');
                 $("#errorLogin").addClass('in');
             }
         });

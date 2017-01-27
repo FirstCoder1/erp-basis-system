@@ -18,7 +18,7 @@ class Empleados {
 
 
         $salida = array();
-        if ($empleados){
+        if (count($empleados) === 1){
             $miEmpleado = $empleados[0];
 
             //$miEmpleado->set( "password", password_hash($password,PASSWORD_DEFAULT));      //asi se hashea el password

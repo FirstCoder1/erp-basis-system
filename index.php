@@ -36,18 +36,18 @@
 
 	<body class="background-morado color-blanco">
 
-		<div id="loginDiv" class="container text-center sombra">									<!--Contenerdor del Login-->
+		<div id="loginDiv" class="container text-center">									<!--Contenerdor del Login-->
 			<div class="row ">
-				<div class="col-xs-3"></div>
+				<div class="col-xs-1 col-sm-3"></div>
 
-				<div class="col-xs-6">
-                    <h1 class="text-left sombra">
-                        <i class="fa fa-id-card-o fa-4x" aria-hidden="true"></i>
+				<div class="col-xs-10 col-sm-6">
+                    <h1><i class="fa fa-id-card-o fa-4x sombra" aria-hidden="true"></i></h1>
+                    <h1 class="sombra">
                         Iniciar Sesión
                     </h1>
                     <form id="loginForm"
                           autocomplete="off">
-                        <div class="form-group text-left">
+                        <div class="form-group text-left sombra">
                             Usuario:
                             <input type="text"
                                    id="loginFormUserName"
@@ -57,7 +57,7 @@
                                    title="Solo letras y números (no signos), 5 - 45 caracteres."
                                    required autofocus>
                         </div>
-                        <div class="form-group text-left">
+                        <div class="form-group text-left sombra">
                             Contraseña:
                             <input type="password"
                                    id="loginFormPassword"
@@ -68,19 +68,22 @@
                                    title="Solo letras y números (no signos), 5 - 45 caracteres."
                                    required>
                         </div>
-                        <button class="btn btn-primary btn-lg btn-block"
+                        <button class="btn btn-primary btn-lg paddingLeft50"
                                type="submit">
                             Entrar
+                            <i id="loadingLogin"
+                               class="fa fa-spinner fa-spin fa-fw fa-lg  fade out align-right"></i>
                         </button>
+
                         <div id="errorLogin"
                              class="alert alert-danger alert-dismissable fade out margen-arriba text-left">
                             <a class="close fadeDadOut">×</a>
-                            <strong>Error! - </strong><span id="errorLoginMensaje"></span>
+                            <strong>¡Error!: </strong><span id="errorLoginMensaje"></span>
                         </div>
                     </form>
 				</div>
 
-				<div class="col-xs-3"></div>
+				<div class="col-xs-1 col-sm-3"></div>
 			</div>
 		</div> 								 <!--Contenedor del Login-->
 
@@ -91,5 +94,5 @@
 </html>
 
 <!--
-COMENTARIOS GENERALES               :
+COMENTARIOS GENERALES:
 -->
