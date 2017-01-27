@@ -16,7 +16,7 @@ $(document).ready(function () {
             console.log(data); //TODO
             if (data.success) {
 
-                window.top.location.href = "inicio.php";
+                window.top.location.href = "./inicio.php";
 
             } else {						                                        //En caso de error, mensaje de error
                 $("#errorLoginMensaje").html(data.error);

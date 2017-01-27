@@ -9,8 +9,6 @@
 
 	define("APPNAME", "Sistema");               //TODO - Nombre del sistema.
 
-    define("CRYPTKEY", "crypt");               //TODO - Buena llave.
-
 /*
 COMENTARIOS GENERALES:
 
