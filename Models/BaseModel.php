@@ -16,7 +16,7 @@ class BaseModel
         return $this->$atributo;
     }
 
-    public function buscar(){
+    public function buscarClase(){
         $this->fillEmptyWithWildcard();
         $sql = $this->crearQueryBuscar();
 
@@ -26,6 +26,19 @@ class BaseModel
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, get_class($this));
+
+    }
+
+    public function buscarArreglo(){
+        $this->fillEmptyWithWildcard();
+        $sql = $this->crearQueryBuscar();
+
+        $stmt = Conexion::getConnection()->prepare($sql);
+        $this->bindParamAll($stmt);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     }
 

@@ -76,7 +76,7 @@
                         </button>
 
                         <div id="errorLogin"
-                             class="alert alert-danger alert-dismissable fade out margen-arriba text-left">
+                             class="alert alert-danger alert-dismissable fade out margen-arriba15 text-left">
                             <a class="close fadeDadOut">×</a>
                             <strong>¡Error!: </strong><span id="errorLoginMensaje"></span>
                         </div>

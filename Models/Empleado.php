@@ -16,15 +16,13 @@ class Empleado extends BaseModel
     protected   $delegacionMunicipioDomicilio;
     protected   $codigoPostalDomicilio;
     protected   $ciudadDomicilio;
+    protected   $estadoDomicilio;
+    protected   $email;
     protected   $telefonoLocal;
     protected   $telefonoMovil;
-    protected   $genero;
-    protected   $estaturaM;
-    protected   $estadoCivil;
     protected   $curp;
-    protected   $email;
     protected   $fechaAlta;
-    protected   $estado;
+    protected   $estadoSistema;
     protected   $userName;
     protected   $password;
 

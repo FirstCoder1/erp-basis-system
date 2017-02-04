@@ -14,7 +14,7 @@ class Empleados {
         $miEmpleado = new Empleado();
         $miEmpleado->set( "userName", $userName);
 
-        $empleados = $miEmpleado->buscar();
+        $empleados = $miEmpleado->buscarClase();
 
 
         $salida = array();
@@ -24,7 +24,7 @@ class Empleados {
             //$miEmpleado->set( "password", password_hash($password,PASSWORD_DEFAULT));      //asi se hashea el password
             if (password_verify($password,$miEmpleado->get("password"))){                         //El password coincide
 
-                if ($miEmpleado->get("estado")){                                                        //Revisar estado
+                if ($miEmpleado->get("estadoSistema")){                                                        //Revisar estado
                     $salida["success"] = true ;
 
                     session_start();                                                //Se asigna la sesion en el servidor
@@ -33,7 +33,7 @@ class Empleados {
 
                 }else{
                     $salida["success"] = false;
-                    $salida["error"] = "Empleado desativado.";
+                    $salida["error"] = "Empleado desactivado.";
                 }
 
             }else{
@@ -48,6 +48,25 @@ class Empleados {
 
         return $salida;
 
+    }
+
+    public static function todos(){
+
+        $miEmpleado = new Empleado();
+        $empleados = $miEmpleado->buscarArreglo();
+
+        $salida = array();
+        if (count($empleados) > 0){
+
+            $salida["success"] = true ;
+            $salida["empleadosTodos"] = $empleados ;
+
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando empleados.";
+        }
+
+        return $salida;
     }
 }
 

@@ -1,3 +1,32 @@
 NOTAS:
 
 file_put_contents('php://stderr', print_r($sql, TRUE));
+
+<nav id="headerDiv" class="navbar-inverse navbar-fixed-top">			             <!--Contendor Header-->
+        <div class="container-fluid">
+            <ul class="nav navbar-nav ">                                                    <!--Parte izquierda header-->
+                <li class="active">
+                    <a class="irAInicio fa-lg" href="#">
+                        <span class="glyphicon glyphicon-home"></span> Inicio
+                    </a>
+                    <p class="navbar-text">
+                        <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Empleados INerwerwerwe
+                    </p>
+                </li>
+            </ul>                                                 <!--Parte izquierda header-->
+            <ul class="nav navbar-nav navbar-right">                                         <!--Parte derecha header-->
+                <li class="dropdown">
+                    <a class="dropdown-toggle fa-lg" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                        <?=$miEmpleado->get("nombre")." ".$miEmpleado->get("apPaterno")?>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu darkerBgOnHoverDropdown-menu">
+                        <li>
+                            <a href="#" class="cerrarSesion">Cerrar sesión</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>                                      <!--Parte derecha header-->
+        </div>
+    </nav>    		                    <!--Contenedor Header-->

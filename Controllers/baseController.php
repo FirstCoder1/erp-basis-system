@@ -15,3 +15,7 @@ $action = $_POST["action"];
 if ($action == "empleadoLogin"){
     echo json_encode(Empleados::login($_POST["userName"],$_POST["password"]));
 }
+
+elseif ($action == "empleadosTodos"){
+    echo json_encode(Empleados::todos());
+}

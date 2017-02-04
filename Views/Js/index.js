@@ -17,7 +17,7 @@ $(document).ready(function () {
             }
         }).done(function (data) {            /*Se recibe respuesta*/
 
-            console.log(data); //TODO
+            console.log(data);
             if (data.success) {
 
                 window.top.location.href = "./inicio.php";
