@@ -27,8 +27,7 @@ class BaseModel
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, get_class($this));
 
-    }
-
+    }                                   /*Trabajar con la respuesta en un controlador*/
     public function buscarArreglo(){
         $this->fillEmptyWithWildcard();
         $sql = $this->crearQueryBuscar();
@@ -40,7 +39,20 @@ class BaseModel
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
+}                                  /*mandar la respuesta diractamnete como json*/
+
+    public function agregar(){
+
+        $sql = $this->crearQueryAgregar();
+
+        $stmt = Conexion::getConnection()->prepare($sql);
+        $this->bindParamAll($stmt);
+
+        return $stmt->execute();
+
     }
+
+
 
     public function fillEmptyWithWildcard(){
         foreach ($this as $key => $value) {
@@ -69,5 +81,24 @@ class BaseModel
         }
 
     }
+
+    public function crearQueryAgregar(){
+        $sql = "";
+        $values = "VALUES (";
+        foreach ($this as $key => $value) {
+            if ($key == "_tableName"){
+                $sql = "INSERT INTO ".$value." (".$sql;
+            } else {
+                $sql .= $key.",";
+                $values .= "'".$value."',";
+            }
+        }
+
+        $sql = substr($sql,0,-1).") ";
+        $values = substr($values,0,-1).");";
+
+        return $sql.$values;
+    }
+
 
 }

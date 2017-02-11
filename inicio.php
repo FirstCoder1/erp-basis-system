@@ -191,7 +191,7 @@
 
     <div id="empleadosDiv" class="container collapse"> 				                         <!--Contenedor Empleados-->
 
-        <div class="col-xs-12 col-sm-12 paddingCero">                                                    <!--Modulo Empleados-->
+        <div class="col-xs-12 col-sm-12 paddingCero">                                            <!--Modulo Empleados-->
 
             <div class="moduloEncabezado">
                 <div id="empleadosIcon" class="modulo-icon">
@@ -214,120 +214,169 @@
 
 
                 <div class="form-agregar collapse margen-abajo30">
-                    <form class="form-horizontal" id="agregarEmpleadoForm" autocomplete="off">
+                    <form class="form-horizontal" id="empleadoForm" autocomplete="off">
 
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="nombre">Nombre:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="nombre" class="form-control" placeholder="Xxxxx" maxlength="35" pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*" title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. " autofocus required>
+                            <label class="control-label col-sm-3">Nombre:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control nombre"
+                                       placeholder="Xxxxx"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                       autofocus
+                                        >
+                                <!--TODO required-->
                             </div>
                         </div>
-
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="apPaterno">Apellido Paterno:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="apPaterno" class="form-control" placeholder="Yyyyy" maxlength="35" pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*" title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. " required>
+                            <label class="control-label col-sm-3" >Apellido Paterno:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control apPaterno"
+                                       placeholder="Yyyyy"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                       >
+                                        <!--TODO required-->
                             </div>
                         </div>
-
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="apMaterno">Apellido Materno:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="apMaterno" class="form-control" placeholder="Zzzzz" maxlength="35" pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*" title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. " required>
+                            <label class="control-label col-sm-3" >Apellido Materno:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control apMaterno"
+                                       placeholder="Zzzzz"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. " >
                             </div>
                         </div>
-
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="fechaDeNacimiento">Fecha de Nacimiento:</label>
-                            <div class="col-sm-9">
-                                <input type="date" id="fechaDeNacimiento" class="form-control" required>
+                            <label class="control-label col-sm-3">Fecha de Nacimiento:</label>
+                            <div class="col-sm-7">
+                                <input type="date"
+                                       class="form-control fechaDeNacimiento">
                             </div>
                         </div>
-
+                        <!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="calleNumeroDomicilio">Calle y número:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="calleNumeroDomicilio" class="form-control" placeholder="Xxxxx YYY" maxlength="70" pattern="[a-zA-Z0-9- ñáéíóú]{5,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." required>
+                            <label class="control-label col-sm-3">Estado:</label>
+                            <div class="col-sm-7">
+                                <!–– Dropdown estados de México ––>
+                                <select class="form-control direccionSelectEstado">
+                                    <option value="">Selecciona uno</option>
+                                    <option value="Distrito Federal">Distrito Federal</option>
+                                    <option value="Aguascalientes">Aguascalientes</option>
+                                    <option value="Baja California">Baja California</option>
+                                    <option value="Baja California Sur">Baja California Sur</option>
+                                    <option value="Campeche">Campeche</option>
+                                    <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                                    <option value="Colima">Colima</option>
+                                    <option value="Chiapas">Chiapas</option>
+                                    <option value="Chihuahua">Chihuahua</option>
+                                    <option value="Durango">Durango</option>
+                                    <option value="Guanajuato">Guanajuato</option>
+                                    <option value="Guerrero">Guerrero</option>
+                                    <option value="Hidalgo">Hidalgo</option>
+                                    <option value="Jalisco">Jalisco</option>
+                                    <option value="México">México</option>
+                                    <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+                                    <option value="Morelos">Morelos</option>
+                                    <option value="Nayarit">Nayarit</option>
+                                    <option value="Nuevo León">Nuevo León</option>
+                                    <option value="Oaxaca">Oaxaca</option>
+                                    <option value="Puebla">Puebla</option>
+                                    <option value="Querétaro">Querétaro</option>
+                                    <option value="Quintana Roo">Quintana Roo</option>
+                                    <option value="San Luis Potosí">San Luis Potosí</option>
+                                    <option value="Sinaloa">Sinaloa</option>
+                                    <option value="Sonora">Sonora</option>
+                                    <option value="Tabasco">Tabasco</option>
+                                    <option value="Tamaulipas">Tamaulipas</option>
+                                    <option value="Tlaxcala">Tlaxcala</option>
+                                    <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+                                    <option value="Yucatán">Yucatán</option>
+                                    <option value="Zacatecas">Zacatecas</option>
+                                </select>
                             </div>
                         </div>
-
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="coloniaDomicilio">Colonia:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="coloniaDomicilio" class="form-control" placeholder="Xxxxxxxxx" maxlength="70" pattern="[a-zA-Z0-9- ñáéíóú]{5,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." required>
+                            <label class="control-label col-sm-3">Delegación o Municipio:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control direccionSelectDelegacionMunicipio" >
+                                    <option value="">Primero selecciona un estado</option>
+                                </select>
                             </div>
                         </div>
-
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="delegacionMunicipioDomicilio">Delegación o Municipio:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="delegacionMunicipioDomicilio" class="form-control" placeholder="Xxxxxxxxxxxx" maxlength="70" pattern="[a-zA-Z0-9-  ñáéíóú]{5,70}" title="Solo letras,espacios y números (no signos), 5 - 70 caracteres." required>
+                            <label class="control-label col-sm-3">Código Postal:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control direccionSelectCodigoPostal">
+                                    <option value="">Primero selecciona una delegación o municipio</option>
+                                </select>
                             </div>
                         </div>
-
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="codigoPostalDomicilio">Código Postal:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="codigoPostalDomicilio" class="form-control" placeholder="XXXXXX" maxlength="8" pattern="[A-Z0-9]{5,8}" title="Solo letras mayúsculas y números (no signos), 5 - 8 caracteres." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="ciudadDomicilio">Ciudad:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="ciudadDomicilio" class="form-control" placeholder="Xxxxx" maxlength="70" pattern="[a-zA-Z0-9- ñáéíóú]{2,70}" title="Solo letras,espacios y números (no signos), 2 - 70 caracteres." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="estadoDomicilio">Estado:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="estadoDomicilio" class="form-control" placeholder="Xxxxx" maxlength="70" pattern="[a-zA-Z0-9- ñáéíóú]{2,70}" title="Solo letras,espacios y números (no signos), 2 - 70 caracteres." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="email">Email:</label>
-                            <div class="col-sm-9">
-                                <input type="email" id="email" class="form-control" placeholder="xxxxx@yyyyy.zzz" maxlength="128" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="telefonoLocal">Teléfono Local:</label>
-                            <div class="col-sm-9">
-                                <input type="tel" id="telefonoLocal" class="form-control" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="telefonoMovil">Teléfono Movil:</label>
-                            <div class="col-sm-9">
-                                <input type="tel" id="telefonoMovil" class="form-control" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="curp">CURP:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="curp" class="form-control" placeholder="XXXXXXXXXXXXXXXXXX" maxlength="18" pattern="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$" title="Solo letras y números (no signos), 18 caracteres." required>
-                            </div>
-                        </div>
-
-                        <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="estadoSistema">Estado en el Sistema:</label>
-                            <div class="col-sm-9">
-                                <select class="form-control" id="estadoSistema" required>
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
+                            <label class="control-label col-sm-3">Colonia:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control coloniaDomicilio">
+                                    <option value="">Primero selecciona un codigo postal</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" for="username">Nombre de usuario:</label>
-                            <div class="col-sm-9">
-                                <input type="text" id="username" class="form-control" placeholder="xxxxx" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres." required>
+                            <label class="control-label col-sm-3">Calle y número:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control calleNumeroDomicilio"
+                                       placeholder="Xxxxx YYY"
+                                       maxlength="70"
+                                       pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
+                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Email:</label>
+                            <div class="col-sm-7">
+                                <input type="email" class="form-control email" placeholder="xxxxx@yyyyy.zzz" maxlength="128">
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Teléfono Local:</label>
+                            <div class="col-sm-7">
+                                <input type="tel" class="form-control telefonoLocal" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Teléfono Movil:</label>
+                            <div class="col-sm-7">
+                                <input type="tel" class="form-control telefonoMovil" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">CURP:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control curp" placeholder="XXXXXXXXXXXXXXXXXX" maxlength="18" pattern="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$" title="Solo letras y números (no signos), 18 caracteres.">
+                            </div>
+                        </div>
+
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Estado en el Sistema:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control estadoSistema">
+                                    <option value="0">Inactivo</option>
+                                    <option value="1">Activo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Nombre de usuario:</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control userName" placeholder="xxxxx" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres.">
                             </div>
                         </div>
 
@@ -362,10 +411,9 @@
                             <th>Paterno</th>
                             <th>Materno</th>
                             <th>Calle y número</th>
-                            <th>Colonia</th>
                             <th>Delegación</th>
                             <th>C.P.</th>
-                            <th>Ciudad</th>
+                            <th>Colonia</th>
                             <th>Estado</th>
                             <th>Local</th>
                             <th>Movil</th>

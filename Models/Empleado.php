@@ -11,12 +11,11 @@ class Empleado extends BaseModel
     protected   $apPaterno;
     protected   $apMaterno;
     protected   $fechaDeNacimiento;
-    protected   $calleNumeroDomicilio;
-    protected   $coloniaDomicilio;
+    protected   $estadoDomicilio;
     protected   $delegacionMunicipioDomicilio;
     protected   $codigoPostalDomicilio;
-    protected   $ciudadDomicilio;
-    protected   $estadoDomicilio;
+    protected   $coloniaDomicilio;
+    protected   $calleNumeroDomicilio;
     protected   $email;
     protected   $telefonoLocal;
     protected   $telefonoMovil;

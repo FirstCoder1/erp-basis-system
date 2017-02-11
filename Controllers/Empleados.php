@@ -9,10 +9,8 @@ use \APP\Models\Empleado;
 use App\Utils\Log;
 
 class Empleados {
-    public static function login( $userName, $password){
+    public static function login( Empleado $miEmpleado, $password){
 
-        $miEmpleado = new Empleado();
-        $miEmpleado->set( "userName", $userName);
 
         $empleados = $miEmpleado->buscarClase();
 
@@ -50,7 +48,7 @@ class Empleados {
 
     }
 
-    public static function todos(){
+    public static function todosArrelo(){
 
         $miEmpleado = new Empleado();
         $empleados = $miEmpleado->buscarArreglo();
@@ -67,6 +65,21 @@ class Empleados {
         }
 
         return $salida;
+    }
+
+    public static function agregar( Empleado $miEmpleado){
+
+        $salida = array();
+
+        if ($miEmpleado->agregar()){
+            $salida["success"] = true ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error agregando empleado.";
+        }
+
+        return $salida;
+
     }
 }
 
