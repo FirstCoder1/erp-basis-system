@@ -69,6 +69,7 @@ class Empleados {
 
     public static function agregar( Empleado $miEmpleado){
 
+        $miEmpleado->set("fechaAlta","CURRENT_TIMESTAMP");
         $salida = array();
 
         if ($miEmpleado->agregar()){

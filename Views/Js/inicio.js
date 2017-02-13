@@ -1220,7 +1220,8 @@ $(document).ready(function () {
                 estado: $(this).closest(".form-group-sm").prev().find("select").val(),
                 municipio: $(this).find(":selected").val()
             }
-        }).done(function (data) {
+        })
+            .done(function (data) {
 
             if (data.success) {
                 $.each(data.codigosPostalesBusqueda, function( key, value ) {
@@ -1233,7 +1234,10 @@ $(document).ready(function () {
                 $("#errorEmpleados").addClass('in');
 
             }
-        });
+        })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });;
 
     });
     $(".direccionSelectCodigoPostal").change(function() {
@@ -1261,7 +1265,7 @@ $(document).ready(function () {
             type: 'POST',
             dataType: 'json',
             data: {
-                action: "empleadoAgregar", /*Cambiar valores por this*/
+                action: "empleadoAgregar",
                 nombre: $(this).find('.nombre').val(),
                 apPaterno: $(this).find('.apPaterno').val(),
                 apMaterno: $(this).find('.apMaterno').val(),
@@ -1277,11 +1281,9 @@ $(document).ready(function () {
                 curp: $(this).find('.curp').val(),
                 estadoSistema: $(this).find('.estadoSistema').val(),
                 userName: $(this).find('.userName').val()
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Status: " + textStatus); alert("Error: " + errorThrown);
             }
-        }).done(function (data) {
+        })
+            .done(function (data) {
             console.log(data);
             /*if (data.success) {
                 document.getElementById("agregarEmpleadoForm").reset();
@@ -1290,7 +1292,10 @@ $(document).ready(function () {
             } else {						//En caso de error, mensaje de error
                 document.getElementById("exitoErrorAgregarEmpleadoForm").innerHTML = "Error agregando empleado.";
             }*/
-        });
+        })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
 
         /*return false;*/
     });

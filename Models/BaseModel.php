@@ -23,7 +23,11 @@ class BaseModel
         $stmt = Conexion::getConnection()->prepare($sql);
         $this->bindParamAll($stmt);
 
-        $stmt->execute();
+        try {
+            $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
 
         return $stmt->fetchAll(\PDO::FETCH_CLASS, get_class($this));
 
@@ -35,7 +39,11 @@ class BaseModel
         $stmt = Conexion::getConnection()->prepare($sql);
         $this->bindParamAll($stmt);
 
-        $stmt->execute();
+        try {
+            $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
@@ -48,7 +56,17 @@ class BaseModel
         $stmt = Conexion::getConnection()->prepare($sql);
         $this->bindParamAll($stmt);
 
-        return $stmt->execute();
+        $salida = "";
+        try {
+            $salida = $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
+
+        Log::error("salida :: ".$salida);
+        Log::error("stm :: ".print_r($stmt->errorInfo(),true));
+
+        return $salida;
 
     }
 
@@ -90,7 +108,11 @@ class BaseModel
                 $sql = "INSERT INTO ".$value." (".$sql;
             } else {
                 $sql .= $key.",";
-                $values .= "'".$value."',";
+                if ($value == "CURRENT_TIMESTAMP"){
+                    $values .= $value.",";
+                }else{
+                    $values .= "'".$value."',";
+                }
             }
         }
 

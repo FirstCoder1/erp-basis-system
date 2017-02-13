@@ -15,7 +15,7 @@ use \PDO;
                 self::$con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 self::$con->setAttribute(PDO::ATTR_PERSISTENT, true);
             } catch (PDOException $e) {
-                Log::error("Database connection failed: " . $e->getMessage());
+                Log::error("Database connection failed." . $e->getMessage());
             }
         }
 
