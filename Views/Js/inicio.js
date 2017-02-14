@@ -1,5 +1,35 @@
 $(document).ready(function () {
 
+    $.extend( true, $.fn.dataTable.defaults, {
+        "scrollX": true,
+        "fixedColumns": true,
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ filas por página",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin información disponible",
+            "thousands":      ",",
+            "loadingRecords": "Cargando...",
+            "processing":     "Procesando...",
+            "search":         "Buscar:",
+            "paginate": {
+                "first":      "Inicio",
+                "last":       "Final",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+            "aria": {
+                "sortAscending":  ": activa para ordenar la comlumna ascendente",
+                "sortDescending": ": activa para ordenar la comlumna descendente"
+            },
+            "infoFiltered": "(filtrado de _MAX_ filas totales)",
+            "select": {
+                rows: "",
+            }
+        }
+    } );                   /*Valores por default de las jQuery DataTables*/
+
+
     $(".irAInicio").click( function (evt) {
         irAInicio();
     });                                                       /*Ir al inicio*/
@@ -23,6 +53,8 @@ $(document).ready(function () {
 
 
 
+
+
     function irAInicio() {
         $(".container").removeClass("in");
         $("#mainDiv").addClass("in")
@@ -33,18 +65,57 @@ $(document).ready(function () {
     function cerrarSesion() {
         window.location.href = "./cerrarsesion.php";
     }
+    function actualizatabla(tablaHtml,tablaController){
+
+        $.ajax({
+            url     : "./Controllers/baseController.php",
+            type    : 'POST',
+            dataType: 'json',
+            data    : {
+                action: tablaController
+            }
+        })
+            .done(function (data) {
+
+                if (data.success) {
+                    //console.log(data.empleadosTodos);
+                    tablaHtml.clear();
+                    tablaHtml.rows.add(data.todos).draw();
+
+
+                } else {
+
+                    $(tablaHtml.table().container()).siblings(".alert")
+                        .removeClass("alert-success")
+                        .addClass("alert-danger")
+                        .addClass("in")
+                        .children(".alertMensaje")
+                        .html("<strong>¡Error!: </strong>"+data.error);
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    }
 
 
 
 
 
     $(".btn-agregar").click(function (evt) {
-        $(this).parent().nextAll(".form-agregar").addClass("in");
-        $(this).addClass("disabled");
+        $(this).parent().nextAll(".form-agregar").attr("accion","agregar");
+        $(this).parent().nextAll(".form-agregar").addClass("in").children("form").trigger("reset");
     });
     $(".btn-cancelar").click(function (evt) {
         $(this).closest(".form-agregar").removeClass("in");
         $(this).closest(".form-agregar").prev(".acciones").children(".btn-agregar").removeClass("disabled");
+    });
+
+    $(".btn-editar").click(function (evt) {
+        $(this).parent().nextAll(".form-agregar").attr("accion","editar");
+        $(this).parent().nextAll(".form-agregar").addClass("in");
     });
 
     $(".direccionSelectEstado").change(function() {
@@ -1215,6 +1286,7 @@ $(document).ready(function () {
             url     : "./Controllers/baseController.php",
             type    : 'POST',
             dataType: 'json',
+            async : false,
             data    : {
                 action: "codigosPostales_de_Estado_y_DelegacionMunicipio",
                 estado: $(this).closest(".form-group-sm").prev().find("select").val(),
@@ -1223,21 +1295,24 @@ $(document).ready(function () {
         })
             .done(function (data) {
 
-            if (data.success) {
-                $.each(data.codigosPostalesBusqueda, function( key, value ) {
-                    element.closest(".form-group-sm").next().find("select").append('' +
-                        '<option value="'+value.codigoPostal+'" colonias="'+value.colonia+'">'+value.codigoPostal+'</option>');
-                });
-            } else {
+                if (data.success) {
+                    $.each(data.codigosPostalesBusqueda, function( key, value ) {
+                        element.closest(".form-group-sm").next().find("select").append('' +
+                            '<option value="'+value.codigoPostal+'" colonias="'+value.colonia+'">'+value.codigoPostal+'</option>');
+                    });
+                } else {
 
-                $("#errorEmpleadosMensaje").html(data.error);
-                $("#errorEmpleados").addClass('in');
-
-            }
-        })
+                    element.closest(".form-agregar").siblings(".alert")
+                        .removeClass("alert-success")
+                        .addClass("alert-danger")
+                        .addClass("in")
+                        .children(".alertMensaje")
+                        .html("<strong>¡Error!: </strong>"+data.error);
+                }
+            })
             .fail(function(XMLHttpRequest, textStatus, errorThrown) {
                 alert("Error: " + errorThrown);
-            });;
+            });
 
     });
     $(".direccionSelectCodigoPostal").change(function() {
@@ -1257,109 +1332,12 @@ $(document).ready(function () {
 
     });
 
-    $("#empleadoForm").submit(function (evt) {
-        evt.preventDefault();
-
-        $.ajax({
-            url: "./Controllers/baseController.php",
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                action: "empleadoAgregar",
-                nombre: $(this).find('.nombre').val(),
-                apPaterno: $(this).find('.apPaterno').val(),
-                apMaterno: $(this).find('.apMaterno').val(),
-                fechaDeNacimiento: $(this).find('.fechaDeNacimiento').val(),
-                estadoDomicilio: $(this).find('.direccionSelectEstado').val(),
-                delegacionMunicipioDomicilio: $(this).find('.direccionSelectDelegacionMunicipio').val(),
-                codigoPostalDomicilio: $(this).find('.direccionSelectCodigoPostal').val(),
-                coloniaDomicilio: $(this).find('.coloniaDomicilio').val(),
-                calleNumeroDomicilio: $(this).find('.calleNumeroDomicilio').val(),
-                email: $(this).find('.email').val(),
-                telefonoLocal: $(this).find('.telefonoLocal').val(),
-                telefonoMovil: $(this).find('.telefonoMovil').val(),
-                curp: $(this).find('.curp').val(),
-                estadoSistema: $(this).find('.estadoSistema').val(),
-                userName: $(this).find('.userName').val()
-            }
-        })
-            .done(function (data) {
-            console.log(data);
-            /*if (data.success) {
-                document.getElementById("agregarEmpleadoForm").reset();
-                buscarEmpleado();
-                document.getElementById("exitoErrorAgregarEmpleadoForm").innerHTML = "Empleado agregado con éxito.";
-            } else {						//En caso de error, mensaje de error
-                document.getElementById("exitoErrorAgregarEmpleadoForm").innerHTML = "Error agregando empleado.";
-            }*/
-        })
-            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error: " + errorThrown);
-            });
-
-        /*return false;*/
-    });
-
-
-
-
-
-
-
-
-    $.extend( true, $.fn.dataTable.defaults, {
-        "scrollX": true,
-        "fixedColumns": true,
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ filas por página",
-            "zeroRecords": "Sin resultados",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin información disponible",
-            "thousands":      ",",
-            "loadingRecords": "Cargando...",
-            "processing":     "Procesando...",
-            "search":         "Buscar:",
-            "paginate": {
-                "first":      "Inicio",
-                "last":       "Final",
-                "next":       "Siguiente",
-                "previous":   "Anterior"
-            },
-            "aria": {
-                "sortAscending":  ": activa para ordenar la comlumna ascendente",
-                "sortDescending": ": activa para ordenar la comlumna descendente"
-            },
-            "infoFiltered": "(filtrado de _MAX_ filas totales)"
-        }
-    } );                   /*Valores por default de las jQuery DataTables*/
-
-
 
 
     var empleadosTabla;
     empleadosTabla = $('#empleadosTable').DataTable({
         "select": true,
-        /*"dom": '<"borde-amarillo"B><l>frtip',
-        "buttons": [
-            {
-                text: 'Agregar',
-                className: 'green',
-                action: function ( e, dt, node, config ) {
-                    var text = this.text();
-                    this.text(function(){
-                            return text === "Agregar" ? "Cancelar" : "Agregar";
-                    }
-                    );
-                },
-            },{
-                text: 'Editar',
-                className: 'red',
-                action: function ( e, dt, node, config ) {
-                    alert( 'Button Editar activated' );
-                },
-                enabled: false
-            }
-        ],*/
+        "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
         "columns": [
             { "data": "nombre" },
             { "data": "apPaterno" },
@@ -1378,7 +1356,9 @@ $(document).ready(function () {
             { "data": "estadoSistema" },
             { "data": "userName" }
         ]
+
     });                                            /*Arranca Tabla*/
+
 
     $("#empleadosIcon").click( function (evt) {
         $("#mainDiv").removeClass("in");
@@ -1386,32 +1366,93 @@ $(document).ready(function () {
         $("body").removeClass("background-morado");
         $("body").addClass("background-blanco");
 
+        actualizatabla(empleadosTabla, "empleadosTodos");
+
+    })
+    $("#empleadoForm").submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.parent().attr("accion")=="agregar"){
+            accion = "empleadoAgregar";
+        }else if (element.parent().attr("accion")=="editar" && element.find('.idEmpleado').val() != "" ){
+            accion = "empleadoEditar";
+        }else {
+            element.parent().siblings(".alert")
+                .removeClass("alert-success")
+                .addClass("alert-danger")
+                .addClass("in")
+                .children(".alertMensaje")
+                .html("<strong>¡Error!: </strong>"+"Acción desconocida o sin selección para editar");
+            return;
+        }
+
         $.ajax({
-            url     : "./Controllers/baseController.php",
-            type    : 'POST',
+            url: "./Controllers/baseController.php",
+            type: 'POST',
             dataType: 'json',
-            data    : {
-                action: "empleadosTodos"
+            data: {
+                action: accion,
+                idEmpleado: $(this).find('.idEmpleado').val(),
+                nombre: $(this).find('.nombre').val(),
+                apPaterno: $(this).find('.apPaterno').val(),
+                apMaterno: $(this).find('.apMaterno').val(),
+                fechaDeNacimiento: $(this).find('.fechaDeNacimiento').val(),
+                estadoDomicilio: $(this).find('.direccionSelectEstado').val(),
+                delegacionMunicipioDomicilio: $(this).find('.direccionSelectDelegacionMunicipio').val(),
+                codigoPostalDomicilio: $(this).find('.direccionSelectCodigoPostal').val(),
+                coloniaDomicilio: $(this).find('.coloniaDomicilio').val(),
+                calleNumeroDomicilio: $(this).find('.calleNumeroDomicilio').val(),
+                email: $(this).find('.email').val(),
+                telefonoLocal: $(this).find('.telefonoLocal').val(),
+                telefonoMovil: $(this).find('.telefonoMovil').val(),
+                curp: $(this).find('.curp').val(),
+                estadoSistema: $(this).find('.estadoSistema').val(),
+                userName: $(this).find('.userName').val()
             }
-        }).done(function (data) {
+        })
+            .done(function (data) {
+                console.log(data);
+                if (data.success) {
+                    element.closest(".form-agregar").removeClass("in");
+                    element.trigger('reset');
+                    element.parent().siblings(".alert")
+                        .removeClass("alert-danger")
+                        .addClass("alert-success")
+                        .addClass("in")
+                        .children(".alertMensaje")
+                        .html("<strong> Operación Exitosa </strong>");
+                    element.parent().siblings(".acciones").children(".btn-agregar").removeClass("disabled");
+                    actualizatabla(empleadosTabla, "empleadosTodos");
+                } else {
+                    element.parent().siblings(".alert")
+                        .removeClass("alert-success")
+                        .addClass("alert-danger")
+                        .addClass("in")
+                        .children(".alertMensaje")
+                        .html("<strong>¡Error!: </strong>"+data.error);
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
 
+    });
 
-            if (data.success) {
+    $("#empleadoEditar").click(function (evt) {
 
-                //console.log(data.empleadosTodos);
+        var miEmpleado = empleadosTabla.row( { selected: true } ).data();
+        $.each(miEmpleado, function( key, value ) {
 
-                empleadosTabla.rows.add(data.empleadosTodos).draw();
-
-
-
-            } else {
-
-                $("#errorEmpleadosMensaje").html(data.error);
-                $("#errorEmpleados").addClass('in');
-
+            if(value != ""){
+                $("#empleadoForm").find('.'+key).val(value).triggerHandler('change');
+            }else{
+                $("#empleadoForm").find('.'+key).val("");
             }
+
         });
-
 
     })
 
@@ -1431,5 +1472,30 @@ $(document).ready(function () {
         $("#mainDiv").removeClass("in");
         $("#clientesDiv").addClass("in");
     })
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+    Esto tiene que ir despues de la inicializacion de todas las datatales
+*/
+
+    $(".allDataTables").DataTable().on( 'select', function () {
+        $(this).closest(".moduloMain").children(".acciones").children(".btn-editar")
+            .prop('disabled', false);
+    } );
+    $(".allDataTables").DataTable().on( 'deselect', function () {
+        $(this).closest(".moduloMain").children(".acciones").children(".btn-editar")
+            .prop('disabled', true);
+    } );
+
 
 });

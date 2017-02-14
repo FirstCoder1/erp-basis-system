@@ -201,21 +201,31 @@
             </div>
 
             <div class="moduloMain">
-                <div id="errorEmpleados"
-                     class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
+                <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
-                    <strong>¡Error!: </strong><span id="errorEmpleadosMensaje"></span>
-                </div>                                        <!--TODO quitar dejar mejorar-->
+                    <span class="alertMensaje"></span>
+                </div>
 
                 <div class="col-sm-12 acciones margen-abajo15">
                     <button type="button" class="btn-agregar btn btn-default btn-md ">Agregar Nuevo</button>
-                    <button type="button" class="btn btn-default btn-md disabled">Editar</button>
+                    <button id="empleadoEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
                 </div>
 
 
-                <div class="form-agregar collapse margen-abajo30">
+                <div class="form-agregar collapse margen-abajo30" accion="">
                     <form class="form-horizontal" id="empleadoForm" autocomplete="off">
 
+                        <div class="form-group-sm collapse">
+                            <label class="control-label col-sm-3">ID:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control idEmpleado"
+                                       placeholder="XX"
+                                       maxlength="35"
+                                       title="Id, no modificable por el usuario."
+                                >
+                            </div>
+                        </div>
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Nombre:</label>
                             <div class="col-sm-7">
@@ -226,8 +236,8 @@
                                        pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
                                        title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
                                        autofocus
-                                        >
-                                <!--TODO required-->
+                                       required
+                                >
                             </div>
                         </div>
                         <div class="form-group-sm">
@@ -239,8 +249,8 @@
                                        maxlength="35"
                                        pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
                                        title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
-                                       >
-                                        <!--TODO required-->
+                                       required
+                                >
                             </div>
                         </div>
                         <div class="form-group-sm">
@@ -266,7 +276,7 @@
                             <label class="control-label col-sm-3">Estado:</label>
                             <div class="col-sm-7">
                                 <!–– Dropdown estados de México ––>
-                                <select class="form-control direccionSelectEstado">
+                                <select class="form-control direccionSelectEstado estadoDomicilio">
                                     <option value="">Selecciona uno</option>
                                     <option value="Distrito Federal">Distrito Federal</option>
                                     <option value="Aguascalientes">Aguascalientes</option>
@@ -306,7 +316,7 @@
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Delegación o Municipio:</label>
                             <div class="col-sm-7">
-                                <select class="form-control direccionSelectDelegacionMunicipio" >
+                                <select class="form-control direccionSelectDelegacionMunicipio delegacionMunicipioDomicilio" >
                                     <option value="">Primero selecciona un estado</option>
                                 </select>
                             </div>
@@ -314,7 +324,7 @@
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Código Postal:</label>
                             <div class="col-sm-7">
-                                <select class="form-control direccionSelectCodigoPostal">
+                                <select class="form-control direccionSelectCodigoPostal codigoPostalDomicilio">
                                     <option value="">Primero selecciona una delegación o municipio</option>
                                 </select>
                             </div>
@@ -360,7 +370,13 @@
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">CURP:</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control curp" placeholder="XXXXXXXXXXXXXXXXXX" maxlength="18" pattern="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$" title="Solo letras y números (no signos), 18 caracteres.">
+                                <input type="text"
+                                       class="form-control curp"
+                                       placeholder="XXXXXXXXXXXXXXXXXX"
+                                       maxlength="18"
+                                       pattern="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$"
+                                       title="Solo letras y números (no signos), 18 caracteres."
+                                       >
                             </div>
                         </div>
 
@@ -376,7 +392,14 @@
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Nombre de usuario:</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control userName" placeholder="xxxxx" maxlength="45" pattern="[a-zA-Z0-9-]{5,45}" title="Solo letras y números (no signos), 5 - 45 caracteres.">
+                                <input type="text"
+                                       class="form-control userName"
+                                       placeholder="xxxxx"
+                                       maxlength="45"
+                                       pattern="[a-zA-Z0-9-]{5,45}"
+                                       title="Solo letras y números (no signos), 5 - 45 caracteres."
+                                       required
+                                >
                             </div>
                         </div>
 
@@ -391,17 +414,13 @@
                     </form>
                 </div>
 
-
-
-
-
-                <table id="empleadosTable" class="display nowrap compact table-bordered" cellspacing="0" width="100%">
+                <table id="empleadosTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th rowspan="2">Nombre</th>
                             <th colspan="2">Apellido</th>
                             <th rowspan="2">Fecha nacimiento</th>
-                            <th colspan="6">Dirección</th>
+                            <th colspan="5">Dirección</th>
                             <th rowspan="2">Email</th>
                             <th colspan="2">Teléfono</th>
                             <th rowspan="2">CURP</th>
@@ -471,8 +490,6 @@
 
 <!--
 COMENTARIOS GENERALES:
-
-- tengo que hacer que cuando de clic en el icono, desaparezca el main y quede el empleadosDiv y al inicio no exista empleados Div en lo absoluto, collpase TODO
 
 -->
 

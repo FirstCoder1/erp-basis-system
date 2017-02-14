@@ -56,6 +56,30 @@ elseif ($action == "empleadoAgregar"){
 
 }
 
+elseif ($action == "empleadoEditar"){
+
+    $miEmpleado = new Empleado();
+    $miEmpleado->set("idEmpleado", $_POST["idEmpleado"]);
+    $miEmpleado->set("nombre", $_POST["nombre"]);
+    $miEmpleado->set("apPaterno", $_POST["apPaterno"]);
+    $miEmpleado->set("apMaterno", $_POST["apMaterno"]);
+    $miEmpleado->set("fechaDeNacimiento", $_POST["fechaDeNacimiento"]);
+    $miEmpleado->set("estadoDomicilio", $_POST["estadoDomicilio"]);
+    $miEmpleado->set("delegacionMunicipioDomicilio", $_POST["delegacionMunicipioDomicilio"]);
+    $miEmpleado->set("codigoPostalDomicilio", $_POST["codigoPostalDomicilio"]);
+    $miEmpleado->set("coloniaDomicilio", $_POST["coloniaDomicilio"]);
+    $miEmpleado->set("calleNumeroDomicilio", $_POST["calleNumeroDomicilio"]);
+    $miEmpleado->set("email", $_POST["email"]);
+    $miEmpleado->set("telefonoLocal", $_POST["telefonoLocal"]);
+    $miEmpleado->set("telefonoMovil", $_POST["telefonoMovil"]);
+    $miEmpleado->set("curp", $_POST["curp"]);
+    $miEmpleado->set("estadoSistema", $_POST["estadoSistema"]);
+    $miEmpleado->set("userName", $_POST["userName"]);
+
+    echo json_encode(Empleados::editar($miEmpleado));
+
+}
+
 /*
 COMENTARIOS GENERALES:
 

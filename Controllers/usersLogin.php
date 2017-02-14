@@ -74,4 +74,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {    //si se llama al index a través 
 
 }
 
-//TODO - cifrar la contraseña bien, manejar error en registro, registrar intentos de log.

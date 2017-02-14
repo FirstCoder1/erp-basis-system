@@ -70,6 +70,27 @@ class BaseModel
 
     }
 
+    public function editar( $id ){
+
+        $sql = $this->crearQueryEditar( $id );
+
+        $stmt = Conexion::getConnection()->prepare($sql);
+        $this->bindParamAll($stmt);
+
+        $salida = "";
+        try {
+            $salida = $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
+
+        Log::error("salida :: ".$salida);
+        Log::error("stm :: ".print_r($stmt->errorInfo(),true));
+
+        return $salida;
+
+    }
+
 
 
     public function fillEmptyWithWildcard(){
@@ -108,11 +129,12 @@ class BaseModel
                 $sql = "INSERT INTO ".$value." (".$sql;
             } else {
                 $sql .= $key.",";
-                if ($value == "CURRENT_TIMESTAMP"){
+                if ($value == "CURRENT_TIMESTAMP" || $value == "NULL"){
                     $values .= $value.",";
                 }else{
                     $values .= "'".$value."',";
                 }
+
             }
         }
 
@@ -120,6 +142,30 @@ class BaseModel
         $values = substr($values,0,-1).");";
 
         return $sql.$values;
+    }
+    public function crearQueryEditar($id){
+
+        $sql = "";
+        foreach ($this as $key => $value) {
+            if ($key == $id || $value == "NO_INCLUDE"){
+                continue;
+            }
+
+
+            if ($key == "_tableName"){
+                $sql = "UPDATE ".$value." SET ".$sql;
+            } else {
+
+                    $sql .= $key."='".$value."', ";
+
+            }
+        }
+
+        $sql = substr($sql,0,-2);
+
+        $sql.= " WHERE ".$id."='".$this->get($id)."'";
+
+        return $sql;
     }
 
 

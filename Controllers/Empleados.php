@@ -57,7 +57,7 @@ class Empleados {
         if (count($empleados) > 0){
 
             $salida["success"] = true ;
-            $salida["empleadosTodos"] = $empleados ;
+            $salida["todos"] = $empleados ;
 
         }else{
             $salida["success"] = false;
@@ -70,9 +70,50 @@ class Empleados {
     public static function agregar( Empleado $miEmpleado){
 
         $miEmpleado->set("fechaAlta","CURRENT_TIMESTAMP");
+
+        $empleadoValidate = new Empleado();
+        $empleadoValidate->set("userName",$miEmpleado->get("userName"));
+        $empleados = $empleadoValidate->buscarClase();
+
         $salida = array();
 
+        if(count($empleados)!=0){
+            $salida["success"] = false;
+            $salida["error"] = "Nombre de usuario invalido";
+            return $salida;
+        }
+
         if ($miEmpleado->agregar()){
+            $salida["success"] = true ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error agregando empleado.";
+        }
+
+        return $salida;
+
+    }
+
+    public static function editar( Empleado $miEmpleado){
+
+        $miEmpleado->set("fechaAlta","NO_INCLUDE");
+        $miEmpleado->set("password","NO_INCLUDE");
+
+        $empleadoValidate = new Empleado();
+        $empleadoValidate->set("userName",$miEmpleado->get("userName"));
+        $empleados = $empleadoValidate->buscarClase();
+
+        $salida = array();
+
+
+        Log::error("here");
+        if(count($empleados)!=0 && $empleados[0]->get("idEmpleado") != $miEmpleado->get("idEmpleado")){
+            $salida["success"] = false;
+            $salida["error"] = "Nombre de usuario invalido";
+            return $salida;
+        }
+
+        if ($miEmpleado->editar("idEmpleado")){
             $salida["success"] = true ;
         }else{
             $salida["success"] = false;
