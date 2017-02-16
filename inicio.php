@@ -88,6 +88,17 @@
 
         </div>                                            <!--Acceso Empleados-->
 
+        <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Contraseñas-->
+
+            <div id="contraseñasIcon" class="acceso-icon">
+                <i class="fa fa-key fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="acceso-nombre">
+                Contraseñas
+            </div>
+
+        </div>                                             <!--Acceso Contraseñas-->
+
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Clientes-->
 
             <div id="clientesIcon" class="acceso-icon">
@@ -184,11 +195,6 @@
 
 
 
-
-
-
-
-
     <div id="empleadosDiv" class="container collapse"> 				                         <!--Contenedor Empleados-->
 
         <div class="col-xs-12 col-sm-12 paddingCero">                                            <!--Modulo Empleados-->
@@ -227,7 +233,7 @@
                             </div>
                         </div>
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3">Nombre:</label>
+                            <label class="control-label col-sm-3">*Nombre:</label>
                             <div class="col-sm-7">
                                 <input type="text"
                                        class="form-control nombre"
@@ -241,7 +247,7 @@
                             </div>
                         </div>
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3" >Apellido Paterno:</label>
+                            <label class="control-label col-sm-3" >*Apellido Paterno:</label>
                             <div class="col-sm-7">
                                 <input type="text"
                                        class="form-control apPaterno"
@@ -390,7 +396,7 @@
                             </div>
                         </div>
                         <div class="form-group-sm">
-                            <label class="control-label col-sm-3">Nombre de usuario:</label>
+                            <label class="control-label col-sm-3">*Nombre de usuario:</label>
                             <div class="col-sm-7">
                                 <input type="text"
                                        class="form-control userName"
@@ -407,9 +413,6 @@
                             <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
                             <button type="submit" class="btn btn-success">Guardar</button>
                         </div>
-
-
-
 
                     </form>
                 </div>
@@ -446,11 +449,118 @@
                 </table>
             </div>
 
-
         </div>                                  <!--Modulo Empleados-->
 
 
     </div>                                    <!--Contenedor Empleados-->
+
+    <div id="contraseñasDiv" class="container collapse"> 				                   <!--Contenedor Contraseñas-->
+
+        <div class="col-xs-12 col-sm-12 paddingCero">                                          <!--Modulo Contraseñas-->
+
+            <div class="moduloEncabezado">
+                <div id="contraseñasIcon" class="modulo-icon">
+                    <i class="fa fa-key fa-3x" aria-hidden="true"></i>
+                </div>
+                <h2 class="floatLeft margen-izquierda15">Contraseñas</h2>
+            </div>
+
+            <div class="moduloMain">
+                <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
+                    <a class="close collapseDad">×</a>
+                    <span class="alertMensaje"></span>
+                </div>
+
+                <div class="col-sm-12 acciones margen-abajo15">
+                    <button id="contraseñaEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Asignar contraseña</button>
+                </div>
+
+
+                <div class="form-agregar collapse margen-abajo30">
+                    <form class="form-horizontal" id="contraseñaForm" autocomplete="off">
+
+                        <div class="form-group-sm collapse">
+                            <label class="control-label col-sm-3">ID:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control idEmpleado"
+                                       placeholder="XX"
+                                       maxlength="35"
+                                       title="Id, no modificable por el usuario."
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Nombre completo:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control nombre"
+                                       placeholder="Nombre completo"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                       disabled
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3" >*Nueva contraseña:</label>
+                            <div class="col-sm-7">
+                                <input type="password"
+                                       id="loginFormPassword"
+                                       class="form-control password"
+                                       placeholder="Nueva contraseña"
+                                       maxlength="45"
+                                       pattern="[a-zA-Z0-9-]{5,45}"
+                                       title="Solo letras y números (no signos), 5 - 45 caracteres."
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 margen-arriba15 margen-abajo15">
+                            <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <table id="contraseñasTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Nombre</th>
+                            <th colspan="2">Apellido</th>
+                            <th rowspan="2">Fecha nacimiento</th>
+                            <th colspan="5">Dirección</th>
+                            <th rowspan="2">Email</th>
+                            <th colspan="2">Teléfono</th>
+                            <th rowspan="2">CURP</th>
+                            <th colspan="3">Sistema</th>
+                        </tr>
+                        <tr>
+                            <th>Paterno</th>
+                            <th>Materno</th>
+                            <th>Calle y número</th>
+                            <th>Delegación</th>
+                            <th>C.P.</th>
+                            <th>Colonia</th>
+                            <th>Estado</th>
+                            <th>Local</th>
+                            <th>Movil</th>
+                            <th>Alta</th>
+                            <th>Estado</th>
+                            <th>Usuario</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>                                  <!--Modulo Contraseñas-->
+
+
+    </div>                                    <!--Contenedor Contraseñas-->
 
 
 

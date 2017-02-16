@@ -30,29 +30,20 @@ $(document).ready(function () {
     } );                   /*Valores por default de las jQuery DataTables*/
 
 
+
+
+
+
+
+
+
+
     $(".irAInicio").click( function (evt) {
         irAInicio();
     });                                                       /*Ir al inicio*/
     $(".cerrarSesion").click( function (evt) {
         cerrarSesion();
     });                                                   /*Cerrar sesion*/
-
-
-
-    $(".fadeDadOut").click( function (evt) {
-
-        $(this).parent().removeClass('in');
-        $(this).parent().addClass('out');
-
-    });                                                 /*Replegar al padre*/
-    $(".collapseDad").click( function (evt) {
-
-        $(this).parent().removeClass('in');
-
-    });                                                 /*Replegar al padre*/
-
-
-
 
 
     function irAInicio() {
@@ -64,6 +55,27 @@ $(document).ready(function () {
     }
     function cerrarSesion() {
         window.location.href = "./cerrarsesion.php";
+    }
+
+
+
+    function alerta(element,type,mensaje){
+
+        if (type == "success"){
+            element.closest(".moduloMain").children(".alert")
+                .removeClass("alert-danger")
+                .addClass("alert-success")
+        }else{
+            element.closest(".moduloMain").children(".alert")
+                .removeClass("alert-success")
+                .addClass("alert-danger")
+        }
+        element.closest(".moduloMain").children(".alert")
+            .addClass("in")
+            .children(".alertMensaje")
+            .html(mensaje);
+        $('html, body').animate({ scrollTop: $('body').offset().top}, 'slow');
+
     }
     function actualizatabla(tablaHtml,tablaController){
 
@@ -85,12 +97,7 @@ $(document).ready(function () {
 
                 } else {
 
-                    $(tablaHtml.table().container()).siblings(".alert")
-                        .removeClass("alert-success")
-                        .addClass("alert-danger")
-                        .addClass("in")
-                        .children(".alertMensaje")
-                        .html("<strong>¡Error!: </strong>"+data.error);
+                    alerta($(tablaHtml.table().container()),"error","<strong>¡Error!: </strong>"+data.error);
 
                 }
             })
@@ -99,23 +106,35 @@ $(document).ready(function () {
             });
 
     }
+    function irModulo(elementModulo){
+        $("#mainDiv").removeClass("in");
+        elementModulo.addClass("in");
+        $("body").removeClass("background-morado");
+        $("body").addClass("background-blanco");
+    }
 
 
 
-
+    $(".collapseDad").click( function (evt) {
+        $(this).parent().removeClass('in');
+    });                                                /*Replegar al padre*/
 
     $(".btn-agregar").click(function (evt) {
-        $(this).parent().nextAll(".form-agregar").attr("accion","agregar");
-        $(this).parent().nextAll(".form-agregar").addClass("in").children("form").trigger("reset");
+        $(this).parent().nextAll(".form-agregar")
+            .attr("accion","agregar")
+            .addClass("in")
+
+            .children("form")
+            .trigger("reset");;
     });
     $(".btn-cancelar").click(function (evt) {
         $(this).closest(".form-agregar").removeClass("in");
-        $(this).closest(".form-agregar").prev(".acciones").children(".btn-agregar").removeClass("disabled");
     });
 
     $(".btn-editar").click(function (evt) {
-        $(this).parent().nextAll(".form-agregar").attr("accion","editar");
-        $(this).parent().nextAll(".form-agregar").addClass("in");
+        $(this).parent().nextAll(".form-agregar")
+            .attr("accion","editar")
+            .addClass("in");
     });
 
     $(".direccionSelectEstado").change(function() {
@@ -1300,14 +1319,11 @@ $(document).ready(function () {
                         element.closest(".form-group-sm").next().find("select").append('' +
                             '<option value="'+value.codigoPostal+'" colonias="'+value.colonia+'">'+value.codigoPostal+'</option>');
                     });
+
                 } else {
 
-                    element.closest(".form-agregar").siblings(".alert")
-                        .removeClass("alert-success")
-                        .addClass("alert-danger")
-                        .addClass("in")
-                        .children(".alertMensaje")
-                        .html("<strong>¡Error!: </strong>"+data.error);
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
                 }
             })
             .fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1334,8 +1350,19 @@ $(document).ready(function () {
 
 
 
+
+
+    $("#empleadosIcon").click( function (evt) {
+
+        irModulo($("#empleadosDiv"));
+
+        actualizatabla(empleadosTabla, "empleadosTodos");
+
+    });
+
     var empleadosTabla;
-    empleadosTabla = $('#empleadosTable').DataTable({
+    empleadosTabla = $('#empleadosTable')
+        .DataTable({
         "select": true,
         "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
         "columns": [
@@ -1352,23 +1379,17 @@ $(document).ready(function () {
             { "data": "telefonoLocal" },
             { "data": "telefonoMovil" },
             { "data": "curp" },
-            { "data": "fechaAlta" },
-            { "data": "estadoSistema" },
+            { "data": "fechaAlta"},
+            { "data": "estadoSistema",
+                "render": function ( data, type, full, meta ) {
+                    return data==1?"Activo":"Inactivo";
+                } },
             { "data": "userName" }
         ]
 
-    });                                            /*Arranca Tabla*/
+    });                           /*Arranca Tabla*/
 
 
-    $("#empleadosIcon").click( function (evt) {
-        $("#mainDiv").removeClass("in");
-        $("#empleadosDiv").addClass("in");
-        $("body").removeClass("background-morado");
-        $("body").addClass("background-blanco");
-
-        actualizatabla(empleadosTabla, "empleadosTodos");
-
-    })
     $("#empleadoForm").submit(function (evt) {
         evt.preventDefault();
 
@@ -1380,12 +1401,9 @@ $(document).ready(function () {
         }else if (element.parent().attr("accion")=="editar" && element.find('.idEmpleado').val() != "" ){
             accion = "empleadoEditar";
         }else {
-            element.parent().siblings(".alert")
-                .removeClass("alert-success")
-                .addClass("alert-danger")
-                .addClass("in")
-                .children(".alertMensaje")
-                .html("<strong>¡Error!: </strong>"+"Acción desconocida o sin selección para editar");
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
             return;
         }
 
@@ -1414,25 +1432,21 @@ $(document).ready(function () {
             }
         })
             .done(function (data) {
+/*
                 console.log(data);
+*/
                 if (data.success) {
+
                     element.closest(".form-agregar").removeClass("in");
                     element.trigger('reset');
-                    element.parent().siblings(".alert")
-                        .removeClass("alert-danger")
-                        .addClass("alert-success")
-                        .addClass("in")
-                        .children(".alertMensaje")
-                        .html("<strong> Operación Exitosa </strong>");
-                    element.parent().siblings(".acciones").children(".btn-agregar").removeClass("disabled");
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
                     actualizatabla(empleadosTabla, "empleadosTodos");
                 } else {
-                    element.parent().siblings(".alert")
-                        .removeClass("alert-success")
-                        .addClass("alert-danger")
-                        .addClass("in")
-                        .children(".alertMensaje")
-                        .html("<strong>¡Error!: </strong>"+data.error);
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
                 }
             })
             .fail(function(XMLHttpRequest, textStatus, errorThrown) {
@@ -1440,7 +1454,6 @@ $(document).ready(function () {
             });
 
     });
-
     $("#empleadoEditar").click(function (evt) {
 
         var miEmpleado = empleadosTabla.row( { selected: true } ).data();
@@ -1453,6 +1466,109 @@ $(document).ready(function () {
             }
 
         });
+
+    })
+
+
+
+
+
+
+
+
+    $("#contraseñasIcon").click( function (evt) {
+
+        irModulo($("#contraseñasDiv"));
+
+        actualizatabla(contraseñasTabla, "empleadosTodos");
+
+    });
+
+    var contraseñasTabla;
+    contraseñasTabla = $('#contraseñasTable')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "estadoDomicilio" },
+                { "data": "email" },
+                { "data": "telefonoLocal" },
+                { "data": "telefonoMovil" },
+                { "data": "curp" },
+                { "data": "fechaAlta"},
+                { "data": "estadoSistema",
+                    "render": function ( data, type, full, meta ) {
+                        return data==1?"Activo":"Inactivo";
+                    } },
+                { "data": "userName" }
+            ]
+
+        });
+
+
+    $("#contraseñaForm").submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.find('.idEmpleado').val() == "" ){
+
+            alerta(element,"error","<strong>¡Error!: </strong>Sin selección para editar");
+
+            return;
+        }
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: "empleadoContraseña",
+                idEmpleado: $(this).find('.idEmpleado').val(),
+                password: $(this).find('.password').val(),
+            }
+        })
+            .done(function (data) {
+
+/*
+                 console.log(data);
+*/
+
+                if (data.success) {
+
+                    element.closest(".form-agregar").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(empleadosTabla, "empleadosTodos");
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+    $("#contraseñaEditar").click(function (evt) {
+
+        var miEmpleado = contraseñasTabla.row( { selected: true } ).data();
+
+
+            $("#contraseñaForm").find('.idEmpleado').val(miEmpleado.idEmpleado);
+            $("#contraseñaForm").find('.nombre').val(miEmpleado.nombre+" "+miEmpleado.apPaterno+" "+miEmpleado.apMaterno);
 
     })
 

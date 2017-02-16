@@ -80,6 +80,16 @@ elseif ($action == "empleadoEditar"){
 
 }
 
+elseif ($action == "empleadoContraseña"){
+
+    $miEmpleado = new Empleado();
+    $miEmpleado->set("idEmpleado", $_POST["idEmpleado"]);
+    $miEmpleado->set("password", $_POST["password"]);
+
+    echo json_encode(Empleados::editarContraseña($miEmpleado));
+
+}
+
 /*
 COMENTARIOS GENERALES:
 

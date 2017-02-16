@@ -63,13 +63,11 @@ class BaseModel
             Log::error('Error' . $e->getMessage());
         }
 
-        Log::error("salida :: ".$salida);
-        Log::error("stm :: ".print_r($stmt->errorInfo(),true));
+
 
         return $salida;
 
     }
-
     public function editar( $id ){
 
         $sql = $this->crearQueryEditar( $id );
@@ -84,8 +82,6 @@ class BaseModel
             Log::error('Error' . $e->getMessage());
         }
 
-        Log::error("salida :: ".$salida);
-        Log::error("stm :: ".print_r($stmt->errorInfo(),true));
 
         return $salida;
 

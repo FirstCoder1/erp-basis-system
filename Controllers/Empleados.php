@@ -106,7 +106,6 @@ class Empleados {
         $salida = array();
 
 
-        Log::error("here");
         if(count($empleados)!=0 && $empleados[0]->get("idEmpleado") != $miEmpleado->get("idEmpleado")){
             $salida["success"] = false;
             $salida["error"] = "Nombre de usuario invalido";
@@ -118,6 +117,40 @@ class Empleados {
         }else{
             $salida["success"] = false;
             $salida["error"] = "Error agregando empleado.";
+        }
+
+        return $salida;
+
+    }
+
+    public static function editarContraseña( Empleado $miEmpleado){
+
+        $miEmpleado->set("nombre","NO_INCLUDE");
+        $miEmpleado->set("apPaterno","NO_INCLUDE");
+        $miEmpleado->set("apMaterno","NO_INCLUDE");
+        $miEmpleado->set("fechaDeNacimiento","NO_INCLUDE");
+        $miEmpleado->set("estadoDomicilio","NO_INCLUDE");
+        $miEmpleado->set("delegacionMunicipioDomicilio","NO_INCLUDE");
+        $miEmpleado->set("codigoPostalDomicilio","NO_INCLUDE");
+        $miEmpleado->set("coloniaDomicilio","NO_INCLUDE");
+        $miEmpleado->set("calleNumeroDomicilio","NO_INCLUDE");
+        $miEmpleado->set("email","NO_INCLUDE");
+        $miEmpleado->set("telefonoLocal","NO_INCLUDE");
+        $miEmpleado->set("telefonoMovil","NO_INCLUDE");
+        $miEmpleado->set("curp","NO_INCLUDE");
+        $miEmpleado->set("fechaAlta","NO_INCLUDE");
+        $miEmpleado->set("estadoSistema","NO_INCLUDE");
+        $miEmpleado->set("userName","NO_INCLUDE");
+
+        $miEmpleado->set("password",password_hash($miEmpleado->get("password"), PASSWORD_DEFAULT));
+
+        $salida = array();
+
+        if ($miEmpleado->editar("idEmpleado")){
+            $salida["success"] = true ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error modificando contraseña.";
         }
 
         return $salida;
