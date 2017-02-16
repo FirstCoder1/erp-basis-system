@@ -1,30 +1,25 @@
 <?php namespace APP\Models;
 
-use App\Utils\Log;
 
-class Empleado extends BaseModel
+class Cliente extends BaseModel
 {
 
-    protected   $_tableName = "Empleados";
-    protected   $idEmpleado;
+    protected   $_tableName = "Clientes";
+    protected   $idCliente;
     protected   $nombre;
     protected   $apPaterno;
     protected   $apMaterno;
-    protected   $fechaDeNacimiento;
+    protected   $telefonoMovil;
+    protected   $telefonoLocal;
+    protected   $email;
     protected   $estadoDomicilio;
     protected   $delegacionMunicipioDomicilio;
     protected   $codigoPostalDomicilio;
     protected   $coloniaDomicilio;
     protected   $calleNumeroDomicilio;
-    protected   $email;
-    protected   $telefonoLocal;
-    protected   $telefonoMovil;
+    protected   $fechaDeNacimiento;
     protected   $curp;
     protected   $fechaAlta;
-    protected   $estadoSistema;
-    protected   $userName;
-    protected   $password;
-
 
 }
 

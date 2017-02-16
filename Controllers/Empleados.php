@@ -69,6 +69,7 @@ class Empleados {
 
     public static function agregar( Empleado $miEmpleado){
 
+        $miEmpleado->set("idEmpleado","NULL");
         $miEmpleado->set("fechaAlta","CURRENT_TIMESTAMP");
 
         $empleadoValidate = new Empleado();

@@ -63,8 +63,6 @@ class BaseModel
             Log::error('Error' . $e->getMessage());
         }
 
-
-
         return $salida;
 
     }

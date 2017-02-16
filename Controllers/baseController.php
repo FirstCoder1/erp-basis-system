@@ -14,6 +14,7 @@ $_GET   = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);                
 $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
 $action = $_POST["action"];
+unset($_POST["action"]);
 
 if ($action == "empleadoLogin"){
 
@@ -37,21 +38,11 @@ elseif ($action == "codigosPostales_de_Estado_y_DelegacionMunicipio"){
 elseif ($action == "empleadoAgregar"){
 
     $miEmpleado = new Empleado();
-    $miEmpleado->set("nombre", $_POST["nombre"]);
-    $miEmpleado->set("apPaterno", $_POST["apPaterno"]);
-    $miEmpleado->set("apMaterno", $_POST["apMaterno"]);
-    $miEmpleado->set("fechaDeNacimiento", $_POST["fechaDeNacimiento"]);
-    $miEmpleado->set("estadoDomicilio", $_POST["estadoDomicilio"]);
-    $miEmpleado->set("delegacionMunicipioDomicilio", $_POST["delegacionMunicipioDomicilio"]);
-    $miEmpleado->set("codigoPostalDomicilio", $_POST["codigoPostalDomicilio"]);
-    $miEmpleado->set("coloniaDomicilio", $_POST["coloniaDomicilio"]);
-    $miEmpleado->set("calleNumeroDomicilio", $_POST["calleNumeroDomicilio"]);
-    $miEmpleado->set("email", $_POST["email"]);
-    $miEmpleado->set("telefonoLocal", $_POST["telefonoLocal"]);
-    $miEmpleado->set("telefonoMovil", $_POST["telefonoMovil"]);
-    $miEmpleado->set("curp", $_POST["curp"]);
-    $miEmpleado->set("estadoSistema", $_POST["estadoSistema"]);
-    $miEmpleado->set("userName", $_POST["userName"]);
+
+    foreach ($_POST as $key => $value) {
+        $miEmpleado->set($key, $value);
+    }
+
     echo json_encode(Empleados::agregar($miEmpleado));
 
 }
@@ -59,22 +50,10 @@ elseif ($action == "empleadoAgregar"){
 elseif ($action == "empleadoEditar"){
 
     $miEmpleado = new Empleado();
-    $miEmpleado->set("idEmpleado", $_POST["idEmpleado"]);
-    $miEmpleado->set("nombre", $_POST["nombre"]);
-    $miEmpleado->set("apPaterno", $_POST["apPaterno"]);
-    $miEmpleado->set("apMaterno", $_POST["apMaterno"]);
-    $miEmpleado->set("fechaDeNacimiento", $_POST["fechaDeNacimiento"]);
-    $miEmpleado->set("estadoDomicilio", $_POST["estadoDomicilio"]);
-    $miEmpleado->set("delegacionMunicipioDomicilio", $_POST["delegacionMunicipioDomicilio"]);
-    $miEmpleado->set("codigoPostalDomicilio", $_POST["codigoPostalDomicilio"]);
-    $miEmpleado->set("coloniaDomicilio", $_POST["coloniaDomicilio"]);
-    $miEmpleado->set("calleNumeroDomicilio", $_POST["calleNumeroDomicilio"]);
-    $miEmpleado->set("email", $_POST["email"]);
-    $miEmpleado->set("telefonoLocal", $_POST["telefonoLocal"]);
-    $miEmpleado->set("telefonoMovil", $_POST["telefonoMovil"]);
-    $miEmpleado->set("curp", $_POST["curp"]);
-    $miEmpleado->set("estadoSistema", $_POST["estadoSistema"]);
-    $miEmpleado->set("userName", $_POST["userName"]);
+
+    foreach ($_POST as $key => $value) {
+        $miEmpleado->set($key, $value);
+    }
 
     echo json_encode(Empleados::editar($miEmpleado));
 
@@ -83,8 +62,9 @@ elseif ($action == "empleadoEditar"){
 elseif ($action == "empleadoContraseña"){
 
     $miEmpleado = new Empleado();
-    $miEmpleado->set("idEmpleado", $_POST["idEmpleado"]);
-    $miEmpleado->set("password", $_POST["password"]);
+    foreach ($_POST as $key => $value) {
+        $miEmpleado->set($key, $value);
+    }
 
     echo json_encode(Empleados::editarContraseña($miEmpleado));
 
