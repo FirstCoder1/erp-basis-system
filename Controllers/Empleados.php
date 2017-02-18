@@ -117,7 +117,7 @@ class Empleados {
             $salida["success"] = true ;
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error agregando empleado.";
+            $salida["error"] = "Error editando empleado.";
         }
 
         return $salida;

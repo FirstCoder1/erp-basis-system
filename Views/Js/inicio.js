@@ -91,6 +91,7 @@ $(document).ready(function () {
 
                 if (data.success) {
                     //console.log(data.empleadosTodos);
+                    tablaHtml.row().deselect();
                     tablaHtml.clear();
                     tablaHtml.rows.add(data.todos).draw();
 
@@ -125,7 +126,8 @@ $(document).ready(function () {
             .addClass("in")
 
             .children("form")
-            .trigger("reset");;
+            .trigger("reset");
+
     });
     $(".btn-cancelar").click(function (evt) {
         $(this).closest(".form-agregar").removeClass("in");
@@ -1349,7 +1351,7 @@ $(document).ready(function () {
     });
 
 
-
+/* ------------------------------------------------------------------------------------------------     Empleados     */
 
 
     $("#empleadosIcon").click( function (evt) {
@@ -1388,7 +1390,6 @@ $(document).ready(function () {
         ]
 
     });                           /*Arranca Tabla*/
-
 
     $("#empleadoForm").submit(function (evt) {
         evt.preventDefault();
@@ -1470,10 +1471,7 @@ $(document).ready(function () {
     })
 
 
-
-
-
-
+/* ------------------------------------------------------------------------------------------------     Contraseñas   */
 
 
     $("#contraseñasIcon").click( function (evt) {
@@ -1512,7 +1510,6 @@ $(document).ready(function () {
             ]
 
         });
-
 
     $("#contraseñaForm").submit(function (evt) {
         evt.preventDefault();
@@ -1575,23 +1572,174 @@ $(document).ready(function () {
 
 
 
-
-
-
-
+/* ------------------------------------------------------------------------------------------------     Clientes      */
 
 
 
 
 
     $("#clientesIcon").click( function (evt) {
-        $("#mainDiv").removeClass("in");
-        $("#clientesDiv").addClass("in");
+
+        irModulo($("#clientesDiv"));
+
+        actualizatabla(clientesTabla, "clientesTodos");
+
+    });
+
+    var clientesTabla;
+    clientesTabla = $('#clientesTable')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "telefonoMovil" },
+                { "data": "telefonoLocal" },
+                { "data": "email" },
+                { "data": "estadoDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "curp" },
+                { "data": "fechaAlta"}
+            ]
+
+        });                           /*Arranca Tabla*/
+
+    $("#clienteForm").submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.parent().attr("accion")=="agregar"){
+            accion = "clienteAgregar";
+        }else if (element.parent().attr("accion")=="editar" && element.find('.idCliente').val() != "" ){
+            accion = "clienteEditar";
+        }else {
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
+            return;
+        }
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idCliente: $(this).find('.idCliente').val(),
+                nombre: $(this).find('.nombre').val(),
+                apPaterno: $(this).find('.apPaterno').val(),
+                apMaterno: $(this).find('.apMaterno').val(),
+                telefonoMovil: $(this).find('.telefonoMovil').val(),
+                telefonoLocal: $(this).find('.telefonoLocal').val(),
+                email: $(this).find('.email').val(),
+                estadoDomicilio: $(this).find('.direccionSelectEstado').val(),
+                delegacionMunicipioDomicilio: $(this).find('.direccionSelectDelegacionMunicipio').val(),
+                codigoPostalDomicilio: $(this).find('.direccionSelectCodigoPostal').val(),
+                coloniaDomicilio: $(this).find('.coloniaDomicilio').val(),
+                calleNumeroDomicilio: $(this).find('.calleNumeroDomicilio').val(),
+                fechaDeNacimiento: $(this).find('.fechaDeNacimiento').val(),
+                curp: $(this).find('.curp').val(),
+            }
+        })
+            .done(function (data) {
+                /*
+                 console.log(data);
+                 */
+                if (data.success) {
+
+                    element.closest(".form-agregar").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(clientesTabla, "clientesTodos");
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+    $("#clienteEditar").click(function (evt) {
+
+        var miCliente = clientesTabla.row( { selected: true } ).data();
+        $.each(miCliente, function( key, value ) {
+
+            if(value != ""){
+                $("#clienteForm").find('.'+key).val(value).triggerHandler('change');
+            }else{
+                $("#clienteForm").find('.'+key).val("");
+            }
+
+        });
+
     })
 
 
 
 
+/* ------------------------------------------------------------------------------------------------     Viajes        */
+
+
+
+
+
+
+
+    $("#viajesIcon").click( function (evt) {
+
+        irModulo($("#viajesDiv"));
+        actualizatabla(viajesTabla, "viajesTodos");
+    });
+
+    var viajesTabla;
+    viajesTabla = $('#viajesTable')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "kilometraje" },
+                { "data": "fechaAlta" },
+                { "data": "idCliente" }
+            ]
+
+        });                           /*Arranca Tabla*/
+
+    var viajesClientesTable;
+    viajesClientesTable = $('#viajesClientesTable')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "telefonoMovil" },
+                { "data": "telefonoLocal" },
+                { "data": "email" },
+                { "data": "estadoDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "curp" },
+                { "data": "fechaAlta"}
+            ]
+
+        });                           /*Arranca Tabla*/
 
 
 
@@ -1600,9 +1748,272 @@ $(document).ready(function () {
 
 
 
-/*
-    Esto tiene que ir despues de la inicializacion de todas las datatales
-*/
+
+
+
+
+
+
+    $("#viajeForm").submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.parent().attr("accion")=="agregar"){
+            accion = "viajeAgregar";
+        }else if (element.parent().attr("accion")=="editar" && element.find('.idViaje').val() != "" ){
+            accion = "viajeEditar";
+        }else {
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
+            return;
+        }
+
+        var puntosVar = []
+        $(this).find(".punto").each( function() {
+            var punto= {
+                fechaHora: $(this).find('.fechaHora').val(),
+                estadoDireccion: $(this).find('.estadoDireccion').val(),
+                delegacionMunicipioDireccion: $(this).find('.delegacionMunicipioDireccion').val(),
+                codigoPostalDireccion: $(this).find('.codigoPostalDireccion').val(),
+                coloniaDireccion: $(this).find('.coloniaDireccion').val(),
+                calleNumeroDireccion: $(this).find('.calleNumeroDireccion').val(),
+                descripcionDireccion: $(this).find('.descripcionDireccion').val()
+            }
+            puntosVar.push(punto);
+        });
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idViaje: $(this).find('.idViaje').val(),
+                idCliente: $(this).find('.idCliente').val(),
+                puntos: puntosVar
+
+            }
+        })
+            .done(function (data) {
+                 console.log(data);
+
+                if (data.success) {
+
+                    element.closest(".form-agregar").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(viajesTabla, "viajesTodos");
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+
+    $('.puntos').on('click', '.agregarPunto', function (){
+        $(this).closest(".panel").after( '' +
+            '<div class="panel panel-default margen-arriba15 panelNuevo">'+
+            '<div class="panel-heading">'+
+            'Punto a visitar:'+
+            '</div>'+
+        '<div class="panel-body">'+
+            '<div class="punto">'+
+                '<div class="form-group-sm">'+
+                    '<label class="control-label col-sm-3">Fecha y hora:</label>'+
+                    '<div class="col-sm-7">'+
+                        '<input type="datetime-local"'+
+                               'class="form-control fechaHora"'+
+                        '>'+
+                    '</div>'+
+                '</div>                                                  <!--fechaHora-->'+
+                '<!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->'+
+                '<div class="form-group-sm">'+
+                    '<label class="control-label col-sm-3">Estado:</label>'+
+                    '<div class="col-sm-7">'+
+                        '<!–– Dropdown estados de México ––>'+
+                        '<select class="form-control direccionSelectEstado estadoDireccion">'+
+                            '<option value="">Selecciona uno</option>'+
+                            '<option value="Distrito Federal">Distrito Federal</option>'+
+                            '<option value="Aguascalientes">Aguascalientes</option>'+
+                            '<option value="Baja California">Baja California</option>'+
+                            '<option value="Baja California Sur">Baja California Sur</option>'+
+                            '<option value="Campeche">Campeche</option>'+
+                            '<option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>'+
+                            '<option value="Colima">Colima</option>'+
+                            '<option value="Chiapas">Chiapas</option>'+
+                            '<option value="Chihuahua">Chihuahua</option>'+
+                            '<option value="Durango">Durango</option>'+
+                            '<option value="Guanajuato">Guanajuato</option>'+
+                            '<option value="Guerrero">Guerrero</option>'+
+                            '<option value="Hidalgo">Hidalgo</option>'+
+                            '<option value="Jalisco">Jalisco</option>'+
+                            '<option value="México">México</option>'+
+                            '<option value="Michoacán de Ocampo">Michoacán de Ocampo</option>'+
+                            '<option value="Morelos">Morelos</option>'+
+                            '<option value="Nayarit">Nayarit</option>'+
+                            '<option value="Nuevo León">Nuevo León</option>'+
+                            '<option value="Oaxaca">Oaxaca</option>'+
+                            '<option value="Puebla">Puebla</option>'+
+                            '<option value="Querétaro">Querétaro</option>'+
+                            '<option value="Quintana Roo">Quintana Roo</option>'+
+                            '<option value="San Luis Potosí">San Luis Potosí</option>'+
+                            '<option value="Sinaloa">Sinaloa</option>'+
+                            '<option value="Sonora">Sonora</option>'+
+                            '<option value="Tabasco">Tabasco</option>'+
+                            '<option value="Tamaulipas">Tamaulipas</option>'+
+                            '<option value="Tlaxcala">Tlaxcala</option>'+
+                            '<option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>'+
+                            '<option value="Yucatán">Yucatán</option>'+
+                            '<option value="Zacatecas">Zacatecas</option>'+
+                        '</select>'+
+                    '</div>'+
+                '</div>                                            <!--estadoDireccion-->'+
+                '<div class="form-group-sm">'+
+                    '<label class="control-label col-sm-3">Delegación o Municipio:</label>'+
+                    '<div class="col-sm-7">'+
+                        '<select class="form-control direccionSelectDelegacionMunicipio delegacionMunicipioDireccion" >'+
+                            '<option value="">Primero selecciona un estado</option>'+
+                        '</select>'+
+                    '</div>'+
+                '</div>                               <!--delegacionMunicipioDireccion-->'+
+                '<div class="form-group-sm">'+
+                    '<label class="control-label col-sm-3">Código Postal:</label>'+
+                    '<div class="col-sm-7">'+
+                        '<select class="form-control direccionSelectCodigoPostal codigoPostalDireccion">'+
+                            '<option value="">Primero selecciona una delegación o municipio</option>'+
+                        '</select>'+
+                    '</div>'+
+                '</div>                                      <!--codigoPostalDireccion-->'+
+                '<div class="form-group-sm">'+
+                    '<label class="control-label col-sm-3">Colonia:</label>'+
+                    '<div class="col-sm-7">'+
+                        '<select class="form-control coloniaDireccion">'+
+                            '<option value="">Primero selecciona un codigo postal</option>'+
+                        '</select>'+
+                    '</div>'+
+                '</div>                                           <!--coloniaDireccion-->'+
+                '<div class="form-group-sm">'+
+                    '<label class="control-label col-sm-3">Calle y número:</label>'+
+                    '<div class="col-sm-7">'+
+                        '<input type="text"'+
+                               'class="form-control calleNumeroDireccion"'+
+                               'placeholder="Xxxxx YYY"'+
+                               'maxlength="70"'+
+                               'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
+                               'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">'+
+                    '</div>'+
+                '</div>                                       <!--calleNumeroDireccion-->'+
+
+                '<div class="form-group-sm">'+
+                    '<label class="control-label col-sm-3">Descripción:</label>'+
+                    '<div class="col-sm-7">'+
+                        '<input type="text"'+
+                               'class="form-control descripcionDireccion"'+
+                               'placeholder="Detalles sobre el lugar"'+
+                               'maxlength="300"'+
+                               'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
+                               'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">'+
+                    '</div>'+
+                '</div>                                       <!--descripcionDireccion-->'+
+
+
+            '</div>'+
+        '</div>'+
+        '<div class="panel-footer text-right">'+
+            '<button type="button" class="btn btn-default btn-xs">Repetir primer punto</button>'+
+            '<button type="button" class="btn btn-default btn-xs agregarPunto">Agregar</button>'+
+            '<button type="button" class="btn btn-danger btn-xs eliminarPunto">Eliminar</button>'+
+        '</div>'+
+        '</div>' );
+    });
+    $('.puntos').on('click', '.eliminarPunto', function (){
+        $(this).closest(".panel").remove();
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $(".tablesInFormRefresh").click(function (evt) {
+        actualizatabla(viajesClientesTable, "clientesTodos");
+        $("#viajeForm").find(".panelNuevo").remove();
+
+    });
+    $("#viajesClientesTable").DataTable().on( 'select', function () {
+        var miCliente = viajesClientesTable.row( { selected: true } ).data();
+
+        $("#viajeForm").find('.idCliente').val(miCliente.idCliente);
+        $("#viajeForm").find('.nombre').val(miCliente.nombre+" "+miCliente.apPaterno+" "+miCliente.apMaterno);
+    } );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    $("#viajeEditar").click(function (evt) {
+
+        var miViaje = viajesTabla.row( { selected: true } ).data();
+        $.each(miViaje, function( key, value ) {
+
+            if(value != ""){
+                $("#viajeForm").find('.'+key).val(value).triggerHandler('change');
+            }else{
+                $("#viajeForm").find('.'+key).val("");
+            }
+
+        });
+
+    });
+
+
+
+
+
+
+
+    /*
+        Esto tiene que ir despues de la inicializacion de todas las datatales
+    */
 
     $(".allDataTables").DataTable().on( 'select', function () {
         $(this).closest(".moduloMain").children(".acciones").children(".btn-editar")

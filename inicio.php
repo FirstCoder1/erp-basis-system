@@ -560,7 +560,253 @@
         </div>                                  <!--Modulo Contraseñas-->
 
 
-    </div>                                    <!--Contenedor Contraseñas-->
+    </div>                                <!--Contenedor Contraseñas-->
+
+    <div id="clientesDiv" class="container collapse"> 				                         <!--Contenedor Clientes-->
+
+        <div class="col-xs-12 col-sm-12 paddingCero">                                            <!--Modulo Clientes-->
+
+            <div class="moduloEncabezado">
+                <div id="clientesIcon" class="modulo-icon">
+                    <i class="fa fa-handshake-o fa-3x" aria-hidden="true"></i>
+                </div>
+                <h2 class="floatLeft margen-izquierda15">Clientes</h2>
+            </div>
+
+            <div class="moduloMain">
+                <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
+                    <a class="close collapseDad">×</a>
+                    <span class="alertMensaje"></span>
+                </div>
+
+                <div class="col-sm-12 acciones margen-abajo15">
+                    <button type="button" class="btn-agregar btn btn-default btn-md ">Agregar Nuevo</button>
+                    <button id="clienteEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
+                </div>
+
+
+                <div class="form-agregar collapse margen-abajo30" accion="">
+                    <form class="form-horizontal" id="clienteForm" autocomplete="off">
+
+                        <div class="form-group-sm collapse">
+                            <label class="control-label col-sm-3">ID:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control idCliente"
+                                       placeholder="XX"
+                                       maxlength="35"
+                                       title="Id, no modificable por el usuario."
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">*Nombre:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control nombre"
+                                       placeholder="Xxxxx"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                       autofocus
+                                       required
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3" >*Apellido Paterno:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control apPaterno"
+                                       placeholder="Yyyyy"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                       required
+                                >
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3" >Apellido Materno:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control apMaterno"
+                                       placeholder="Zzzzz"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. " >
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Teléfono Movil:</label>
+                            <div class="col-sm-7">
+                                <input type="tel"
+                                       class="form-control telefonoMovil"
+                                       placeholder="(XXX)XX-XXXX-XXXX"
+                                       maxlength="32"
+                                       pattern="[0-9-+() ]{8,32}"
+                                       title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Teléfono Local:</label>
+                            <div class="col-sm-7">
+                                <input type="tel"
+                                       class="form-control telefonoLocal"
+                                       placeholder="(XXX)XX-XXXX-XXXX"
+                                       maxlength="32"
+                                       pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Email:</label>
+                            <div class="col-sm-7">
+                                <input type="email"
+                                       class="form-control email"
+                                       placeholder="xxxxx@yyyyy.zzz"
+                                       maxlength="128">
+                            </div>
+                        </div>
+
+                        <!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Estado:</label>
+                            <div class="col-sm-7">
+                                <!–– Dropdown estados de México ––>
+                                <select class="form-control direccionSelectEstado estadoDomicilio">
+                                    <option value="">Selecciona uno</option>
+                                    <option value="Distrito Federal">Distrito Federal</option>
+                                    <option value="Aguascalientes">Aguascalientes</option>
+                                    <option value="Baja California">Baja California</option>
+                                    <option value="Baja California Sur">Baja California Sur</option>
+                                    <option value="Campeche">Campeche</option>
+                                    <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                                    <option value="Colima">Colima</option>
+                                    <option value="Chiapas">Chiapas</option>
+                                    <option value="Chihuahua">Chihuahua</option>
+                                    <option value="Durango">Durango</option>
+                                    <option value="Guanajuato">Guanajuato</option>
+                                    <option value="Guerrero">Guerrero</option>
+                                    <option value="Hidalgo">Hidalgo</option>
+                                    <option value="Jalisco">Jalisco</option>
+                                    <option value="México">México</option>
+                                    <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+                                    <option value="Morelos">Morelos</option>
+                                    <option value="Nayarit">Nayarit</option>
+                                    <option value="Nuevo León">Nuevo León</option>
+                                    <option value="Oaxaca">Oaxaca</option>
+                                    <option value="Puebla">Puebla</option>
+                                    <option value="Querétaro">Querétaro</option>
+                                    <option value="Quintana Roo">Quintana Roo</option>
+                                    <option value="San Luis Potosí">San Luis Potosí</option>
+                                    <option value="Sinaloa">Sinaloa</option>
+                                    <option value="Sonora">Sonora</option>
+                                    <option value="Tabasco">Tabasco</option>
+                                    <option value="Tamaulipas">Tamaulipas</option>
+                                    <option value="Tlaxcala">Tlaxcala</option>
+                                    <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+                                    <option value="Yucatán">Yucatán</option>
+                                    <option value="Zacatecas">Zacatecas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Delegación o Municipio:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control direccionSelectDelegacionMunicipio delegacionMunicipioDomicilio" >
+                                    <option value="">Primero selecciona un estado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Código Postal:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control direccionSelectCodigoPostal codigoPostalDomicilio">
+                                    <option value="">Primero selecciona una delegación o municipio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Colonia:</label>
+                            <div class="col-sm-7">
+                                <select class="form-control coloniaDomicilio">
+                                    <option value="">Primero selecciona un codigo postal</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Calle y número:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control calleNumeroDomicilio"
+                                       placeholder="Xxxxx YYY"
+                                       maxlength="70"
+                                       pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
+                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
+                            </div>
+                        </div>
+
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">Fecha de Nacimiento:</label>
+                            <div class="col-sm-7">
+                                <input type="date"
+                                       class="form-control fechaDeNacimiento">
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">CURP:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control curp"
+                                       placeholder="XXXXXXXXXXXXXXXXXX"
+                                       maxlength="18"
+                                       pattern="^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$"
+                                       title="Solo letras y números (no signos), 18 caracteres."
+                                >
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 margen-arriba15 margen-abajo15">
+                            <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <table id="clientesTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th rowspan="2">Nombre</th>
+                        <th colspan="2">Apellido</th>
+                        <th colspan="2">Teléfono</th>
+                        <th rowspan="2">Email</th>
+                        <th colspan="5">Dirección</th>
+                        <th rowspan="2">Fecha nacimiento</th>
+                        <th rowspan="2">CURP</th>
+                        <th rowspan="2">Alta en sistema</th>
+                    </tr>
+                    <tr>
+                        <th>Paterno</th>
+                        <th>Materno</th>
+                        <th>Movil</th>
+                        <th>Local</th>
+                        <th>Calle y número</th>
+                        <th>Delegación</th>
+                        <th>C.P.</th>
+                        <th>Colonia</th>
+                        <th>Estado</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>                                  <!--Modulo Clientes-->
+
+
+    </div>                                    <!--Contenedor Clientes-->
 
 
 
@@ -576,20 +822,279 @@
 
 
 
-    <div id="clientesDiv" class="container collapse moduloDiv"> 						       <!--ModuloDiv Clientes-->
-        <div class="row ">
+
+    <div id="viajesDiv" class="container collapse"> 				                            <!--Contenedor Viajes-->
+
+        <div class="col-xs-12 col-sm-12 paddingCero">                                               <!--Modulo Viajes-->
+
+            <div class="moduloEncabezado">
+                <div id="viajesIcon" class="modulo-icon">
+                    <i class="fa fa-suitcase fa-3x" aria-hidden="true"></i>
+                </div>
+                <h2 class="floatLeft margen-izquierda15">Viajes</h2>
+            </div>
+
+            <div class="moduloMain">
+                <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
+                    <a class="close collapseDad">×</a>
+                    <span class="alertMensaje"></span>
+                </div>
+
+                <div class="col-sm-12 acciones margen-abajo15">
+                    <button type="button" class="btn-agregar btn btn-default btn-md tablesInFormRefresh">Agregar Nuevo</button>
+                    <button id="viajeEditar" type="button" class="btn-editar btn btn-default btn-md tablesInFormRefresh" disabled>Editar</button>
+                </div>
 
 
-            <div class="col-xs-12 col-sm-12 borde-amarillo">                                      <!--Modulo Clientes-->
-
-                Modulo Clientes
-
-            </div>                                   <!--Modulo Clientes-->
+                <div class="form-agregar collapse col-sm-12 margen-abajo30" accion="">
 
 
-        </div>
+                    <form class="form-horizontal" id="viajeForm" autocomplete="off">
 
-    </div>                            <!--ModuloDiv Clientes-->
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Selecciona un cliente:
+                            </div>
+                            <div class="panel-body">
+                                <table id="viajesClientesTable" class="display nowrap compact table-bordered" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th rowspan="2">Nombre</th>
+                                        <th colspan="2">Apellido</th>
+                                        <th colspan="2">Teléfono</th>
+                                        <th rowspan="2">Email</th>
+                                        <th colspan="5">Dirección</th>
+                                        <th rowspan="2">Fecha nacimiento</th>
+                                        <th rowspan="2">CURP</th>
+                                        <th rowspan="2">Alta en sistema</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Paterno</th>
+                                        <th>Materno</th>
+                                        <th>Movil</th>
+                                        <th>Local</th>
+                                        <th>Calle y número</th>
+                                        <th>Delegación</th>
+                                        <th>C.P.</th>
+                                        <th>Colonia</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group-sm collapse">
+                            <label class="control-label col-sm-3">ID:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control idViaje"
+                                       placeholder="XX"
+                                       maxlength="35"
+                                       title="Id, no modificable por el usuario."
+                                       disabled
+                                >
+                            </div>
+                        </div>                                           <!--idViaje-->
+                        <div class="form-group-sm collapse">
+                            <label class="control-label col-sm-3">ID Cliente:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control idCliente"
+                                       placeholder="XX"
+                                       maxlength="35"
+                                       title="Id, no modificable por el usuario."
+                                       disabled
+                                >
+                            </div>
+                        </div>                                         <!--idCliente-->
+
+                        <div class="form-group-sm clearfix">
+                            <label class="control-label col-sm-3">*Nombre cliente:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control nombre"
+                                       placeholder="Selecciona un cliente"
+                                       maxlength="35"
+                                       pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                       title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                       autofocus
+                                       disabled
+                                >
+                            </div>
+                        </div>                                            <!--nombre-->
+
+
+
+
+
+
+
+
+                        <div class="puntos">
+                            <div class="panel panel-default margen-arriba15">
+                                <div class="panel-heading">
+                                    Punto a visitar:
+                                </div>
+                                <div class="panel-body">
+                                    <div class="punto">
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Fecha y hora:</label>
+                                            <div class="col-sm-7">
+                                                <input type="datetime-local"
+                                                       class="form-control fechaHora"
+                                                >
+                                            </div>
+                                        </div>                                                  <!--fechaHora-->
+
+                                        <!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Estado:</label>
+                                            <div class="col-sm-7">
+                                                <!–– Dropdown estados de México ––>
+                                                <select class="form-control direccionSelectEstado estadoDireccion">
+                                                    <option value="">Selecciona uno</option>
+                                                    <option value="Distrito Federal">Distrito Federal</option>
+                                                    <option value="Aguascalientes">Aguascalientes</option>
+                                                    <option value="Baja California">Baja California</option>
+                                                    <option value="Baja California Sur">Baja California Sur</option>
+                                                    <option value="Campeche">Campeche</option>
+                                                    <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                                                    <option value="Colima">Colima</option>
+                                                    <option value="Chiapas">Chiapas</option>
+                                                    <option value="Chihuahua">Chihuahua</option>
+                                                    <option value="Durango">Durango</option>
+                                                    <option value="Guanajuato">Guanajuato</option>
+                                                    <option value="Guerrero">Guerrero</option>
+                                                    <option value="Hidalgo">Hidalgo</option>
+                                                    <option value="Jalisco">Jalisco</option>
+                                                    <option value="México">México</option>
+                                                    <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+                                                    <option value="Morelos">Morelos</option>
+                                                    <option value="Nayarit">Nayarit</option>
+                                                    <option value="Nuevo León">Nuevo León</option>
+                                                    <option value="Oaxaca">Oaxaca</option>
+                                                    <option value="Puebla">Puebla</option>
+                                                    <option value="Querétaro">Querétaro</option>
+                                                    <option value="Quintana Roo">Quintana Roo</option>
+                                                    <option value="San Luis Potosí">San Luis Potosí</option>
+                                                    <option value="Sinaloa">Sinaloa</option>
+                                                    <option value="Sonora">Sonora</option>
+                                                    <option value="Tabasco">Tabasco</option>
+                                                    <option value="Tamaulipas">Tamaulipas</option>
+                                                    <option value="Tlaxcala">Tlaxcala</option>
+                                                    <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+                                                    <option value="Yucatán">Yucatán</option>
+                                                    <option value="Zacatecas">Zacatecas</option>
+                                                </select>
+                                            </div>
+                                        </div>                                            <!--estadoDireccion-->
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Delegación o Municipio:</label>
+                                            <div class="col-sm-7">
+                                                <select class="form-control direccionSelectDelegacionMunicipio delegacionMunicipioDireccion" >
+                                                    <option value="">Primero selecciona un estado</option>
+                                                </select>
+                                            </div>
+                                        </div>                               <!--delegacionMunicipioDireccion-->
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Código Postal:</label>
+                                            <div class="col-sm-7">
+                                                <select class="form-control direccionSelectCodigoPostal codigoPostalDireccion">
+                                                    <option value="">Primero selecciona una delegación o municipio</option>
+                                                </select>
+                                            </div>
+                                        </div>                                      <!--codigoPostalDireccion-->
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Colonia:</label>
+                                            <div class="col-sm-7">
+                                                <select class="form-control coloniaDireccion">
+                                                    <option value="">Primero selecciona un codigo postal</option>
+                                                </select>
+                                            </div>
+                                        </div>                                           <!--coloniaDireccion-->
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Calle y número:</label>
+                                            <div class="col-sm-7">
+                                                <input type="text"
+                                                       class="form-control calleNumeroDireccion"
+                                                       placeholder="Xxxxx YYY"
+                                                       maxlength="70"
+                                                       pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
+                                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
+                                            </div>
+                                        </div>                                       <!--calleNumeroDireccion-->
+
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Descripción:</label>
+                                            <div class="col-sm-7">
+                                                <input type="text"
+                                                       class="form-control descripcionDireccion"
+                                                       placeholder="Detalles sobre el lugar"
+                                                       maxlength="300"
+                                                       pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
+                                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
+                                            </div>
+                                        </div>                                       <!--descripcionDireccion-->
+
+
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-right">
+                                    <button type="button" class="btn btn-default btn-xs agregarPunto">Agregar</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="col-sm-12 margen-arriba15 margen-abajo15">
+                            <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Guardar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <table id="viajesTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>Kilometraje</th>
+                        <th>Alta en sistema</th>
+                        <th>idCliente</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>                                  <!--Modulo Viajes-->
+
+
+    </div>                                          <!--Contenedor Viajes-->
+
+
+
+
+
+
+
+
 
 
     <script src="./Views/Js/inicio.js"></script>
