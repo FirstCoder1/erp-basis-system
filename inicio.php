@@ -927,12 +927,6 @@
                         </div>                                            <!--nombre-->
 
 
-
-
-
-
-
-
                         <div class="puntos">
                             <div class="panel panel-default margen-arriba15">
                                 <div class="panel-heading">
@@ -941,10 +935,11 @@
                                 <div class="panel-body">
                                     <div class="punto">
                                         <div class="form-group-sm">
-                                            <label class="control-label col-sm-3">Fecha y hora:</label>
+                                            <label class="control-label col-sm-3">*Fecha y hora:</label>
                                             <div class="col-sm-7">
                                                 <input type="datetime-local"
                                                        class="form-control fechaHora"
+                                                       required
                                                 >
                                             </div>
                                         </div>                                                  <!--fechaHora-->
@@ -1016,14 +1011,15 @@
                                             </div>
                                         </div>                                           <!--coloniaDireccion-->
                                         <div class="form-group-sm">
-                                            <label class="control-label col-sm-3">Calle y número:</label>
+                                            <label class="control-label col-sm-3">*Calle y número:</label>
                                             <div class="col-sm-7">
                                                 <input type="text"
                                                        class="form-control calleNumeroDireccion"
                                                        placeholder="Xxxxx YYY"
                                                        maxlength="70"
                                                        pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
-                                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
+                                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres."
+                                                       required>
                                             </div>
                                         </div>                                       <!--calleNumeroDireccion-->
 
@@ -1043,7 +1039,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-footer text-right">
-                                    <button type="button" class="btn btn-default btn-xs agregarPunto">Agregar</button>
+                                    <button type="button" class="btn btn-default btn-xs agregarPunto">Agregar punto</button>
                                 </div>
                             </div>
                         </div>

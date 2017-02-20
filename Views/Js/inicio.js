@@ -139,7 +139,7 @@ $(document).ready(function () {
             .addClass("in");
     });
 
-    $(".direccionSelectEstado").change(function() {
+    $(".form-agregar").on('change',".direccionSelectEstado", function() {
 
         $(this).closest(".form-group-sm").next().next().find("select").html('' +
             '<option value="">Primero selecciona una delegación o municipio</option>');
@@ -1294,7 +1294,7 @@ $(document).ready(function () {
                 '<option value="">Error reconociendo estado</option>');
         };
     });
-    $(".direccionSelectDelegacionMunicipio").change(function() {
+    $(".form-agregar").on('change',".direccionSelectDelegacionMunicipio", function() {
 
         $(this).closest(".form-group-sm").next().find("select").html('' +
             '<option value="">Selecciona uno</option>');
@@ -1333,7 +1333,7 @@ $(document).ready(function () {
             });
 
     });
-    $(".direccionSelectCodigoPostal").change(function() {
+    $(".form-agregar").on('change',".direccionSelectCodigoPostal", function() {
 
         var self = $(this);
         var arreglo = $(this).find(":selected").attr("colonias").split(';');
@@ -1351,7 +1351,8 @@ $(document).ready(function () {
     });
 
 
-/* ------------------------------------------------------------------------------------------------     Empleados     */
+
+    /* ------------------------------------------------------------------------------------------------     Empleados     */
 
 
     $("#empleadosIcon").click( function (evt) {
@@ -1829,10 +1830,11 @@ $(document).ready(function () {
         '<div class="panel-body">'+
             '<div class="punto">'+
                 '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">Fecha y hora:</label>'+
+                    '<label class="control-label col-sm-3">*Fecha y hora:</label>'+
                     '<div class="col-sm-7">'+
                         '<input type="datetime-local"'+
                                'class="form-control fechaHora"'+
+                               'required'+
                         '>'+
                     '</div>'+
                 '</div>                                                  <!--fechaHora-->'+
@@ -1903,14 +1905,15 @@ $(document).ready(function () {
                     '</div>'+
                 '</div>                                           <!--coloniaDireccion-->'+
                 '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">Calle y número:</label>'+
+                    '<label class="control-label col-sm-3">*Calle y número:</label>'+
                     '<div class="col-sm-7">'+
                         '<input type="text"'+
                                'class="form-control calleNumeroDireccion"'+
                                'placeholder="Xxxxx YYY"'+
                                'maxlength="70"'+
                                'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
-                               'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">'+
+                               'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres."' +
+                               'required>'+
                     '</div>'+
                 '</div>                                       <!--calleNumeroDireccion-->'+
 
@@ -1930,14 +1933,14 @@ $(document).ready(function () {
             '</div>'+
         '</div>'+
         '<div class="panel-footer text-right">'+
-            '<button type="button" class="btn btn-default btn-xs">Repetir primer punto</button>'+
-            '<button type="button" class="btn btn-default btn-xs agregarPunto">Agregar</button>'+
-            '<button type="button" class="btn btn-danger btn-xs eliminarPunto">Eliminar</button>'+
+            '<button type="button" class="btn btn-default btn-xs margen-izquierda5">Repetir primer punto</button>'+
+            '<button type="button" class="btn btn-default btn-xs agregarPunto margen-izquierda5">Agregar</button>'+
+            '<button type="button" class="btn btn-danger btn-xs eliminarPunto margen-izquierda5">Eliminar</button>'+
         '</div>'+
-        '</div>' );
+        '</div>' ).next().hide().show('fast');
     });
     $('.puntos').on('click', '.eliminarPunto', function (){
-        $(this).closest(".panel").remove();
+        $(this).closest(".panel").hide('fast', function(){ $(this).closest(".panel").remove(); });;
     });
 
 
