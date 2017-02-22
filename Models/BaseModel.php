@@ -84,6 +84,23 @@ class BaseModel
         return $salida;
 
     }
+    public function eliminar(){
+
+        $sql = $this->crearQueryEliminar();
+
+        $stmt = Conexion::getConnection()->prepare($sql);
+        $this->bindParamAll($stmt);
+
+        $salida = "";
+        try {
+            $salida = $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
+
+        return $salida;
+
+    }
 
 
 
@@ -158,6 +175,31 @@ class BaseModel
         $sql = substr($sql,0,-2);
 
         $sql.= " WHERE ".$id."='".$this->get($id)."'";
+
+        return $sql;
+    }
+    public function crearQueryEliminar(){
+
+        $sql = "";
+        $values = "";
+        foreach ($this as $key => $value) {
+            if ($value == "NO_INCLUDE" || $value == "%"){
+                continue;
+            }
+
+            if ($key == "_tableName"){
+                $sql = "DELETE FROM ".$value." WHERE ".$sql;
+            } else {
+                $sql .= $key."=";
+                if ($value == "NULL"){
+                    $sql .= $value.",";
+                }else{
+                    $sql .= "'".$value."',";
+                }
+            }
+        }
+
+        $sql = substr($sql,0,-1);
 
         return $sql;
     }

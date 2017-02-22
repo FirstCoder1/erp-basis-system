@@ -95,8 +95,8 @@ elseif ($action == "clienteEditar"){
 
 }
 
-elseif ($action == "viajesTodos"){
-    echo json_encode(Viajes::todosArrelo());
+elseif ($action == "todosViajesClientesPuntos"){
+    echo json_encode(Viajes::todosViajesClientesPuntosArreglo());
 }
 elseif ($action == "viajeAgregar"){
 
@@ -106,7 +106,7 @@ elseif ($action == "viajeAgregar"){
     $miViaje->set("idViaje",$_POST["idViaje"]);
     $miViaje->set("idCliente",$_POST["idCliente"]);
 
-    $salida = Viajes::agregar($miViaje,$miPunto);
+    $salida = Viajes::agregar($miViaje);
 
     if ($salida["success"]){
 
@@ -133,36 +133,44 @@ elseif ($action == "viajeAgregar"){
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 elseif ($action == "viajeEditar"){
 
-    $miModelo = new Viaje();
+    $miViaje = new Viaje();
+    $miPunto = new Punto();
 
-    foreach ($_POST as $key => $value) {
-        $miModelo->set($key, $value);
+    $miViaje->set("idViaje",$_POST["idViaje"]);
+    $miViaje->set("idCliente",$_POST["idCliente"]);
+
+    $salida = Viajes::editar($miViaje);
+
+    if ($salida["success"]){
+
+        $miPunto->set("idViaje",$miViaje->get("idViaje"));
+
+        $salida = Puntos::eliminarPorID($miPunto);
+
+        if(!$salida["success"]){
+            echo json_encode($salida);
+        }
+
+        foreach ($_POST["puntos"] as $key => $value) {
+            $miPunto->set("fechaHora",$value["fechaHora"]);
+            $miPunto->set("estadoDireccion",$value["estadoDireccion"]);
+            $miPunto->set("delegacionMunicipioDireccion",$value["delegacionMunicipioDireccion"]);
+            $miPunto->set("codigoPostalDireccion",$value["codigoPostalDireccion"]);
+            $miPunto->set("coloniaDireccion",$value["coloniaDireccion"]);
+            $miPunto->set("calleNumeroDireccion",$value["calleNumeroDireccion"]);
+            $miPunto->set("descripcionDireccion",$value["descripcionDireccion"]);
+            $salida = Puntos::agregar($miPunto);
+            if (!$salida["success"]){
+                echo json_encode($salida);
+            }
+        }
+        echo json_encode($salida);
+
+    }else{
+        echo json_encode($salida);
     }
-
-    echo json_encode(Viajes::editar($miModelo));
 
 }
 

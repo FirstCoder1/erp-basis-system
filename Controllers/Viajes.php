@@ -31,6 +31,25 @@ class Viajes {
         return $salida;
     }
 
+    public static function todosViajesClientesPuntosArreglo(){
+
+        $miViaje = new Viaje();
+        $viajes = $miViaje->viajesClientesPuntos();
+
+        $salida = array();
+        if (count($viajes) > 0){
+
+            $salida["success"] = true ;
+            $salida["todos"] = $viajes ;
+
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando viajes.";
+        }
+
+        return $salida;
+    }
+
     public static function agregar( Viaje $miViaje){
 
         $miViaje->set("idViaje","NULL");
@@ -69,30 +88,6 @@ class Viajes {
         return $salida;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public static function editar( Viaje $miViaje){
 

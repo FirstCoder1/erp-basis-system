@@ -88,7 +88,9 @@ $(document).ready(function () {
             }
         })
             .done(function (data) {
-
+/*
+                console.log(data);
+*/
                 if (data.success) {
                     //console.log(data.empleadosTodos);
                     tablaHtml.row().deselect();
@@ -1296,10 +1298,22 @@ $(document).ready(function () {
     });
     $(".form-agregar").on('change',".direccionSelectDelegacionMunicipio", function() {
 
+        if($(this).find(":selected").val() == ""){
+            $(this).closest(".form-group-sm").next().find("select").html('' +
+                '<option value="">Primero selecciona una delegación o municipio</option>');
+            $(this).closest(".form-group-sm").next().next().find("select").html('' +
+                '<option value="">Primero selecciona un codigo postal</option>');
+
+            return
+        }
+
         $(this).closest(".form-group-sm").next().find("select").html('' +
             '<option value="">Selecciona uno</option>');
         $(this).closest(".form-group-sm").next().next().find("select").html('' +
             '<option value="">Primero selecciona un codigo postal</option>');
+
+
+
 
         var element = $(this);
 
@@ -1334,6 +1348,13 @@ $(document).ready(function () {
 
     });
     $(".form-agregar").on('change',".direccionSelectCodigoPostal", function() {
+
+        if($(this).find(":selected").val() == ""){
+            $(this).closest(".form-group-sm").next().find("select").html('' +
+                '<option value="">Primero selecciona un codigo postal</option>');
+
+            return
+        }
 
         var self = $(this);
         var arreglo = $(this).find(":selected").attr("colonias").split(';');
@@ -1460,12 +1481,13 @@ $(document).ready(function () {
 
         var miEmpleado = empleadosTabla.row( { selected: true } ).data();
         $.each(miEmpleado, function( key, value ) {
-
+/*
             if(value != ""){
-                $("#empleadoForm").find('.'+key).val(value).triggerHandler('change');
-            }else{
+*/
+                $("#empleadoForm").find('.'+key).val(value).trigger('change');
+            /*}else{
                 $("#empleadoForm").find('.'+key).val("");
-            }
+            }*/
 
         });
 
@@ -1678,11 +1700,13 @@ $(document).ready(function () {
         var miCliente = clientesTabla.row( { selected: true } ).data();
         $.each(miCliente, function( key, value ) {
 
+/*
             if(value != ""){
-                $("#clienteForm").find('.'+key).val(value).triggerHandler('change');
-            }else{
+*/
+                $("#clienteForm").find('.'+key).val(value).trigger('change');
+            /*}else{
                 $("#clienteForm").find('.'+key).val("");
-            }
+            }*/
 
         });
 
@@ -1697,13 +1721,23 @@ $(document).ready(function () {
 
 
 
-
+    var theDiv = $('#viajesDiv');
 
     $("#viajesIcon").click( function (evt) {
-
-        irModulo($("#viajesDiv"));
-        actualizatabla(viajesTabla, "viajesTodos");
+        irModulo(theDiv);
+        actualizatabla(viajesTabla, "todosViajesClientesPuntos");
     });
+
+    $("#viajesDiv .btn-agregar").click(function (evt) {
+            actualizatabla(viajesClientesTable, "clientesTodos");
+            $("#viajeForm").find(".panelNuevo").remove();
+
+        });
+
+    $("#viajesDiv .btn-editar").click(function (evt) {
+            actualizatabla(viajesClientesTable, "clientesTodos");
+
+        });
 
     var viajesTabla;
     viajesTabla = $('#viajesTable')
@@ -1711,9 +1745,12 @@ $(document).ready(function () {
             "select": true,
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
             "columns": [
-                { "data": "kilometraje" },
+                { "data": "idViaje" },
                 { "data": "fechaAlta" },
-                { "data": "idCliente" }
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "puntos" }
             ]
 
         });                           /*Arranca Tabla*/
@@ -1743,18 +1780,6 @@ $(document).ready(function () {
         });                           /*Arranca Tabla*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     $("#viajeForm").submit(function (evt) {
         evt.preventDefault();
 
@@ -1763,7 +1788,7 @@ $(document).ready(function () {
 
         if (element.parent().attr("accion")=="agregar"){
             accion = "viajeAgregar";
-        }else if (element.parent().attr("accion")=="editar" && element.find('.idViaje').val() != "" ){
+        } else if (element.parent().attr("accion")=="editar" && element.find('.idViaje').val() != "" ){
             accion = "viajeEditar";
         }else {
 
@@ -1799,15 +1824,13 @@ $(document).ready(function () {
             }
         })
             .done(function (data) {
-                 console.log(data);
-
                 if (data.success) {
 
                     element.closest(".form-agregar").removeClass("in");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(viajesTabla, "viajesTodos");
+                    actualizatabla(viajesTabla, "todosViajesClientesPuntos");
                 } else {
 
                     alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
@@ -1822,145 +1845,203 @@ $(document).ready(function () {
     });
 
     $('.puntos').on('click', '.agregarPunto', function (){
-        $(this).closest(".panel").after( '' +
-            '<div class="panel panel-default margen-arriba15 panelNuevo">'+
-            '<div class="panel-heading">'+
-            'Punto a visitar:'+
-            '</div>'+
+        $(this).closest(".panel").after( panelNuevo ).next().hide().show('fast');
+    });
+
+    var panelNuevo = '<div class="panel panel-default margen-arriba15 panelNuevo">'+
+        '<div class="panel-heading">'+
+        'Punto a visitar:'+
+        '</div>'+
         '<div class="panel-body">'+
-            '<div class="punto">'+
-                '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">*Fecha y hora:</label>'+
-                    '<div class="col-sm-7">'+
-                        '<input type="datetime-local"'+
-                               'class="form-control fechaHora"'+
-                               'required'+
-                        '>'+
-                    '</div>'+
-                '</div>                                                  <!--fechaHora-->'+
-                '<!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->'+
-                '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">Estado:</label>'+
-                    '<div class="col-sm-7">'+
-                        '<!–– Dropdown estados de México ––>'+
-                        '<select class="form-control direccionSelectEstado estadoDireccion">'+
-                            '<option value="">Selecciona uno</option>'+
-                            '<option value="Distrito Federal">Distrito Federal</option>'+
-                            '<option value="Aguascalientes">Aguascalientes</option>'+
-                            '<option value="Baja California">Baja California</option>'+
-                            '<option value="Baja California Sur">Baja California Sur</option>'+
-                            '<option value="Campeche">Campeche</option>'+
-                            '<option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>'+
-                            '<option value="Colima">Colima</option>'+
-                            '<option value="Chiapas">Chiapas</option>'+
-                            '<option value="Chihuahua">Chihuahua</option>'+
-                            '<option value="Durango">Durango</option>'+
-                            '<option value="Guanajuato">Guanajuato</option>'+
-                            '<option value="Guerrero">Guerrero</option>'+
-                            '<option value="Hidalgo">Hidalgo</option>'+
-                            '<option value="Jalisco">Jalisco</option>'+
-                            '<option value="México">México</option>'+
-                            '<option value="Michoacán de Ocampo">Michoacán de Ocampo</option>'+
-                            '<option value="Morelos">Morelos</option>'+
-                            '<option value="Nayarit">Nayarit</option>'+
-                            '<option value="Nuevo León">Nuevo León</option>'+
-                            '<option value="Oaxaca">Oaxaca</option>'+
-                            '<option value="Puebla">Puebla</option>'+
-                            '<option value="Querétaro">Querétaro</option>'+
-                            '<option value="Quintana Roo">Quintana Roo</option>'+
-                            '<option value="San Luis Potosí">San Luis Potosí</option>'+
-                            '<option value="Sinaloa">Sinaloa</option>'+
-                            '<option value="Sonora">Sonora</option>'+
-                            '<option value="Tabasco">Tabasco</option>'+
-                            '<option value="Tamaulipas">Tamaulipas</option>'+
-                            '<option value="Tlaxcala">Tlaxcala</option>'+
-                            '<option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>'+
-                            '<option value="Yucatán">Yucatán</option>'+
-                            '<option value="Zacatecas">Zacatecas</option>'+
-                        '</select>'+
-                    '</div>'+
-                '</div>                                            <!--estadoDireccion-->'+
-                '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">Delegación o Municipio:</label>'+
-                    '<div class="col-sm-7">'+
-                        '<select class="form-control direccionSelectDelegacionMunicipio delegacionMunicipioDireccion" >'+
-                            '<option value="">Primero selecciona un estado</option>'+
-                        '</select>'+
-                    '</div>'+
-                '</div>                               <!--delegacionMunicipioDireccion-->'+
-                '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">Código Postal:</label>'+
-                    '<div class="col-sm-7">'+
-                        '<select class="form-control direccionSelectCodigoPostal codigoPostalDireccion">'+
-                            '<option value="">Primero selecciona una delegación o municipio</option>'+
-                        '</select>'+
-                    '</div>'+
-                '</div>                                      <!--codigoPostalDireccion-->'+
-                '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">Colonia:</label>'+
-                    '<div class="col-sm-7">'+
-                        '<select class="form-control coloniaDireccion">'+
-                            '<option value="">Primero selecciona un codigo postal</option>'+
-                        '</select>'+
-                    '</div>'+
-                '</div>                                           <!--coloniaDireccion-->'+
-                '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">*Calle y número:</label>'+
-                    '<div class="col-sm-7">'+
-                        '<input type="text"'+
-                               'class="form-control calleNumeroDireccion"'+
-                               'placeholder="Xxxxx YYY"'+
-                               'maxlength="70"'+
-                               'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
-                               'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres."' +
-                               'required>'+
-                    '</div>'+
-                '</div>                                       <!--calleNumeroDireccion-->'+
+        '<div class="punto">'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">*Fecha y hora:</label>'+
+        '<div class="col-sm-7">'+
+        '<input type="datetime-local"'+
+        'class="form-control fechaHora"'+
+        'required'+
+        '>'+
+        '</div>'+
+        '</div>                                                  <!--fechaHora-->'+
+        '<!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">Estado:</label>'+
+        '<div class="col-sm-7">'+
+        '<!–– Dropdown estados de México ––>'+
+        '<select class="form-control direccionSelectEstado estadoDireccion">'+
+        '<option value="">Selecciona uno</option>'+
+        '<option value="Distrito Federal">Distrito Federal</option>'+
+        '<option value="Aguascalientes">Aguascalientes</option>'+
+        '<option value="Baja California">Baja California</option>'+
+        '<option value="Baja California Sur">Baja California Sur</option>'+
+        '<option value="Campeche">Campeche</option>'+
+        '<option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>'+
+        '<option value="Colima">Colima</option>'+
+        '<option value="Chiapas">Chiapas</option>'+
+        '<option value="Chihuahua">Chihuahua</option>'+
+        '<option value="Durango">Durango</option>'+
+        '<option value="Guanajuato">Guanajuato</option>'+
+        '<option value="Guerrero">Guerrero</option>'+
+        '<option value="Hidalgo">Hidalgo</option>'+
+        '<option value="Jalisco">Jalisco</option>'+
+        '<option value="México">México</option>'+
+        '<option value="Michoacán de Ocampo">Michoacán de Ocampo</option>'+
+        '<option value="Morelos">Morelos</option>'+
+        '<option value="Nayarit">Nayarit</option>'+
+        '<option value="Nuevo León">Nuevo León</option>'+
+        '<option value="Oaxaca">Oaxaca</option>'+
+        '<option value="Puebla">Puebla</option>'+
+        '<option value="Querétaro">Querétaro</option>'+
+        '<option value="Quintana Roo">Quintana Roo</option>'+
+        '<option value="San Luis Potosí">San Luis Potosí</option>'+
+        '<option value="Sinaloa">Sinaloa</option>'+
+        '<option value="Sonora">Sonora</option>'+
+        '<option value="Tabasco">Tabasco</option>'+
+        '<option value="Tamaulipas">Tamaulipas</option>'+
+        '<option value="Tlaxcala">Tlaxcala</option>'+
+        '<option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>'+
+        '<option value="Yucatán">Yucatán</option>'+
+        '<option value="Zacatecas">Zacatecas</option>'+
+        '</select>'+
+        '</div>'+
+        '</div>                                            <!--estadoDireccion-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">Delegación o Municipio:</label>'+
+        '<div class="col-sm-7">'+
+        '<select class="form-control direccionSelectDelegacionMunicipio delegacionMunicipioDireccion" >'+
+        '<option value="">Primero selecciona un estado</option>'+
+        '</select>'+
+        '</div>'+
+        '</div>                               <!--delegacionMunicipioDireccion-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">Código Postal:</label>'+
+        '<div class="col-sm-7">'+
+        '<select class="form-control direccionSelectCodigoPostal codigoPostalDireccion">'+
+        '<option value="">Primero selecciona una delegación o municipio</option>'+
+        '</select>'+
+        '</div>'+
+        '</div>                                      <!--codigoPostalDireccion-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">Colonia:</label>'+
+        '<div class="col-sm-7">'+
+        '<select class="form-control coloniaDireccion">'+
+        '<option value="">Primero selecciona un codigo postal</option>'+
+        '</select>'+
+        '</div>'+
+        '</div>                                           <!--coloniaDireccion-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">*Calle y número:</label>'+
+        '<div class="col-sm-7">'+
+        '<input type="text"'+
+        'class="form-control calleNumeroDireccion"'+
+        'placeholder="Xxxxx YYY"'+
+        'maxlength="70"'+
+        'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
+        'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres."' +
+        'required>'+
+        '</div>'+
+        '</div>                                       <!--calleNumeroDireccion-->'+
 
-                '<div class="form-group-sm">'+
-                    '<label class="control-label col-sm-3">Descripción:</label>'+
-                    '<div class="col-sm-7">'+
-                        '<input type="text"'+
-                               'class="form-control descripcionDireccion"'+
-                               'placeholder="Detalles sobre el lugar"'+
-                               'maxlength="300"'+
-                               'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
-                               'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">'+
-                    '</div>'+
-                '</div>                                       <!--descripcionDireccion-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">Descripción:</label>'+
+        '<div class="col-sm-7">'+
+        '<input type="text"'+
+        'class="form-control descripcionDireccion"'+
+        'placeholder="Detalles sobre el lugar"'+
+        'maxlength="300"'+
+        'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
+        'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">'+
+        '</div>'+
+        '</div>                                       <!--descripcionDireccion-->'+
 
 
-            '</div>'+
+        '</div>'+
         '</div>'+
         '<div class="panel-footer text-right">'+
-            '<button type="button" class="btn btn-default btn-xs margen-izquierda5">Repetir primer punto</button>'+
-            '<button type="button" class="btn btn-default btn-xs agregarPunto margen-izquierda5">Agregar</button>'+
-            '<button type="button" class="btn btn-danger btn-xs eliminarPunto margen-izquierda5">Eliminar</button>'+
+        '<button type="button" class="btn btn-default btn-xs margen-izquierda5 repetirPrimero">Repetir primer punto</button>'+
+        '<button type="button" class="btn btn-default btn-xs margen-izquierda5 repetirAnterior">Repetir anterior</button>'+
+        '<button type="button" class="btn btn-default btn-xs agregarPunto margen-izquierda5">Agregar Punto</button>'+
+        '<button type="button" class="btn btn-danger btn-xs eliminarPunto margen-izquierda5">Eliminar</button>'+
         '</div>'+
-        '</div>' ).next().hide().show('fast');
-    });
+        '</div>';
+
     $('.puntos').on('click', '.eliminarPunto', function (){
-        $(this).closest(".panel").hide('fast', function(){ $(this).closest(".panel").remove(); });;
+        $(this).closest(".panel").hide('fast', function(){ $(this).closest(".panel").remove(); });
+    });
+    $('.puntos').on('click', '.repetirPrimero', function (){
+        $(this).closest('.panel').find('.fechaHora').val($(this).closest('.puntos').first('.panel').find('.fechaHora').val());
+        $(this).closest('.panel').find('.estadoDireccion').val($(this).closest('.puntos').first('.panel').find('.estadoDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.delegacionMunicipioDireccion').val($(this).closest('.puntos').first('.panel').find('.delegacionMunicipioDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.codigoPostalDireccion').val($(this).closest('.puntos').first('.panel').find('.codigoPostalDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.coloniaDireccion').val($(this).closest('.puntos').first('.panel').find('.coloniaDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.calleNumeroDireccion').val($(this).closest('.puntos').first('.panel').find('.calleNumeroDireccion').val());
+        $(this).closest('.panel').find('.descripcionDireccion').val($(this).closest('.puntos').first('.panel').find('.descripcionDireccion').val());
+    });
+    $('.puntos').on('click', '.repetirAnterior', function (){
+        $(this).closest('.panel').find('.fechaHora').val($(this).closest('.panel').prev('.panel').find('.fechaHora').val());
+        $(this).closest('.panel').find('.estadoDireccion').val($(this).closest('.panel').prev('.panel').find('.estadoDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.delegacionMunicipioDireccion').val($(this).closest('.panel').prev('.panel').find('.delegacionMunicipioDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.codigoPostalDireccion').val($(this).closest('.panel').prev('.panel').find('.codigoPostalDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.coloniaDireccion').val($(this).closest('.panel').prev('.panel').find('.coloniaDireccion').val()).trigger('change');
+        $(this).closest('.panel').find('.calleNumeroDireccion').val($(this).closest('.panel').prev('.panel').find('.calleNumeroDireccion').val());
+        $(this).closest('.panel').find('.descripcionDireccion').val($(this).closest('.panel').prev('.panel').find('.descripcionDireccion').val());
     });
 
 
 
 
+    $("#viajeEditar").click(function (evt) {
 
-
-
-
-
-
-
-
-
-
-    $(".tablesInFormRefresh").click(function (evt) {
-        actualizatabla(viajesClientesTable, "clientesTodos");
         $("#viajeForm").find(".panelNuevo").remove();
 
+        var miViaje = viajesTabla.row( { selected: true } ).data();
+
+        $("#viajeForm").find('.idViaje').val(miViaje.idViaje);
+        $("#viajeForm").find('.idCliente').val(miViaje.idCliente);
+        $("#viajeForm").find('.nombre').val(miViaje.nombre+" "+miViaje.apPaterno+" "+miViaje.apMaterno);
+
+        var table =  miViaje.puntos;
+        $($(table)).find('tr').each(function( key, value ) {
+
+           if(key == 0){
+               $("#viajeForm").find('.panelPrimero').find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
+               $("#viajeForm").find('.panelPrimero').find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
+               $("#viajeForm").find('.panelPrimero').find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
+               $("#viajeForm").find('.panelPrimero').find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
+               $("#viajeForm").find('.panelPrimero').find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
+               $("#viajeForm").find('.panelPrimero').find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
+               $("#viajeForm").find('.panelPrimero').find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
+           }else{
+
+               $('#viajeForm .panel').last().find('.agregarPunto').trigger('click');
+
+               $("#viajeForm .panel").last().find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
+               $("#viajeForm .panel").last().find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
+               $("#viajeForm .panel").last().find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
+               $("#viajeForm .panel").last().find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
+               $("#viajeForm .panel").last().find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
+               $("#viajeForm .panel").last().find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
+               $("#viajeForm .panel").last().find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
+
+           }
+        });
+
+
+
+        /*$.each(miViaje, function( key, value ) {
+
+            if(value != ""){
+                $("#viajeForm").find('.'+key).val(value).triggerHandler('change');
+            }else{
+                $("#viajeForm").find('.'+key).val("");
+            }
+
+        });*/
+
     });
+
+
+
     $("#viajesClientesTable").DataTable().on( 'select', function () {
         var miCliente = viajesClientesTable.row( { selected: true } ).data();
 
@@ -1975,38 +2056,6 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    $("#viajeEditar").click(function (evt) {
-
-        var miViaje = viajesTabla.row( { selected: true } ).data();
-        $.each(miViaje, function( key, value ) {
-
-            if(value != ""){
-                $("#viajeForm").find('.'+key).val(value).triggerHandler('change');
-            }else{
-                $("#viajeForm").find('.'+key).val("");
-            }
-
-        });
-
-    });
 
 
 

@@ -83,6 +83,29 @@ class Puntos {
 
     }
 
+    public static function eliminarPorID( Punto $miPunto){
+
+        $miPunto->set('idPunto','NO_INCLUDE');
+        $miPunto->set('fechaHora','NO_INCLUDE');
+        $miPunto->set('estadoDireccion','NO_INCLUDE');
+        $miPunto->set('delegacionMunicipioDireccion','NO_INCLUDE');
+        $miPunto->set('codigoPostalDireccion','NO_INCLUDE');
+        $miPunto->set('calleNumeroDireccion','NO_INCLUDE');
+        $miPunto->set('descripcionDireccion','NO_INCLUDE');
+
+        $salida = array();
+
+        if ($miPunto->eliminar()){
+            $salida["success"] = true ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error eliminando punto.";
+        }
+
+        return $salida;
+
+    }
+
 }
 
 /*

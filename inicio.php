@@ -841,8 +841,8 @@
                 </div>
 
                 <div class="col-sm-12 acciones margen-abajo15">
-                    <button type="button" class="btn-agregar btn btn-default btn-md tablesInFormRefresh">Agregar Nuevo</button>
-                    <button id="viajeEditar" type="button" class="btn-editar btn btn-default btn-md tablesInFormRefresh" disabled>Editar</button>
+                    <button type="button" class="btn-agregar btn btn-default btn-md">Agregar Nuevo</button>
+                    <button id="viajeEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
                 </div>
 
 
@@ -928,7 +928,7 @@
 
 
                         <div class="puntos">
-                            <div class="panel panel-default margen-arriba15">
+                            <div class="panel panel-default margen-arriba15 panelPrimero">
                                 <div class="panel-heading">
                                     Punto a visitar:
                                 </div>
@@ -939,6 +939,7 @@
                                             <div class="col-sm-7">
                                                 <input type="datetime-local"
                                                        class="form-control fechaHora"
+                                                       step="300"
                                                        required
                                                 >
                                             </div>
@@ -1045,18 +1046,6 @@
                         </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
                         <div class="col-sm-12 margen-arriba15 margen-abajo15">
                             <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
                             <button type="submit" class="btn btn-success">Guardar</button>
@@ -1066,12 +1055,19 @@
 
                 </div>
 
-                <table id="viajesTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
+                <table id="viajesTable" class="display nowrap compact table-bordered allDataTables mainTableDiv" cellspacing="0" width="100%">
                     <thead>
                     <tr>
-                        <th>Kilometraje</th>
-                        <th>Alta en sistema</th>
-                        <th>idCliente</th>
+                        <th colspan="2">Viaje</th>
+                        <th colspan="3">Cliente</th>
+                        <th rowspan="2">Puntos</th>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha Alta</th>
+                        <th>Nombre</th>
+                        <th>Paterno</th>
+                        <th>Materno</th>
                     </tr>
                     </thead>
                     <tbody>

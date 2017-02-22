@@ -2,3 +2,16 @@ NOTAS:
 
 file_put_contents('php://stderr', print_r($sql, TRUE));
 
+SELECT Clientes.idCliente, Clientes.nombre, Clientes.apPaterno, Clientes.apMaterno,
+Viajes.idViaje, Viajes.fechaAlta,
+Puntos.idPunto, Puntos.fechaHora, Puntos.estadoDireccion, Puntos.delegacionMunicipioDireccion, Puntos.codigoPostalDireccion, Puntos.coloniaDireccion, Puntos.calleNumeroDireccion, Puntos.descripcionDireccion
+FROM Clientes
+INNER JOIN Viajes ON Clientes.idCliente = Viajes.idCliente
+INNER JOIN Puntos ON Viajes.idViaje = Puntos.idViaje
+
+
+
+
+SELECT Puntos.* , FIND_IN_SET(CONCAT(`fechaHora`,`estadoDireccion`,`delegacionMunicipioDireccion`,`codigoPostalDireccion`,`coloniaDireccion`,`calleNumeroDireccion`,`descripcionDireccion`),x) n FROM Puntos JOIN (
+SELECT `idViaje` , GROUP_CONCAT(`fechaHora`,`estadoDireccion`,`delegacionMunicipioDireccion`,`codigoPostalDireccion`,`coloniaDireccion`,`calleNumeroDireccion`,`descripcionDireccion`) x FROM Puntos GROUP BY idViaje)
+y ON y.idViaje = Puntos.idViaje
