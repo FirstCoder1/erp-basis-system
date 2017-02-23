@@ -116,7 +116,7 @@
     text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.5), 0px 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.moduloEncabezado{
+.divModuloEncabezado{
     color: #222222;
     padding: 15px 0px 15px 40px;
     border-bottom: 2px solid #95a2a3;
@@ -138,7 +138,7 @@
 
 
 
-.moduloMain{
+.divModuloMain{
     color: #222222;
 }
 
@@ -190,43 +190,43 @@ div.dataTables_wrapper {
 
 
 
-#empleadosIcon{
+.empleadosIcon{
     background-color: #2ecc71;
  }
 
-#contraseñasIcon{
+.contraseñasIcon{
     background-color: #3a38df;
 }
 
-#clientesIcon{
+.clientesIcon{
     background-color: #f39c12;
 }
 
-#viajesIcon{
+.viajesIcon{
     background-color: #c0392b;
 }
 
-#cotizacionesIcon{
+.cotizacionesIcon{
     background-color: #8e44ad;
 }
 
-#ventasIcon{
+.ventasIcon{
     background-color: #1abc9c;
 }
 
-#registrosIcon{
+.registrosIcon{
     background-color: #7f8c8d;
 }
 
-#unidadesIcon{
+.unidadesIcon{
     background-color: #4aa3df;
 }
 
-#choferesIcon{
+.choferesIcon{
     background-color: #FF888B;
 }
 
-#propietariosIcon{
+.propietariosIcon{
     background-color: #AA784D;
 }
 

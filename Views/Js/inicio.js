@@ -31,13 +31,6 @@ $(document).ready(function () {
 
 
 
-
-
-
-
-
-
-
     $(".irAInicio").click( function (evt) {
         irAInicio();
     });                                                       /*Ir al inicio*/
@@ -45,10 +38,9 @@ $(document).ready(function () {
         cerrarSesion();
     });                                                   /*Cerrar sesion*/
 
-
     function irAInicio() {
         $(".container").removeClass("in");
-        $("#mainDiv").addClass("in")
+        $("#divMain").addClass("in")
         $("body").removeClass("background-blanco")
         $("body").addClass("background-morado")
 
@@ -57,50 +49,39 @@ $(document).ready(function () {
         window.location.href = "./cerrarsesion.php";
     }
 
+    $(".acceso-icon").click(function (evt) {
+        var theDiv = $('#div'+$(this).attr('nombre'));
 
-
-    function alerta(element,type,mensaje){
-
-        if (type == "success"){
-            element.closest(".moduloMain").children(".alert")
-                .removeClass("alert-danger")
-                .addClass("alert-success")
-        }else{
-            element.closest(".moduloMain").children(".alert")
-                .removeClass("alert-success")
-                .addClass("alert-danger")
-        }
-        element.closest(".moduloMain").children(".alert")
-            .addClass("in")
-            .children(".alertMensaje")
-            .html(mensaje);
-        $('html, body').animate({ scrollTop: $('body').offset().top}, 'slow');
-
+        irModulo(theDiv);
+        actualizatabla($(theDiv.find('.mainTableDiv')));
+    });
+    function irModulo(elementModulo){
+        $("#divMain").removeClass("in");
+        elementModulo.addClass("in");
+        $("body").removeClass("background-morado");
+        $("body").addClass("background-blanco");
     }
-    function actualizatabla(tablaHtml,tablaController){
+    function actualizatabla(tablaHtml){
 
         $.ajax({
             url     : "./Controllers/baseController.php",
             type    : 'POST',
             dataType: 'json',
             data    : {
-                action: tablaController
+                action: tablaHtml.attr('controller')
             }
         })
             .done(function (data) {
-/*
-                console.log(data);
-*/
                 if (data.success) {
-                    //console.log(data.empleadosTodos);
-                    tablaHtml.row().deselect();
-                    tablaHtml.clear();
-                    tablaHtml.rows.add(data.todos).draw();
+                    tablaHtml.DataTable()
+                        .row().deselect()
+                        .clear()
+                        .rows.add(data.todos).draw();
 
 
                 } else {
 
-                    alerta($(tablaHtml.table().container()),"error","<strong>¡Error!: </strong>"+data.error);
+                    alerta(tablaHtml,"error","<strong>¡Error!: </strong>"+data.error);
 
                 }
             })
@@ -109,39 +90,53 @@ $(document).ready(function () {
             });
 
     }
-    function irModulo(elementModulo){
-        $("#mainDiv").removeClass("in");
-        elementModulo.addClass("in");
-        $("body").removeClass("background-morado");
-        $("body").addClass("background-blanco");
+    function alerta(element,type,mensaje){
+
+        if (type == "success"){
+            element.closest(".divModuloMain").children(".alert")
+                .removeClass("alert-danger")
+                .addClass("alert-success")
+        }else{
+            element.closest(".divModuloMain").children(".alert")
+                .removeClass("alert-success")
+                .addClass("alert-danger")
+        }
+        element.closest(".divModuloMain").children(".alert")
+            .addClass("in")
+            .children(".alertMensaje")
+            .html(mensaje);
+        $('html, body').animate({ scrollTop: $('body').offset().top}, 'slow');
+
     }
-
-
 
     $(".collapseDad").click( function (evt) {
         $(this).parent().removeClass('in');
     });                                                /*Replegar al padre*/
 
+
     $(".btn-agregar").click(function (evt) {
-        $(this).parent().nextAll(".form-agregar")
-            .attr("accion","agregar")
+        $(this).closest('.divModuloMain').find('.divMainForm')
             .addClass("in")
 
-            .children("form")
+            .children('form')
+            .attr("accion","agregar")
             .trigger("reset");
 
     });
     $(".btn-cancelar").click(function (evt) {
-        $(this).closest(".form-agregar").removeClass("in");
+        $(this).closest(".divMainForm").removeClass("in");
     });
 
     $(".btn-editar").click(function (evt) {
-        $(this).parent().nextAll(".form-agregar")
-            .attr("accion","editar")
-            .addClass("in");
+        $(this).closest('.divModuloMain').children(".divMainForm")
+            .addClass("in")
+            
+            .children('form')
+            .attr("accion","editar");
     });
+    
 
-    $(".form-agregar").on('change',".direccionSelectEstado", function() {
+    $(".divMainForm").on('change',".direccionSelectEstado", function() {
 
         $(this).closest(".form-group-sm").next().next().find("select").html('' +
             '<option value="">Primero selecciona una delegación o municipio</option>');
@@ -1296,7 +1291,7 @@ $(document).ready(function () {
                 '<option value="">Error reconociendo estado</option>');
         };
     });
-    $(".form-agregar").on('change',".direccionSelectDelegacionMunicipio", function() {
+    $(".divMainForm").on('change',".direccionSelectDelegacionMunicipio", function() {
 
         if($(this).find(":selected").val() == ""){
             $(this).closest(".form-group-sm").next().find("select").html('' +
@@ -1311,8 +1306,6 @@ $(document).ready(function () {
             '<option value="">Selecciona uno</option>');
         $(this).closest(".form-group-sm").next().next().find("select").html('' +
             '<option value="">Primero selecciona un codigo postal</option>');
-
-
 
 
         var element = $(this);
@@ -1347,7 +1340,7 @@ $(document).ready(function () {
             });
 
     });
-    $(".form-agregar").on('change',".direccionSelectCodigoPostal", function() {
+    $(".divMainForm").on('change',".direccionSelectCodigoPostal", function() {
 
         if($(this).find(":selected").val() == ""){
             $(this).closest(".form-group-sm").next().find("select").html('' +
@@ -1371,21 +1364,11 @@ $(document).ready(function () {
 
     });
 
+/* ------------------------------------------------------------------------------------------------     Empleados     */
 
+    var theDivEmpleados = $('#divEmpleados');
 
-    /* ------------------------------------------------------------------------------------------------     Empleados     */
-
-
-    $("#empleadosIcon").click( function (evt) {
-
-        irModulo($("#empleadosDiv"));
-
-        actualizatabla(empleadosTabla, "empleadosTodos");
-
-    });
-
-    var empleadosTabla;
-    empleadosTabla = $('#empleadosTable')
+    theDivEmpleados.find('.mainTableDiv')
         .DataTable({
         "select": true,
         "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
@@ -1411,19 +1394,21 @@ $(document).ready(function () {
             { "data": "userName" }
         ]
 
-    });                           /*Arranca Tabla*/
+    });
 
-    $("#empleadoForm").submit(function (evt) {
+    theDivEmpleados.find('.divMainForm form').submit(function (evt) {
         evt.preventDefault();
 
         var element = $(this);
         var accion;
 
-        if (element.parent().attr("accion")=="agregar"){
+        if (element.attr("accion")=="agregar"){
             accion = "empleadoAgregar";
-        }else if (element.parent().attr("accion")=="editar" && element.find('.idEmpleado').val() != "" ){
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idEmpleado').val() != "" ){
             accion = "empleadoEditar";
-        }else {
+        }
+        else {
 
             alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
 
@@ -1455,16 +1440,14 @@ $(document).ready(function () {
             }
         })
             .done(function (data) {
-/*
-                console.log(data);
-*/
+
                 if (data.success) {
 
-                    element.closest(".form-agregar").removeClass("in");
+                    element.closest(".divMainForm").removeClass("in");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(empleadosTabla, "empleadosTodos");
+                    actualizatabla(theDivEmpleados.find('.mainTableDiv'));
                 } else {
 
                     alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
@@ -1477,17 +1460,12 @@ $(document).ready(function () {
             });
 
     });
-    $("#empleadoEditar").click(function (evt) {
+    theDivEmpleados.find('.btn-editar').click(function (evt) {
 
-        var miEmpleado = empleadosTabla.row( { selected: true } ).data();
-        $.each(miEmpleado, function( key, value ) {
-/*
-            if(value != ""){
-*/
-                $("#empleadoForm").find('.'+key).val(value).trigger('change');
-            /*}else{
-                $("#empleadoForm").find('.'+key).val("");
-            }*/
+        var selected = theDivEmpleados.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+        $.each(selected, function( key, value ) {
+
+            theDivEmpleados.find('.divMainForm form').find('.'+key).val(value).trigger('change');
 
         });
 
@@ -1496,17 +1474,9 @@ $(document).ready(function () {
 
 /* ------------------------------------------------------------------------------------------------     Contraseñas   */
 
+    var theDivContraseñas = $('#divContraseñas');
 
-    $("#contraseñasIcon").click( function (evt) {
-
-        irModulo($("#contraseñasDiv"));
-
-        actualizatabla(contraseñasTabla, "empleadosTodos");
-
-    });
-
-    var contraseñasTabla;
-    contraseñasTabla = $('#contraseñasTable')
+    theDivContraseñas.find('.mainTableDiv')
         .DataTable({
             "select": true,
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
@@ -1534,11 +1504,10 @@ $(document).ready(function () {
 
         });
 
-    $("#contraseñaForm").submit(function (evt) {
+    theDivContraseñas.find('.divMainForm form').submit(function (evt) {
         evt.preventDefault();
 
         var element = $(this);
-        var accion;
 
         if (element.find('.idEmpleado').val() == "" ){
 
@@ -1559,17 +1528,13 @@ $(document).ready(function () {
         })
             .done(function (data) {
 
-/*
-                 console.log(data);
-*/
-
                 if (data.success) {
 
-                    element.closest(".form-agregar").removeClass("in");
+                    element.closest(".divMainForm").removeClass("in");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(empleadosTabla, "empleadosTodos");
+                    actualizatabla(theDivContraseñas.find('.mainTableDiv'));
                 } else {
 
                     alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
@@ -1582,35 +1547,21 @@ $(document).ready(function () {
             });
 
     });
-    $("#contraseñaEditar").click(function (evt) {
+    theDivContraseñas.find('.btn-editar').click(function (evt) {
 
-        var miEmpleado = contraseñasTabla.row( { selected: true } ).data();
+        var selected = theDivContraseñas.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
 
-
-            $("#contraseñaForm").find('.idEmpleado').val(miEmpleado.idEmpleado);
-            $("#contraseñaForm").find('.nombre').val(miEmpleado.nombre+" "+miEmpleado.apPaterno+" "+miEmpleado.apMaterno);
+        theDivContraseñas.find('.divMainForm form').find('.idEmpleado').val(selected.idEmpleado);
+        theDivContraseñas.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
 
     })
 
 
-
-
 /* ------------------------------------------------------------------------------------------------     Clientes      */
 
+    var theDivClientes = $('#divClientes');
 
-
-
-
-    $("#clientesIcon").click( function (evt) {
-
-        irModulo($("#clientesDiv"));
-
-        actualizatabla(clientesTabla, "clientesTodos");
-
-    });
-
-    var clientesTabla;
-    clientesTabla = $('#clientesTable')
+    theDivClientes.find('.mainTableDiv')
         .DataTable({
             "select": true,
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
@@ -1631,19 +1582,21 @@ $(document).ready(function () {
                 { "data": "fechaAlta"}
             ]
 
-        });                           /*Arranca Tabla*/
+        });
 
-    $("#clienteForm").submit(function (evt) {
+    theDivClientes.find('.divMainForm form').submit(function (evt) {
         evt.preventDefault();
 
         var element = $(this);
         var accion;
 
-        if (element.parent().attr("accion")=="agregar"){
+        if (element.attr("accion")=="agregar"){
             accion = "clienteAgregar";
-        }else if (element.parent().attr("accion")=="editar" && element.find('.idCliente').val() != "" ){
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idCliente').val() != "" ){
             accion = "clienteEditar";
-        }else {
+        }
+        else {
 
             alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
 
@@ -1673,16 +1626,13 @@ $(document).ready(function () {
             }
         })
             .done(function (data) {
-                /*
-                 console.log(data);
-                 */
                 if (data.success) {
 
-                    element.closest(".form-agregar").removeClass("in");
+                    element.closest(".divMainForm").removeClass("in");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(clientesTabla, "clientesTodos");
+                    actualizatabla(theDivClientes.find('.mainTableDiv'));
                 } else {
 
                     alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
@@ -1695,52 +1645,23 @@ $(document).ready(function () {
             });
 
     });
-    $("#clienteEditar").click(function (evt) {
+    theDivClientes.find('.btn-editar').click(function (evt) {
 
-        var miCliente = clientesTabla.row( { selected: true } ).data();
-        $.each(miCliente, function( key, value ) {
+        var selected = theDivClientes.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+        $.each(selected, function( key, value ) {
 
-/*
-            if(value != ""){
-*/
-                $("#clienteForm").find('.'+key).val(value).trigger('change');
-            /*}else{
-                $("#clienteForm").find('.'+key).val("");
-            }*/
+            theDivClientes.find('.divMainForm form').find('.'+key).val(value).trigger('change');
 
         });
 
     })
 
 
-
-
 /* ------------------------------------------------------------------------------------------------     Viajes        */
 
+    var theDivViajes = $('#divViajes');
 
-
-
-
-    var theDiv = $('#viajesDiv');
-
-    $("#viajesIcon").click( function (evt) {
-        irModulo(theDiv);
-        actualizatabla(viajesTabla, "todosViajesClientesPuntos");
-    });
-
-    $("#viajesDiv .btn-agregar").click(function (evt) {
-            actualizatabla(viajesClientesTable, "clientesTodos");
-            $("#viajeForm").find(".panelNuevo").remove();
-
-        });
-
-    $("#viajesDiv .btn-editar").click(function (evt) {
-            actualizatabla(viajesClientesTable, "clientesTodos");
-
-        });
-
-    var viajesTabla;
-    viajesTabla = $('#viajesTable')
+    theDivViajes.find('.mainTableDiv')
         .DataTable({
             "select": true,
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
@@ -1752,11 +1673,9 @@ $(document).ready(function () {
                 { "data": "apMaterno" },
                 { "data": "puntos" }
             ]
+        });
 
-        });                           /*Arranca Tabla*/
-
-    var viajesClientesTable;
-    viajesClientesTable = $('#viajesClientesTable')
+    theDivViajes.find('.divMainForm form table')
         .DataTable({
             "select": true,
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
@@ -1777,74 +1696,21 @@ $(document).ready(function () {
                 { "data": "fechaAlta"}
             ]
 
-        });                           /*Arranca Tabla*/
-
-
-    $("#viajeForm").submit(function (evt) {
-        evt.preventDefault();
-
-        var element = $(this);
-        var accion;
-
-        if (element.parent().attr("accion")=="agregar"){
-            accion = "viajeAgregar";
-        } else if (element.parent().attr("accion")=="editar" && element.find('.idViaje').val() != "" ){
-            accion = "viajeEditar";
-        }else {
-
-            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
-
-            return;
-        }
-
-        var puntosVar = []
-        $(this).find(".punto").each( function() {
-            var punto= {
-                fechaHora: $(this).find('.fechaHora').val(),
-                estadoDireccion: $(this).find('.estadoDireccion').val(),
-                delegacionMunicipioDireccion: $(this).find('.delegacionMunicipioDireccion').val(),
-                codigoPostalDireccion: $(this).find('.codigoPostalDireccion').val(),
-                coloniaDireccion: $(this).find('.coloniaDireccion').val(),
-                calleNumeroDireccion: $(this).find('.calleNumeroDireccion').val(),
-                descripcionDireccion: $(this).find('.descripcionDireccion').val()
-            }
-            puntosVar.push(punto);
         });
 
-        $.ajax({
-            url: "./Controllers/baseController.php",
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                action: accion,
-                idViaje: $(this).find('.idViaje').val(),
-                idCliente: $(this).find('.idCliente').val(),
-                puntos: puntosVar
 
-            }
-        })
-            .done(function (data) {
-                if (data.success) {
-
-                    element.closest(".form-agregar").removeClass("in");
-                    element.trigger('reset');
-
-                    alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(viajesTabla, "todosViajesClientesPuntos");
-                } else {
-
-                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
-
-
-                }
-            })
-            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error: " + errorThrown);
-            });
-
+    theDivViajes.find('.btn-agregar').click(function (evt) {
+        actualizatabla(theDivViajes.find('.divMainForm form table'));
+        theDivViajes.find('.divMainForm form').find(".panelNuevo").remove();
     });
+    theDivViajes.find('.divMainForm form table').DataTable().on( 'select', function () {
+        var selected = theDivViajes.find('.divMainForm form table').DataTable().row( { selected: true } ).data();
 
-    $('.puntos').on('click', '.agregarPunto', function (){
+        theDivViajes.find('.divMainForm form').find('.idCliente').val(selected.idCliente);
+        theDivViajes.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
+    } );
+
+    theDivViajes.on('click', '.agregarPunto', function (){
         $(this).closest(".panel").after( panelNuevo ).next().hide().show('fast');
     });
 
@@ -1965,10 +1831,10 @@ $(document).ready(function () {
         '</div>'+
         '</div>';
 
-    $('.puntos').on('click', '.eliminarPunto', function (){
+    theDivViajes.on('click', '.eliminarPunto', function (){
         $(this).closest(".panel").hide('fast', function(){ $(this).closest(".panel").remove(); });
     });
-    $('.puntos').on('click', '.repetirPrimero', function (){
+    theDivViajes.on('click', '.repetirPrimero', function (){
         $(this).closest('.panel').find('.fechaHora').val($(this).closest('.puntos').first('.panel').find('.fechaHora').val());
         $(this).closest('.panel').find('.estadoDireccion').val($(this).closest('.puntos').first('.panel').find('.estadoDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.delegacionMunicipioDireccion').val($(this).closest('.puntos').first('.panel').find('.delegacionMunicipioDireccion').val()).trigger('change');
@@ -1977,7 +1843,7 @@ $(document).ready(function () {
         $(this).closest('.panel').find('.calleNumeroDireccion').val($(this).closest('.puntos').first('.panel').find('.calleNumeroDireccion').val());
         $(this).closest('.panel').find('.descripcionDireccion').val($(this).closest('.puntos').first('.panel').find('.descripcionDireccion').val());
     });
-    $('.puntos').on('click', '.repetirAnterior', function (){
+    theDivViajes.on('click', '.repetirAnterior', function (){
         $(this).closest('.panel').find('.fechaHora').val($(this).closest('.panel').prev('.panel').find('.fechaHora').val());
         $(this).closest('.panel').find('.estadoDireccion').val($(this).closest('.panel').prev('.panel').find('.estadoDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.delegacionMunicipioDireccion').val($(this).closest('.panel').prev('.panel').find('.delegacionMunicipioDireccion').val()).trigger('change');
@@ -1987,92 +1853,120 @@ $(document).ready(function () {
         $(this).closest('.panel').find('.descripcionDireccion').val($(this).closest('.panel').prev('.panel').find('.descripcionDireccion').val());
     });
 
+    theDivViajes.find('.divMainForm form').submit(function (evt) {
+        evt.preventDefault();
 
+        var element = $(this);
+        var accion;
 
+        if (element.attr("accion")=="agregar"){
+            accion = "viajeAgregar";
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idViaje').val() != "" ){
+            accion = "viajeEditar";
+        }
+        else {
 
-    $("#viajeEditar").click(function (evt) {
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
 
-        $("#viajeForm").find(".panelNuevo").remove();
+            return;
+        }
 
-        var miViaje = viajesTabla.row( { selected: true } ).data();
-
-        $("#viajeForm").find('.idViaje').val(miViaje.idViaje);
-        $("#viajeForm").find('.idCliente').val(miViaje.idCliente);
-        $("#viajeForm").find('.nombre').val(miViaje.nombre+" "+miViaje.apPaterno+" "+miViaje.apMaterno);
-
-        var table =  miViaje.puntos;
-        $($(table)).find('tr').each(function( key, value ) {
-
-           if(key == 0){
-               $("#viajeForm").find('.panelPrimero').find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
-               $("#viajeForm").find('.panelPrimero').find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
-               $("#viajeForm").find('.panelPrimero').find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
-               $("#viajeForm").find('.panelPrimero').find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
-               $("#viajeForm").find('.panelPrimero').find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
-               $("#viajeForm").find('.panelPrimero').find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
-               $("#viajeForm").find('.panelPrimero').find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
-           }else{
-
-               $('#viajeForm .panel').last().find('.agregarPunto').trigger('click');
-
-               $("#viajeForm .panel").last().find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
-               $("#viajeForm .panel").last().find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
-               $("#viajeForm .panel").last().find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
-               $("#viajeForm .panel").last().find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
-               $("#viajeForm .panel").last().find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
-               $("#viajeForm .panel").last().find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
-               $("#viajeForm .panel").last().find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
-
-           }
+        var puntosVar = [];
+        $(this).find(".punto").each( function() {
+            var punto= {
+                fechaHora: $(this).find('.fechaHora').val(),
+                estadoDireccion: $(this).find('.estadoDireccion').val(),
+                delegacionMunicipioDireccion: $(this).find('.delegacionMunicipioDireccion').val(),
+                codigoPostalDireccion: $(this).find('.codigoPostalDireccion').val(),
+                coloniaDireccion: $(this).find('.coloniaDireccion').val(),
+                calleNumeroDireccion: $(this).find('.calleNumeroDireccion').val(),
+                descripcionDireccion: $(this).find('.descripcionDireccion').val()
+            }
+            puntosVar.push(punto);
         });
 
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idViaje: $(this).find('.idViaje').val(),
+                idCliente: $(this).find('.idCliente').val(),
+                puntos: puntosVar
 
-
-        /*$.each(miViaje, function( key, value ) {
-
-            if(value != ""){
-                $("#viajeForm").find('.'+key).val(value).triggerHandler('change');
-            }else{
-                $("#viajeForm").find('.'+key).val("");
             }
+        })
+            .done(function (data) {
+                if (data.success) {
 
-        });*/
+                    element.closest(".divMainForm").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(theDivViajes.find('.mainTableDiv'));
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+
+    theDivViajes.find('.btn-editar').click(function (evt) {
+        actualizatabla(theDivViajes.find('.divMainForm form table'));
+        theDivViajes.find('.divMainForm form').find(".panelNuevo").remove();
+
+        var selected = theDivViajes.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+
+        theDivViajes.find('.divMainForm form').find('.idViaje').val(selected.idViaje);
+        theDivViajes.find('.divMainForm form').find('.idCliente').val(selected.idCliente);
+        theDivViajes.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
+
+        var table =  selected.puntos;
+        $($(table)).find('tr').each(function( key, value ) {
+            if(key == 0){
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
+            }
+            else{
+
+                theDivViajes.find('.divMainForm form .panel').last().find('.agregarPunto').trigger('click');
+
+                theDivViajes.find('.divMainForm form .panel').last().find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
+                theDivViajes.find('.divMainForm form .panel').last().find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
+
+            }
+        });
 
     });
 
 
 
-    $("#viajesClientesTable").DataTable().on( 'select', function () {
-        var miCliente = viajesClientesTable.row( { selected: true } ).data();
+/* ---------------------------------------------Esto tiene que ir despues de la inicializacion de todas las datatales */
 
-        $("#viajeForm").find('.idCliente').val(miCliente.idCliente);
-        $("#viajeForm").find('.nombre').val(miCliente.nombre+" "+miCliente.apPaterno+" "+miCliente.apMaterno);
-    } );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-        Esto tiene que ir despues de la inicializacion de todas las datatales
-    */
-
-    $(".allDataTables").DataTable().on( 'select', function () {
-        $(this).closest(".moduloMain").children(".acciones").children(".btn-editar")
+    $('table.mainTableDiv').DataTable().on( 'select', function () {
+        $(this).closest(".divModuloMain").children(".acciones").children(".btn-editar")
             .prop('disabled', false);
     } );
-    $(".allDataTables").DataTable().on( 'deselect', function () {
-        $(this).closest(".moduloMain").children(".acciones").children(".btn-editar")
+    $('table.mainTableDiv').DataTable().on( 'deselect', function () {
+        $(this).closest(".divModuloMain").children(".acciones").children(".btn-editar")
             .prop('disabled', true);
     } );
 

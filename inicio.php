@@ -74,12 +74,13 @@
         </div>
     </nav>    		                    <!--Contenedor Header-->
 
-    <div id="mainDiv" class="container collapse in"> 								              <!--Contenedor Main-->
+
+    <div id="divMain" class="container collapse in"> 								              <!--Contenedor Main-->
 
 
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Modulo Empleados-->
 
-            <div id="empleadosIcon" class="acceso-icon">
+            <div class="acceso-icon empleadosIcon" nombre="Empleados">
                 <i class="fa fa-users fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -90,7 +91,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Contraseñas-->
 
-            <div id="contraseñasIcon" class="acceso-icon">
+            <div class="acceso-icon contraseñasIcon" nombre="Contraseñas">
                 <i class="fa fa-key fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -101,7 +102,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Clientes-->
 
-            <div id="clientesIcon" class="acceso-icon">
+            <div class="acceso-icon clientesIcon" nombre="Clientes">
                 <i class="fa fa-handshake-o fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -112,7 +113,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                                  <!--Acceso Viajes-->
 
-            <div id="viajesIcon" class="acceso-icon">
+            <div class="acceso-icon viajesIcon" nombre="Viajes">
                 <i class="fa fa-suitcase fa-3x" aria-hidden="true"></i>                </div>
             <div class="acceso-nombre">
                 Viajes
@@ -122,7 +123,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                            <!--Acceso Cotizaciones-->
 
-            <div id="cotizacionesIcon" class="acceso-icon">
+            <div class="acceso-icon cotizacionesIcon" nombre="Cotizaciones">
                 <i class="fa fa-map-signs fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -133,7 +134,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                                  <!--Acceso Ventas-->
 
-            <div id="ventasIcon" class="acceso-icon">
+            <div class="acceso-icon ventasIcon" nombre="Ventas">
                 <i class="fa fa-money fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -144,7 +145,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Registros-->
 
-            <div id="registrosIcon" class="acceso-icon">
+            <div class="acceso-icon registrosIcon" nombre="Registros">
                 <i class="fa fa-hdd-o fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -155,7 +156,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                                <!--Acceso Unidades-->
 
-            <div id="unidadesIcon" class="acceso-icon">
+            <div class="acceso-icon unidadesIcon" nombre="Unidades">
                 <i class="fa fa-bus fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -166,7 +167,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                                <!--Acceso Choferes-->
 
-            <div id="choferesIcon" class="acceso-icon">
+            <div class="acceso-icon choferesIcon" nombre="Choferes">
                 <i class="fa fa-tachometer fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -177,7 +178,7 @@
 
         <div class="col-xs-6 col-sm-2 acceso">                                            <!--Acceso Propietarios-->
 
-            <div id="propietariosIcon" class="acceso-icon">
+            <div class="acceso-icon propietariosIcon" nombre="Propietarios">
                 <i class="fa fa-star fa-3x" aria-hidden="true"></i>
             </div>
             <div class="acceso-nombre">
@@ -193,20 +194,18 @@
 
 
 
-
-
-    <div id="empleadosDiv" class="container collapse"> 				                         <!--Contenedor Empleados-->
+    <div id="divEmpleados" class="container collapse"> 				                         <!--Contenedor Empleados-->
 
         <div class="col-xs-12 col-sm-12 paddingCero">                                            <!--Modulo Empleados-->
 
-            <div class="moduloEncabezado">
-                <div id="empleadosIcon" class="modulo-icon">
+            <div class="divModuloEncabezado">
+                <div class="modulo-icon empleadosIcon">
                     <i class="fa fa-users fa-3x" aria-hidden="true"></i>
                 </div>
                 <h2 class="floatLeft margen-izquierda15">Empleados</h2>
             </div>
 
-            <div class="moduloMain">
+            <div class="divModuloMain">
                 <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
                     <span class="alertMensaje"></span>
@@ -217,9 +216,8 @@
                     <button id="empleadoEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
                 </div>
 
-
-                <div class="form-agregar collapse margen-abajo30" accion="">
-                    <form class="form-horizontal" id="empleadoForm" autocomplete="off">
+                <div class="divMainForm collapse margen-abajo30">
+                    <form class="form-horizontal mainFormDiv" autocomplete="off" accion="">
 
                         <div class="form-group-sm collapse">
                             <label class="control-label col-sm-3">ID:</label>
@@ -231,7 +229,7 @@
                                        title="Id, no modificable por el usuario."
                                 >
                             </div>
-                        </div>
+                        </div>                                        <!--idEmpelado-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">*Nombre:</label>
                             <div class="col-sm-7">
@@ -245,7 +243,7 @@
                                        required
                                 >
                             </div>
-                        </div>
+                        </div>                                                     <!--nombre-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3" >*Apellido Paterno:</label>
                             <div class="col-sm-7">
@@ -258,7 +256,7 @@
                                        required
                                 >
                             </div>
-                        </div>
+                        </div>                                                  <!--apPaterno-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3" >Apellido Materno:</label>
                             <div class="col-sm-7">
@@ -269,14 +267,15 @@
                                        pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
                                        title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. " >
                             </div>
-                        </div>
+                        </div>                                                  <!--apMaterno-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Fecha de Nacimiento:</label>
                             <div class="col-sm-7">
                                 <input type="date"
                                        class="form-control fechaDeNacimiento">
                             </div>
-                        </div>
+                        </div>                                          <!--fechaDeNacimiento-->
+
                         <!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Estado:</label>
@@ -318,7 +317,7 @@
                                     <option value="Zacatecas">Zacatecas</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                            <!--estadoDomicilio-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Delegación o Municipio:</label>
                             <div class="col-sm-7">
@@ -326,7 +325,7 @@
                                     <option value="">Primero selecciona un estado</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                               <!--delegacionMunicipioDomicilio-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Código Postal:</label>
                             <div class="col-sm-7">
@@ -334,7 +333,7 @@
                                     <option value="">Primero selecciona una delegación o municipio</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                      <!--codigoPostalDomicilio-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Colonia:</label>
                             <div class="col-sm-7">
@@ -342,7 +341,7 @@
                                     <option value="">Primero selecciona un codigo postal</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                           <!--coloniaDomicilio-->
 
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Calle y número:</label>
@@ -354,25 +353,34 @@
                                        pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
                                        title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
                             </div>
-                        </div>
+                        </div>                                       <!--calleNumeroDomicilio-->
+
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Email:</label>
                             <div class="col-sm-7">
                                 <input type="email" class="form-control email" placeholder="xxxxx@yyyyy.zzz" maxlength="128">
                             </div>
-                        </div>
+                        </div>                                                      <!--email-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Teléfono Local:</label>
                             <div class="col-sm-7">
-                                <input type="tel" class="form-control telefonoLocal" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                                <input type="tel"
+                                       class="form-control telefonoLocal"
+                                       placeholder="XXXXXXXX"
+                                       maxlength="32"
+                                       pattern="[0-9]{8,32}"
+                                       title="Solo números, sin espacios, 8 - 32 caracteres.">
                             </div>
-                        </div>
+                        </div>                                              <!--telefonoLocal-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Teléfono Movil:</label>
                             <div class="col-sm-7">
-                                <input type="tel" class="form-control telefonoMovil" placeholder="(XXX)XX-XXXX-XXXX" maxlength="32" pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                                <input type="tel"
+                                       class="form-control telefonoMovil"
+                                       placeholder="XXXXXXXX" maxlength="32"
+                                       pattern="[0-9]{8,32}" title="Solo números, sin espacios, 8 - 32 caracteres.">
                             </div>
-                        </div>
+                        </div>                                              <!--telefonoMovil-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">CURP:</label>
                             <div class="col-sm-7">
@@ -384,7 +392,7 @@
                                        title="Solo letras y números (no signos), 18 caracteres."
                                        >
                             </div>
-                        </div>
+                        </div>                                                       <!--curp-->
 
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Estado en el Sistema:</label>
@@ -394,7 +402,7 @@
                                     <option value="1">Activo</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                              <!--estadoSistema-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">*Nombre de usuario:</label>
                             <div class="col-sm-7">
@@ -407,7 +415,7 @@
                                        required
                                 >
                             </div>
-                        </div>
+                        </div>                                                   <!--userName-->
 
                         <div class="col-sm-12 margen-arriba15 margen-abajo15">
                             <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
@@ -417,7 +425,7 @@
                     </form>
                 </div>
 
-                <table id="empleadosTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
+                <table class="display nowrap compact table-bordered mainTableDiv" cellspacing="0" width="100%" controller="empleadosTodos">
                     <thead>
                         <tr>
                             <th rowspan="2">Nombre</th>
@@ -454,18 +462,18 @@
 
     </div>                                    <!--Contenedor Empleados-->
 
-    <div id="contraseñasDiv" class="container collapse"> 				                   <!--Contenedor Contraseñas-->
+    <div id="divContraseñas" class="container collapse"> 				                   <!--Contenedor Contraseñas-->
 
         <div class="col-xs-12 col-sm-12 paddingCero">                                          <!--Modulo Contraseñas-->
 
-            <div class="moduloEncabezado">
-                <div id="contraseñasIcon" class="modulo-icon">
+            <div class="divModuloEncabezado">
+                <div class="modulo-icon contraseñasIcon">
                     <i class="fa fa-key fa-3x" aria-hidden="true"></i>
                 </div>
                 <h2 class="floatLeft margen-izquierda15">Contraseñas</h2>
             </div>
 
-            <div class="moduloMain">
+            <div class="divModuloMain">
                 <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
                     <span class="alertMensaje"></span>
@@ -476,8 +484,8 @@
                 </div>
 
 
-                <div class="form-agregar collapse margen-abajo30">
-                    <form class="form-horizontal" id="contraseñaForm" autocomplete="off">
+                <div class="divMainForm collapse margen-abajo30">
+                    <form class="form-horizontal" autocomplete="off">
 
                         <div class="form-group-sm collapse">
                             <label class="control-label col-sm-3">ID:</label>
@@ -525,7 +533,7 @@
                     </form>
                 </div>
 
-                <table id="contraseñasTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
+                <table class="display nowrap compact table-bordered mainTableDiv" cellspacing="0" width="100%" controller="empleadosTodos">
                     <thead>
                         <tr>
                             <th rowspan="2">Nombre</th>
@@ -562,18 +570,18 @@
 
     </div>                                <!--Contenedor Contraseñas-->
 
-    <div id="clientesDiv" class="container collapse"> 				                         <!--Contenedor Clientes-->
+    <div id="divClientes" class="container collapse"> 				                         <!--Contenedor Clientes-->
 
         <div class="col-xs-12 col-sm-12 paddingCero">                                            <!--Modulo Clientes-->
 
-            <div class="moduloEncabezado">
-                <div id="clientesIcon" class="modulo-icon">
+            <div class="divModuloEncabezado">
+                <div class="modulo-icon clientesIcon">
                     <i class="fa fa-handshake-o fa-3x" aria-hidden="true"></i>
                 </div>
                 <h2 class="floatLeft margen-izquierda15">Clientes</h2>
             </div>
 
-            <div class="moduloMain">
+            <div class="divModuloMain">
                 <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
                     <span class="alertMensaje"></span>
@@ -585,8 +593,8 @@
                 </div>
 
 
-                <div class="form-agregar collapse margen-abajo30" accion="">
-                    <form class="form-horizontal" id="clienteForm" autocomplete="off">
+                <div class="divMainForm collapse margen-abajo30">
+                    <form class="form-horizontal" autocomplete="off">
 
                         <div class="form-group-sm collapse">
                             <label class="control-label col-sm-3">ID:</label>
@@ -598,8 +606,7 @@
                                        title="Id, no modificable por el usuario."
                                 >
                             </div>
-                        </div>
-                        <div class="form-group-sm">
+                        </div>                                         <!--idCliente-->                        <div class="form-group-sm">
                             <label class="control-label col-sm-3">*Nombre:</label>
                             <div class="col-sm-7">
                                 <input type="text"
@@ -612,7 +619,7 @@
                                        required
                                 >
                             </div>
-                        </div>
+                        </div>                                                      <!--nombre-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3" >*Apellido Paterno:</label>
                             <div class="col-sm-7">
@@ -625,7 +632,7 @@
                                        required
                                 >
                             </div>
-                        </div>
+                        </div>                                                  <!--apPaterno-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3" >Apellido Materno:</label>
                             <div class="col-sm-7">
@@ -636,28 +643,28 @@
                                        pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
                                        title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. " >
                             </div>
-                        </div>
+                        </div>                                                  <!--apMaterno-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Teléfono Movil:</label>
                             <div class="col-sm-7">
                                 <input type="tel"
                                        class="form-control telefonoMovil"
-                                       placeholder="(XXX)XX-XXXX-XXXX"
+                                       placeholder="XXXXXXXX"
                                        maxlength="32"
-                                       pattern="[0-9-+() ]{8,32}"
-                                       title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                                       pattern="[0-9]{8,32}"
+                                       title="Solo números, sin espacios, 8 - 32 caracteres.">
                             </div>
-                        </div>
+                        </div>                                              <!--telefonoMovil-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Teléfono Local:</label>
                             <div class="col-sm-7">
                                 <input type="tel"
                                        class="form-control telefonoLocal"
-                                       placeholder="(XXX)XX-XXXX-XXXX"
+                                       placeholder="XXXXXXXX"
                                        maxlength="32"
-                                       pattern="[0-9-+() ]{8,32}" title="Solo números y +,-,(,) , 8 - 32 caracteres.">
+                                       pattern="[0-9]{8,32}" title="Solo números, sin espacios, 8 - 32 caracteres.">
                             </div>
-                        </div>
+                        </div>                                              <!--telefonoLocal-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Email:</label>
                             <div class="col-sm-7">
@@ -666,7 +673,7 @@
                                        placeholder="xxxxx@yyyyy.zzz"
                                        maxlength="128">
                             </div>
-                        </div>
+                        </div>                                                      <!--email-->
 
                         <!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->
                         <div class="form-group-sm">
@@ -709,7 +716,7 @@
                                     <option value="Zacatecas">Zacatecas</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                            <!--estadoDomicilio-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Delegación o Municipio:</label>
                             <div class="col-sm-7">
@@ -717,7 +724,7 @@
                                     <option value="">Primero selecciona un estado</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                               <!--delegacionMunicipioDomicilio-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Código Postal:</label>
                             <div class="col-sm-7">
@@ -725,7 +732,7 @@
                                     <option value="">Primero selecciona una delegación o municipio</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                      <!--codigoPostalDomicilio-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Colonia:</label>
                             <div class="col-sm-7">
@@ -733,7 +740,7 @@
                                     <option value="">Primero selecciona un codigo postal</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>                                           <!--coloniaDomicilio-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Calle y número:</label>
                             <div class="col-sm-7">
@@ -744,7 +751,7 @@
                                        pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
                                        title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
                             </div>
-                        </div>
+                        </div>                                       <!--calleNumeroDomicilio-->
 
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">Fecha de Nacimiento:</label>
@@ -752,7 +759,7 @@
                                 <input type="date"
                                        class="form-control fechaDeNacimiento">
                             </div>
-                        </div>
+                        </div>                                          <!--fechaDeNacimiento-->
                         <div class="form-group-sm">
                             <label class="control-label col-sm-3">CURP:</label>
                             <div class="col-sm-7">
@@ -764,7 +771,7 @@
                                        title="Solo letras y números (no signos), 18 caracteres."
                                 >
                             </div>
-                        </div>
+                        </div>                                                       <!--curp-->
 
                         <div class="col-sm-12 margen-arriba15 margen-abajo15">
                             <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
@@ -774,7 +781,7 @@
                     </form>
                 </div>
 
-                <table id="clientesTable" class="display nowrap compact table-bordered allDataTables" cellspacing="0" width="100%">
+                <table class="display nowrap compact table-bordered mainTableDiv" cellspacing="0" width="100%" controller="clientesTodos">
                     <thead>
                     <tr>
                         <th rowspan="2">Nombre</th>
@@ -808,33 +815,18 @@
 
     </div>                                    <!--Contenedor Clientes-->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div id="viajesDiv" class="container collapse"> 				                            <!--Contenedor Viajes-->
+    <div id="divViajes" class="container collapse"> 				                            <!--Contenedor Viajes-->
 
         <div class="col-xs-12 col-sm-12 paddingCero">                                               <!--Modulo Viajes-->
 
-            <div class="moduloEncabezado">
-                <div id="viajesIcon" class="modulo-icon">
+            <div class="divModuloEncabezado">
+                <div class="modulo-icon viajesIcon">
                     <i class="fa fa-suitcase fa-3x" aria-hidden="true"></i>
                 </div>
                 <h2 class="floatLeft margen-izquierda15">Viajes</h2>
             </div>
 
-            <div class="moduloMain">
+            <div class="divModuloMain">
                 <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
                     <span class="alertMensaje"></span>
@@ -842,21 +834,19 @@
 
                 <div class="col-sm-12 acciones margen-abajo15">
                     <button type="button" class="btn-agregar btn btn-default btn-md">Agregar Nuevo</button>
-                    <button id="viajeEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
+                    <button type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
                 </div>
 
+                <div class="divMainForm collapse col-sm-12 margen-abajo30">
 
-                <div class="form-agregar collapse col-sm-12 margen-abajo30" accion="">
-
-
-                    <form class="form-horizontal" id="viajeForm" autocomplete="off">
+                    <form class="form-horizontal" autocomplete="off">
 
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 Selecciona un cliente:
                             </div>
                             <div class="panel-body">
-                                <table id="viajesClientesTable" class="display nowrap compact table-bordered" cellspacing="0" width="100%">
+                                <table class="display nowrap compact table-bordered" cellspacing="0" width="100%" controller="clientesTodos">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">Nombre</th>
@@ -1055,7 +1045,7 @@
 
                 </div>
 
-                <table id="viajesTable" class="display nowrap compact table-bordered allDataTables mainTableDiv" cellspacing="0" width="100%">
+                <table class="display nowrap compact table-bordered mainTableDiv" cellspacing="0" width="100%" controller="todosViajesClientesPuntos">
                     <thead>
                     <tr>
                         <th colspan="2">Viaje</th>
@@ -1079,11 +1069,6 @@
 
 
     </div>                                          <!--Contenedor Viajes-->
-
-
-
-
-
 
 
 
