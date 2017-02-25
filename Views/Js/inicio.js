@@ -1668,25 +1668,102 @@ $(document).ready(function () {
                 { "data": "idViaje" },
                 { "targets": 0,
                     "data": function ( row, type, val, meta ) {
-                    return $.format.date(row.fechaAlta, "yyyy-MM-dd E HH:mm'h'r's'.");
+                    return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
                 } },
                 { "data": "nombre" },
                 { "data": "apPaterno" },
                 { "data": "apMaterno" },
+                { "targets": 6,
+                    "data": function ( row, type, val, meta ) {
+                        return row.destinoEstado+", <br>"+((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
+                    } },
                 { "targets": 5,
                     "data": function ( row, type, val, meta ) {
+
+                        var fecha = "";
+                        var arregloFechas = [];
+                        var contador = 1;
+                        $.each(row.puntos, function( index, value ) {
+                            if(index == 0){
+                                fecha = value["fecha"];
+                                if(index == (row.puntos.length-1)){
+                                    arregloFechas.push(contador);
+                                }
+                            }else{
+                                if(fecha == value["fecha"]){
+                                    contador++;
+                                    if(index == (row.puntos.length-1)){
+                                        arregloFechas.push(contador);
+                                    }
+                                }else{
+                                    arregloFechas.push(contador);
+                                    contador=1;
+                                }
+                                fecha = value["fecha"];
+                            }
+                        })
+
+                        var diaCount = 1;
+                        var recorreArray = 0;
+                        var interno = 1;
                         var salida = "<table>";
                         $.each(row.puntos, function( index, value ) {
-                            salida+=
-                                '<tr><td>'+value["fecha"]+'</td><td> '+
-                                '<td>'+value["hora"]+'</td><td> '+
-                                '<td>'+value["estadoDireccion"]+'</td><td> '+
-                                '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
-                                '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
-                                '<td>'+value["coloniaDireccion"]+'</td><td> '+
-                                '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
-                                '<td>'+value["descripcionDireccion"]+'</td><td> '+
-                                '<td>'+value["fecha"]+'</td></tr>';
+                            var hora = new Date("1970-01-01 "+value["hora"]);
+                            if(index==0){
+                                fecha = value["fecha"];
+                                salida+=
+                                    '<tr>' +
+                                        '<td rowspan="'+arregloFechas[recorreArray]+'">'+(diaCount++)+'</td>'+
+                                        '<td rowspan="'+arregloFechas[recorreArray]+'">'+value["fecha"]+'</td>'+
+                                        '<td>'+((!value["hora"])?'--:--':$.format.date(hora, "HH:mm'h'r's'."))+'</td><td> '+
+                                        '<td>'+value["estadoDireccion"]+'</td><td> '+
+                                        '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
+                                        '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
+                                        '<td>'+value["coloniaDireccion"]+'</td><td> '+
+                                        '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
+                                        '<td>'+value["descripcionDireccion"]+'</td><td> '+
+                                        '</tr>';
+                                interno++;
+                                if(index == (row.puntos.length-1)){
+                                    salida += '</table>';
+                                }
+                            }else{
+                                if(interno <= arregloFechas[recorreArray]){
+                                    salida += '<tr>' +
+                                        '<td>'+((!value["hora"])?'--:--':$.format.date(hora, "HH:mm'h'r's'."))+'</td><td> '+
+                                        '<td>'+value["estadoDireccion"]+'</td><td> '+
+                                        '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
+                                        '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
+                                        '<td>'+value["coloniaDireccion"]+'</td><td> '+
+                                        '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
+                                        '<td>'+value["descripcionDireccion"]+'</td><td> '+
+                                        '</tr>';
+                                    interno++;
+                                    if(index == (row.puntos.length-1)){
+                                        salida += '</table>';
+                                    }
+                                }else {
+                                    recorreArray++;
+                                    salida+=
+                                        '<tr>' +
+                                        '<td rowspan="'+arregloFechas[recorreArray]+'">'+(diaCount++)+'</td>'+
+                                        '<td rowspan="'+arregloFechas[recorreArray]+'">'+value["fecha"]+'</td>'+
+                                        '<td>'+((!value["hora"])?'--:--':$.format.date(hora, "HH:mm'h'r's'."))+'</td><td> '+
+                                        '<td>'+value["estadoDireccion"]+'</td><td> '+
+                                        '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
+                                        '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
+                                        '<td>'+value["coloniaDireccion"]+'</td><td> '+
+                                        '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
+                                        '<td>'+value["descripcionDireccion"]+'</td><td> '+
+                                        '</tr>';
+                                    interno=2;
+                                    if(index == (row.puntos.length-1)){
+                                        salida += '</table>';
+                                    }
+                                }
+
+                            }
+
                         });
                         salida +=  "</table>";
                         return salida;

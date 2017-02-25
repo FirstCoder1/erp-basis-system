@@ -1129,7 +1129,8 @@
                     <tr>
                         <th colspan="2">Viaje</th>
                         <th colspan="3">Cliente</th>
-                        <th rowspan="2">Puntos</th>
+                        <th rowspan="2">Destino</th>
+                        <th rowspan="2">Itinerario</th>
                         <th rowspan="2">Kilometros</th>
                     </tr>
                     <tr>
