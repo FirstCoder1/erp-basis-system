@@ -30,10 +30,32 @@ class Puntos {
 
         return $salida;
     }
+    public static function todosClase(){
+
+        $miPunto = new Punto();
+        $puntos = $miPunto->buscarClase();
+
+        $salida = array();
+        if (count($puntos) > 0){
+
+            $salida["success"] = true ;
+            $salida["todos"] = $puntos ;
+
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando puntos.";
+        }
+
+        return $salida;
+    }
 
     public static function agregar( Punto $miPunto){
 
         $miPunto->set("idPunto","NULL");
+
+        if ($miPunto->get("hora")==""){
+            $miPunto->set("hora","NULL");
+        }
 
         $viajeValidate = new Viaje();
         $viajeValidate->set("idViaje",$miPunto->get("idViaje"));
@@ -59,6 +81,10 @@ class Puntos {
     }
 
     public static function editar( Punto $miPunto){
+
+        if ($miPunto->get("hora")==""){
+            $miPunto->set("hora","NULL");
+        }
 
         $viajeValidate = new Viaje();
         $viajeValidate->set("idViaje",$miPunto->get("idViaje"));
@@ -86,7 +112,8 @@ class Puntos {
     public static function eliminarPorID( Punto $miPunto){
 
         $miPunto->set('idPunto','NO_INCLUDE');
-        $miPunto->set('fechaHora','NO_INCLUDE');
+        $miPunto->set('fecha','NO_INCLUDE');
+        $miPunto->set('hora','NO_INCLUDE');
         $miPunto->set('estadoDireccion','NO_INCLUDE');
         $miPunto->set('delegacionMunicipioDireccion','NO_INCLUDE');
         $miPunto->set('codigoPostalDireccion','NO_INCLUDE');

@@ -43,6 +43,7 @@
     crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/b-1.2.4/se-1.2.0/datatables.min.js"></script>
+    <script src="./Views/Js/jquery-dateFormat.js"></script>
 
 </head>																						            <!-- head-->
 
@@ -65,6 +66,9 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu darkerBgOnHoverDropdown-menu">
+                        <li>
+                            <a href="https://www.google.com.mx/maps/" target="_blank">Google Maps</a>
+                        </li>
                         <li>
                             <a href="#" class="cerrarSesion">Cerrar sesión</a>
                         </li>
@@ -592,7 +596,6 @@
                     <button id="clienteEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
                 </div>
 
-
                 <div class="divMainForm collapse margen-abajo30">
                     <form class="form-horizontal" autocomplete="off">
 
@@ -798,11 +801,11 @@
                         <th>Materno</th>
                         <th>Movil</th>
                         <th>Local</th>
-                        <th>Calle y número</th>
+                        <th>Estado</th>
                         <th>Delegación</th>
                         <th>C.P.</th>
                         <th>Colonia</th>
-                        <th>Estado</th>
+                        <th>Calle y número</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -863,11 +866,11 @@
                                         <th>Materno</th>
                                         <th>Movil</th>
                                         <th>Local</th>
-                                        <th>Calle y número</th>
+                                        <th>Estado</th>
                                         <th>Delegación</th>
                                         <th>C.P.</th>
                                         <th>Colonia</th>
-                                        <th>Estado</th>
+                                        <th>Calle y número</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -901,7 +904,7 @@
                             </div>
                         </div>                                         <!--idCliente-->
 
-                        <div class="form-group-sm clearfix">
+                        <div class="form-group-sm">
                             <label class="control-label col-sm-3">*Nombre cliente:</label>
                             <div class="col-sm-7">
                                 <input type="text"
@@ -914,26 +917,88 @@
                                        disabled
                                 >
                             </div>
-                        </div>                                            <!--nombre-->
+                        </div>                                                     <!--nombre-->
+                        <div class="form-group-sm">
+                            <label class="control-label col-sm-3">*Destino Estado:</label>
+                            <div class="col-sm-7">
+                                <!–– Dropdown estados de México ––>
+                                <select class="form-control destinoEstado" required>
+                                            <option value="">Selecciona uno</option>
+                                            <option value="Distrito Federal">Local</option>
+                                            <option value="Aguascalientes">Aguascalientes</option>
+                                            <option value="Baja California">Baja California</option>
+                                            <option value="Baja California Sur">Baja California Sur</option>
+                                            <option value="Campeche">Campeche</option>
+                                            <option value="Coahuila de Zaragoza">Coahuila de Zaragoza</option>
+                                            <option value="Colima">Colima</option>
+                                            <option value="Chiapas">Chiapas</option>
+                                            <option value="Chihuahua">Chihuahua</option>
+                                            <option value="Distrito Federal">Distrito Federal</option>
+                                            <option value="Durango">Durango</option>
+                                            <option value="Guanajuato">Guanajuato</option>
+                                            <option value="Guerrero">Guerrero</option>
+                                            <option value="Hidalgo">Hidalgo</option>
+                                            <option value="Jalisco">Jalisco</option>
+                                            <option value="México">México</option>
+                                            <option value="Michoacán de Ocampo">Michoacán de Ocampo</option>
+                                            <option value="Morelos">Morelos</option>
+                                            <option value="Nayarit">Nayarit</option>
+                                            <option value="Nuevo León">Nuevo León</option>
+                                            <option value="Oaxaca">Oaxaca</option>
+                                            <option value="Puebla">Puebla</option>
+                                            <option value="Querétaro">Querétaro</option>
+                                            <option value="Quintana Roo">Quintana Roo</option>
+                                            <option value="San Luis Potosí">San Luis Potosí</option>
+                                            <option value="Sinaloa">Sinaloa</option>
+                                            <option value="Sonora">Sonora</option>
+                                            <option value="Tabasco">Tabasco</option>
+                                            <option value="Tamaulipas">Tamaulipas</option>
+                                            <option value="Tlaxcala">Tlaxcala</option>
+                                            <option value="Veracruz de Ignacio de la Llave">Veracruz de Ignacio de la Llave</option>
+                                            <option value="Yucatán">Yucatán</option>
+                                            <option value="Zacatecas">Zacatecas</option>
+                                        </select>
+                            </div>
+                        </div>                                              <!--destinoEstado-->
+                        <div class="form-group-sm clearfix">
+                            <label class="control-label col-sm-3">Destino Lugar:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control destinoLugar"
+                                       placeholder="Agrega un lugar"
+                                       maxlength="35"
+                                       pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
+                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres."
+                                >
+                            </div>
+                        </div>                                      <!--destinoLugar-->
 
 
                         <div class="puntos">
                             <div class="panel panel-default margen-arriba15 panelPrimero">
                                 <div class="panel-heading">
-                                    Punto a visitar:
+                                    Itinerario:
                                 </div>
                                 <div class="panel-body">
                                     <div class="punto">
+
                                         <div class="form-group-sm">
-                                            <label class="control-label col-sm-3">*Fecha y hora:</label>
+                                            <label class="control-label col-sm-3">*Fecha:</label>
                                             <div class="col-sm-7">
-                                                <input type="datetime-local"
-                                                       class="form-control fechaHora"
+                                                <input type="date"
+                                                       class="form-control fecha"
+                                                       required>
+                                            </div>
+                                        </div>                                      <!--fecha-->
+                                        <div class="form-group-sm">
+                                            <label class="control-label col-sm-3">Hora:</label>
+                                            <div class="col-sm-7">
+                                                <input type="time"
+                                                       class="form-control hora"
                                                        step="300"
-                                                       required
                                                 >
                                             </div>
-                                        </div>                                                  <!--fechaHora-->
+                                        </div>                                       <!--hora-->
 
                                         <!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->
                                         <div class="form-group-sm">
@@ -976,7 +1041,7 @@
                                                     <option value="Zacatecas">Zacatecas</option>
                                                 </select>
                                             </div>
-                                        </div>                                            <!--estadoDireccion-->
+                                        </div>                            <!--estadoDireccion-->
                                         <div class="form-group-sm">
                                             <label class="control-label col-sm-3">Delegación o Municipio:</label>
                                             <div class="col-sm-7">
@@ -984,7 +1049,7 @@
                                                     <option value="">Primero selecciona un estado</option>
                                                 </select>
                                             </div>
-                                        </div>                               <!--delegacionMunicipioDireccion-->
+                                        </div>               <!--delegacionMunicipioDireccion-->
                                         <div class="form-group-sm">
                                             <label class="control-label col-sm-3">Código Postal:</label>
                                             <div class="col-sm-7">
@@ -992,7 +1057,7 @@
                                                     <option value="">Primero selecciona una delegación o municipio</option>
                                                 </select>
                                             </div>
-                                        </div>                                      <!--codigoPostalDireccion-->
+                                        </div>                      <!--codigoPostalDireccion-->
                                         <div class="form-group-sm">
                                             <label class="control-label col-sm-3">Colonia:</label>
                                             <div class="col-sm-7">
@@ -1000,31 +1065,30 @@
                                                     <option value="">Primero selecciona un codigo postal</option>
                                                 </select>
                                             </div>
-                                        </div>                                           <!--coloniaDireccion-->
+                                        </div>                           <!--coloniaDireccion-->
                                         <div class="form-group-sm">
-                                            <label class="control-label col-sm-3">*Calle y número:</label>
+                                            <label class="control-label col-sm-3">Calle y número:</label>
                                             <div class="col-sm-7">
                                                 <input type="text"
                                                        class="form-control calleNumeroDireccion"
                                                        placeholder="Xxxxx YYY"
                                                        maxlength="70"
-                                                       pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
-                                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres."
-                                                       required>
+                                                       pattern="[a-zA-Z0-9- .,ñáéíóú]{5,70}"
+                                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
                                             </div>
-                                        </div>                                       <!--calleNumeroDireccion-->
+                                        </div>                       <!--calleNumeroDireccion-->
 
                                         <div class="form-group-sm">
-                                            <label class="control-label col-sm-3">Descripción:</label>
+                                            <label class="control-label col-sm-3">Referencia:</label>
                                             <div class="col-sm-7">
                                                 <input type="text"
                                                        class="form-control descripcionDireccion"
                                                        placeholder="Detalles sobre el lugar"
                                                        maxlength="300"
-                                                       pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"
-                                                       title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">
+                                                       pattern="{5,70}"
+                                                       title=" 5 - 70 caracteres.">
                                             </div>
-                                        </div>                                       <!--descripcionDireccion-->
+                                        </div>                       <!--descripcionDireccion-->
 
 
                                     </div>
@@ -1036,9 +1100,24 @@
                         </div>
 
 
+                        <div class="form-group-sm ">
+                            <label class="control-label col-sm-3">Kilometros:</label>
+                            <div class="col-sm-7">
+                                <input type="text"
+                                       class="form-control kilometros"
+                                       placeholder="Totales del viaje"
+                                       maxlength="35"
+                                       pattern="[0-9]{1,70}"
+                                       title="Solo números (no espscios), 1 - 70 caracteres."
+                                >
+                            </div>
+                        </div>                                                <!--kilometros-->
+
+
+
                         <div class="col-sm-12 margen-arriba15 margen-abajo15">
-                            <button type="reset" class="btn btn-danger btn-cancelar">Cancelar</button>
-                            <button type="submit" class="btn btn-success">Guardar</button>
+                            <button type="submit" class="btn .btn-lg btn-block btn-success">Guardar</button>
+                            <button type="reset" class="btn .btn-lg btn-block btn-danger btn-cancelar">Cancelar</button>
                         </div>
 
                     </form>
@@ -1051,6 +1130,7 @@
                         <th colspan="2">Viaje</th>
                         <th colspan="3">Cliente</th>
                         <th rowspan="2">Puntos</th>
+                        <th rowspan="2">Kilometros</th>
                     </tr>
                     <tr>
                         <th>ID</th>

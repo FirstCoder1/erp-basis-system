@@ -73,12 +73,11 @@ $(document).ready(function () {
         })
             .done(function (data) {
                 if (data.success) {
+                    console.log(data);
                     tablaHtml.DataTable()
                         .row().deselect()
                         .clear()
                         .rows.add(data.todos).draw();
-
-
                 } else {
 
                     alerta(tablaHtml,"error","<strong>¡Error!: </strong>"+data.error);
@@ -1667,11 +1666,32 @@ $(document).ready(function () {
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
             "columns": [
                 { "data": "idViaje" },
-                { "data": "fechaAlta" },
+                { "targets": 0,
+                    "data": function ( row, type, val, meta ) {
+                    return $.format.date(row.fechaAlta, "yyyy-MM-dd E HH:mm'h'r's'.");
+                } },
                 { "data": "nombre" },
                 { "data": "apPaterno" },
                 { "data": "apMaterno" },
-                { "data": "puntos" }
+                { "targets": 5,
+                    "data": function ( row, type, val, meta ) {
+                        var salida = "<table>";
+                        $.each(row.puntos, function( index, value ) {
+                            salida+=
+                                '<tr><td>'+value["fecha"]+'</td><td> '+
+                                '<td>'+value["hora"]+'</td><td> '+
+                                '<td>'+value["estadoDireccion"]+'</td><td> '+
+                                '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
+                                '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
+                                '<td>'+value["coloniaDireccion"]+'</td><td> '+
+                                '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
+                                '<td>'+value["descripcionDireccion"]+'</td><td> '+
+                                '<td>'+value["fecha"]+'</td></tr>';
+                        });
+                        salida +=  "</table>";
+                        return salida;
+                    } },
+                { "data": "kilometros" }
             ]
         });
 
@@ -1716,19 +1736,27 @@ $(document).ready(function () {
 
     var panelNuevo = '<div class="panel panel-default margen-arriba15 panelNuevo">'+
         '<div class="panel-heading">'+
-        'Punto a visitar:'+
+        'Itinerario:'+
         '</div>'+
         '<div class="panel-body">'+
         '<div class="punto">'+
         '<div class="form-group-sm">'+
-        '<label class="control-label col-sm-3">*Fecha y hora:</label>'+
+        '<label class="control-label col-sm-3">*Fecha:</label>'+
         '<div class="col-sm-7">'+
-        '<input type="datetime-local"'+
-        'class="form-control fechaHora"'+
-        'required'+
+        '<input type="date"'+
+        'class="form-control fecha"'+
+        'required>'+
+        '</div>'+
+        '</div>                                      <!--fecha-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">Hora:</label>'+
+        '<div class="col-sm-7">'+
+        '<input type="time"'+
+        'class="form-control hora"'+
+        'step="300"'+
         '>'+
         '</div>'+
-        '</div>                                                  <!--fechaHora-->'+
+        '</div>                                       <!--hora-->'+
         '<!--Estado, Delegación municipio, codigo postal, colonia deben de estar juntos y en ese orden para funcionar.-->'+
         '<div class="form-group-sm">'+
         '<label class="control-label col-sm-3">Estado:</label>'+
@@ -1796,27 +1824,27 @@ $(document).ready(function () {
         '</div>'+
         '</div>                                           <!--coloniaDireccion-->'+
         '<div class="form-group-sm">'+
-        '<label class="control-label col-sm-3">*Calle y número:</label>'+
+        '<label class="control-label col-sm-3">Calle y número:</label>'+
         '<div class="col-sm-7">'+
         '<input type="text"'+
         'class="form-control calleNumeroDireccion"'+
         'placeholder="Xxxxx YYY"'+
         'maxlength="70"'+
-        'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
+        'pattern="[a-zA-Z0-9- .,ñáéíóú]{5,70}"'+
         'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres."' +
-        'required>'+
+        '>'+
         '</div>'+
         '</div>                                       <!--calleNumeroDireccion-->'+
 
         '<div class="form-group-sm">'+
-        '<label class="control-label col-sm-3">Descripción:</label>'+
+        '<label class="control-label col-sm-3">Referencia:</label>'+
         '<div class="col-sm-7">'+
         '<input type="text"'+
         'class="form-control descripcionDireccion"'+
         'placeholder="Detalles sobre el lugar"'+
         'maxlength="300"'+
-        'pattern="[a-zA-Z0-9- ñáéíóú]{5,70}"'+
-        'title="Solo letras,espacios y números (no signos), 5 - 70 caracteres.">'+
+        'pattern="{5,70}"'+
+        'title=" 5 - 70 caracteres.">'+
         '</div>'+
         '</div>                                       <!--descripcionDireccion-->'+
 
@@ -1835,7 +1863,8 @@ $(document).ready(function () {
         $(this).closest(".panel").hide('fast', function(){ $(this).closest(".panel").remove(); });
     });
     theDivViajes.on('click', '.repetirPrimero', function (){
-        $(this).closest('.panel').find('.fechaHora').val($(this).closest('.puntos').first('.panel').find('.fechaHora').val());
+        $(this).closest('.panel').find('.fecha').val($(this).closest('.puntos').first('.panel').find('.fecha').val());
+        $(this).closest('.panel').find('.hora').val($(this).closest('.puntos').first('.panel').find('.hora').val());
         $(this).closest('.panel').find('.estadoDireccion').val($(this).closest('.puntos').first('.panel').find('.estadoDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.delegacionMunicipioDireccion').val($(this).closest('.puntos').first('.panel').find('.delegacionMunicipioDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.codigoPostalDireccion').val($(this).closest('.puntos').first('.panel').find('.codigoPostalDireccion').val()).trigger('change');
@@ -1844,7 +1873,8 @@ $(document).ready(function () {
         $(this).closest('.panel').find('.descripcionDireccion').val($(this).closest('.puntos').first('.panel').find('.descripcionDireccion').val());
     });
     theDivViajes.on('click', '.repetirAnterior', function (){
-        $(this).closest('.panel').find('.fechaHora').val($(this).closest('.panel').prev('.panel').find('.fechaHora').val());
+        $(this).closest('.panel').find('.fecha').val($(this).closest('.puntos').first('.panel').find('.fecha').val());
+        $(this).closest('.panel').find('.hora').val($(this).closest('.puntos').first('.panel').find('.hora').val());
         $(this).closest('.panel').find('.estadoDireccion').val($(this).closest('.panel').prev('.panel').find('.estadoDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.delegacionMunicipioDireccion').val($(this).closest('.panel').prev('.panel').find('.delegacionMunicipioDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.codigoPostalDireccion').val($(this).closest('.panel').prev('.panel').find('.codigoPostalDireccion').val()).trigger('change');
@@ -1875,7 +1905,8 @@ $(document).ready(function () {
         var puntosVar = [];
         $(this).find(".punto").each( function() {
             var punto= {
-                fechaHora: $(this).find('.fechaHora').val(),
+                fecha: $(this).find('.fecha').val(),
+                hora: $(this).find('.hora').val(),
                 estadoDireccion: $(this).find('.estadoDireccion').val(),
                 delegacionMunicipioDireccion: $(this).find('.delegacionMunicipioDireccion').val(),
                 codigoPostalDireccion: $(this).find('.codigoPostalDireccion').val(),
@@ -1893,6 +1924,9 @@ $(document).ready(function () {
             data: {
                 action: accion,
                 idViaje: $(this).find('.idViaje').val(),
+                destinoEstado: $(this).find('.destinoEstado').val(),
+                destinoLugar: $(this).find('.destinoLugar').val(),
+                kilometros: $(this).find('.kilometros').val(),
                 idCliente: $(this).find('.idCliente').val(),
                 puntos: puntosVar
 
@@ -1926,31 +1960,36 @@ $(document).ready(function () {
         var selected = theDivViajes.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
 
         theDivViajes.find('.divMainForm form').find('.idViaje').val(selected.idViaje);
+        theDivViajes.find('.divMainForm form').find('.destinoEstado').val(selected.destinoEstado);
+        theDivViajes.find('.divMainForm form').find('.destinoLugar').val(selected.destinoLugar);
+        theDivViajes.find('.divMainForm form').find('.kilometros').val(selected.kilometros);
         theDivViajes.find('.divMainForm form').find('.idCliente').val(selected.idCliente);
         theDivViajes.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
 
         var table =  selected.puntos;
         $($(table)).find('tr').each(function( key, value ) {
             if(key == 0){
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.fecha').val($($(value)).find('.fecha').attr('fecha'));
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.hora').val($($(value)).find('.fecha').attr('hora'));
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.estadoDireccion').val($($(value)).find('.fecha').html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.delegacionMunicipioDireccion').val($($(value)).find('.fecha').next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.codigoPostalDireccion').val($($(value)).find('.fecha').next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.coloniaDireccion').val($($(value)).find('.fecha').next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.calleNumeroDireccion').val($($(value)).find('.fecha').next().next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panelPrimero').find('.descripcionDireccion').val($($(value)).find('.fecha').next().next().next().next().next().html()).trigger('change');
             }
             else{
 
                 theDivViajes.find('.divMainForm form .panel').last().find('.agregarPunto').trigger('click');
 
-                theDivViajes.find('.divMainForm form .panel').last().find('.fechaHora').val($($(value)).find('.fechaHora').attr('data'));
-                theDivViajes.find('.divMainForm form .panel').last().find('.estadoDireccion').val($($(value)).find('.fechaHora').html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.delegacionMunicipioDireccion').val($($(value)).find('.fechaHora').next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.codigoPostalDireccion').val($($(value)).find('.fechaHora').next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.coloniaDireccion').val($($(value)).find('.fechaHora').next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.calleNumeroDireccion').val($($(value)).find('.fechaHora').next().next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.descripcionDireccion').val($($(value)).find('.fechaHora').next().next().next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.fecha').val($($(value)).find('.fecha').attr('fecha'));
+                theDivViajes.find('.divMainForm form .panel').last().find('.hora').val($($(value)).find('.fecha').attr('hora'));
+                theDivViajes.find('.divMainForm form .panel').last().find('.estadoDireccion').val($($(value)).find('.fecha').html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.delegacionMunicipioDireccion').val($($(value)).find('.fecha').next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.codigoPostalDireccion').val($($(value)).find('.fecha').next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.coloniaDireccion').val($($(value)).find('.fecha').next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.calleNumeroDireccion').val($($(value)).find('.fecha').next().next().next().next().html()).trigger('change');
+                theDivViajes.find('.divMainForm form .panel').last().find('.descripcionDireccion').val($($(value)).find('.fecha').next().next().next().next().next().html()).trigger('change');
 
             }
         });

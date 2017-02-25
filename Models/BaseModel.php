@@ -117,7 +117,7 @@ class BaseModel
             if ($key == "_tableName"){
                 $sql = "SELECT * FROM ".$value." WHERE ".$sql;
             } else {
-                $sql .= $key." LIKE :".$key." AND ";
+                $sql .= "COALESCE(".$key.", '') LIKE :".$key." AND ";
             }
         }
         return substr($sql, 0, -4);
@@ -165,9 +165,13 @@ class BaseModel
 
             if ($key == "_tableName"){
                 $sql = "UPDATE ".$value." SET ".$sql;
+            } else if ($value == "NULL" || $value == "CURRENT_TIMESTAMP"){
+
+                $sql .= $key."=".$value.", ";
+
             } else {
 
-                    $sql .= $key."='".$value."', ";
+                $sql .= $key."='".$value."', ";
 
             }
         }

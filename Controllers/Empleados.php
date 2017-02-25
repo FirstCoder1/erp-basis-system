@@ -72,6 +72,10 @@ class Empleados {
         $miEmpleado->set("idEmpleado","NULL");
         $miEmpleado->set("fechaAlta","CURRENT_TIMESTAMP");
 
+        if ($miEmpleado->get("fechaDeNacimiento")==""){
+            $miEmpleado->set("fechaDeNacimiento","NULL");
+        }
+
         $empleadoValidate = new Empleado();
         $empleadoValidate->set("userName",$miEmpleado->get("userName"));
         $empleados = $empleadoValidate->buscarClase();
@@ -99,6 +103,11 @@ class Empleados {
 
         $miEmpleado->set("fechaAlta","NO_INCLUDE");
         $miEmpleado->set("password","NO_INCLUDE");
+
+        if ($miEmpleado->get("fechaDeNacimiento")==""){
+            $miEmpleado->set("fechaDeNacimiento","NULL");
+        }
+
 
         $empleadoValidate = new Empleado();
         $empleadoValidate->set("userName",$miEmpleado->get("userName"));

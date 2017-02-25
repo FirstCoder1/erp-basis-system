@@ -34,6 +34,10 @@ class Clientes {
         $miCliente->set("idCliente","NULL");
         $miCliente->set("fechaAlta","CURRENT_TIMESTAMP");
 
+        if ($miCliente->get("fechaDeNacimiento")==""){
+            $miCliente->set("fechaDeNacimiento","NULL");
+        }
+
         $salida = array();
 
         if ($miCliente->agregar()){
@@ -48,6 +52,10 @@ class Clientes {
     }
 
     public static function editar( Cliente $miCliente){
+
+        if ($miCliente->get("fechaDeNacimiento")==""){
+            $miCliente->set("fechaDeNacimiento","NULL");
+        }
 
         $miCliente->set("fechaAlta","NO_INCLUDE");
 

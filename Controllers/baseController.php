@@ -96,7 +96,30 @@ elseif ($action == "clienteEditar"){
 }
 
 elseif ($action == "todosViajesClientesPuntos"){
-    echo json_encode(Viajes::todosViajesClientesPuntosArreglo());
+
+    $salida = Viajes::viajesClientesArrelo();
+
+    if ($salida["success"]){
+        $viajes = array();
+        foreach ($salida["todos"] as $viaje){
+            $viaje["puntos"] = array();
+            $viajes[$viaje["idViaje"]] = $viaje;
+        }
+
+        $salida = Puntos::todosArrelo();
+        if ($salida["success"]){
+            foreach ($salida["todos"] as $punto){
+                array_push($viajes[$punto["idViaje"]]["puntos"],$punto);
+            }
+            $salida["todos"] = array();
+            foreach ($viajes as $viaje){
+                array_push($salida["todos"],$viaje);
+            }
+        }
+
+    }
+
+    echo json_encode($salida);
 }
 elseif ($action == "viajeAgregar"){
 
@@ -104,6 +127,9 @@ elseif ($action == "viajeAgregar"){
     $miPunto = new Punto();
 
     $miViaje->set("idViaje",$_POST["idViaje"]);
+    $miViaje->set("destinoEstado",$_POST["destinoEstado"]);
+    $miViaje->set("destinoLugar",$_POST["destinoLugar"]);
+    $miViaje->set("kilometros",$_POST["kilometros"]);
     $miViaje->set("idCliente",$_POST["idCliente"]);
 
     $salida = Viajes::agregar($miViaje);
@@ -112,7 +138,8 @@ elseif ($action == "viajeAgregar"){
 
         $miPunto->set("idViaje",$salida["lastId"]);
         foreach ($_POST["puntos"] as $key => $value) {
-            $miPunto->set("fechaHora",$value["fechaHora"]);
+            $miPunto->set("fecha",$value["fecha"]);
+            $miPunto->set("hora",$value["hora"]);
             $miPunto->set("estadoDireccion",$value["estadoDireccion"]);
             $miPunto->set("delegacionMunicipioDireccion",$value["delegacionMunicipioDireccion"]);
             $miPunto->set("codigoPostalDireccion",$value["codigoPostalDireccion"]);
@@ -139,6 +166,9 @@ elseif ($action == "viajeEditar"){
     $miPunto = new Punto();
 
     $miViaje->set("idViaje",$_POST["idViaje"]);
+    $miViaje->set("destinoEstado",$_POST["destinoEstado"]);
+    $miViaje->set("destinoLugar",$_POST["destinoLugar"]);
+    $miViaje->set("kilometros",$_POST["kilometros"]);
     $miViaje->set("idCliente",$_POST["idCliente"]);
 
     $salida = Viajes::editar($miViaje);
@@ -154,7 +184,8 @@ elseif ($action == "viajeEditar"){
         }
 
         foreach ($_POST["puntos"] as $key => $value) {
-            $miPunto->set("fechaHora",$value["fechaHora"]);
+            $miPunto->set("fecha",$value["fecha"]);
+            $miPunto->set("hora",$value["hora"]);
             $miPunto->set("estadoDireccion",$value["estadoDireccion"]);
             $miPunto->set("delegacionMunicipioDireccion",$value["delegacionMunicipioDireccion"]);
             $miPunto->set("codigoPostalDireccion",$value["codigoPostalDireccion"]);

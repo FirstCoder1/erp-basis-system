@@ -6,7 +6,8 @@ class Punto extends BaseModel
 
     protected   $_tableName = "Puntos";
     protected   $idPunto;
-    protected   $fechaHora;
+    protected   $fecha;
+    protected   $hora;
     protected   $estadoDireccion;
     protected   $delegacionMunicipioDireccion;
     protected   $codigoPostalDireccion;

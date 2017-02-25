@@ -30,6 +30,24 @@ class Viajes {
 
         return $salida;
     }
+    public static function todosClase(){
+
+        $miViaje = new Viaje();
+        $viajes = $miViaje->buscarClase();
+
+        $salida = array();
+        if (count($viajes) > 0){
+
+            $salida["success"] = true ;
+            $salida["todos"] = $viajes ;
+
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando viajes.";
+        }
+
+        return $salida;
+    }
 
     public static function todosViajesClientesPuntosArreglo(){
 
@@ -55,6 +73,9 @@ class Viajes {
         $miViaje->set("idViaje","NULL");
         $miViaje->set("fechaAlta","CURRENT_TIMESTAMP");
 
+        if ($miViaje->get("kilometros")==""){
+            $miViaje->set("kilometros","NULL");
+        }
 
         $salida = array();
 
@@ -93,6 +114,10 @@ class Viajes {
 
         $miViaje->set("fechaAlta","NO_INCLUDE");
 
+        if ($miViaje->get("kilometros")==""){
+            $miViaje->set("kilometros","NULL");
+        }
+
         $clienteValidate = new Cliente();
         $clienteValidate->set("idCliente",$miViaje->get("idCliente"));
         $clientes = $clienteValidate->buscarClase();
@@ -114,6 +139,25 @@ class Viajes {
 
         return $salida;
 
+    }
+
+    public static function viajesClientesArrelo(){
+
+        $miViaje = new Viaje();
+        $viajes = $miViaje->viajesClientes();
+
+        $salida = array();
+        if (count($viajes) > 0){
+
+            $salida["success"] = true ;
+            $salida["todos"] = $viajes ;
+
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando viajes.";
+        }
+
+        return $salida;
     }
 
 }
