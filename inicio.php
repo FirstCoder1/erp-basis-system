@@ -44,6 +44,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/b-1.2.4/se-1.2.0/datatables.min.js"></script>
     <script src="./Views/Js/jquery-dateFormat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
 
 </head>																						            <!-- head-->
 
@@ -210,6 +211,7 @@
             </div>
 
             <div class="divModuloMain">
+
                 <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
                     <span class="alertMensaje"></span>
@@ -217,7 +219,7 @@
 
                 <div class="col-sm-12 acciones margen-abajo15">
                     <button type="button" class="btn-agregar btn btn-default btn-md ">Agregar Nuevo</button>
-                    <button id="empleadoEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
+                    <button id="empleadoEditar" type="button" class="btn-editar btn-needStelect btn btn-default btn-md" disabled>Editar</button>
                 </div>
 
                 <div class="divMainForm collapse margen-abajo30">
@@ -459,6 +461,7 @@
                     <tbody>
                     </tbody>
                 </table>
+
             </div>
 
         </div>                                  <!--Modulo Empleados-->
@@ -478,13 +481,14 @@
             </div>
 
             <div class="divModuloMain">
+
                 <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
                     <span class="alertMensaje"></span>
                 </div>
 
                 <div class="col-sm-12 acciones margen-abajo15">
-                    <button id="contraseñaEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Asignar contraseña</button>
+                    <button id="contraseñaEditar" type="button" class="btn-editar btn-needStelect btn btn-default btn-md" disabled>Asignar contraseña</button>
                 </div>
 
 
@@ -593,7 +597,7 @@
 
                 <div class="col-sm-12 acciones margen-abajo15">
                     <button type="button" class="btn-agregar btn btn-default btn-md ">Agregar Nuevo</button>
-                    <button id="clienteEditar" type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
+                    <button id="clienteEditar" type="button" class="btn-editar btn-needStelect btn btn-default btn-md" disabled>Editar</button>
                 </div>
 
                 <div class="divMainForm collapse margen-abajo30">
@@ -830,6 +834,7 @@
             </div>
 
             <div class="divModuloMain">
+
                 <div class="alert alert-danger alert-dismissable collapse margen-arriba15 text-left">
                     <a class="close collapseDad">×</a>
                     <span class="alertMensaje"></span>
@@ -837,7 +842,8 @@
 
                 <div class="col-sm-12 acciones margen-abajo15">
                     <button type="button" class="btn-agregar btn btn-default btn-md">Agregar Nuevo</button>
-                    <button type="button" class="btn-editar btn btn-default btn-md" disabled>Editar</button>
+                    <button type="button" class="btn-editar btn-needStelect btn btn-default btn-md" disabled>Editar</button>
+                    <button type="button" class="btn-PDF btn-needStelect btn btn-default btn-md margen-izquierda15" disabled>PDF</button>
                 </div>
 
                 <div class="divMainForm collapse col-sm-12 margen-abajo30">
@@ -1144,6 +1150,7 @@
                     <tbody>
                     </tbody>
                 </table>
+
             </div>
 
         </div>                                  <!--Modulo Viajes-->

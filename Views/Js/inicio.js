@@ -73,12 +73,12 @@ $(document).ready(function () {
         })
             .done(function (data) {
                 if (data.success) {
-                    console.log(data);
                     tablaHtml.DataTable()
                         .row().deselect()
                         .clear()
                         .rows.add(data.todos).draw();
-                } else {
+                }
+                else {
 
                     alerta(tablaHtml,"error","<strong>¡Error!: </strong>"+data.error);
 
@@ -2073,16 +2073,31 @@ $(document).ready(function () {
 
     });
 
+    theDivViajes.find('.btn-PDF').click(function (evt) {
+
+
+        var selected = theDivViajes.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+
+        console.log(selected);
+
+        var doc = new jsPDF();
+        doc.text(10, 10, selected.nombre);
+        doc.output('dataurlnewwindow');
+
+        var fileName = prompt('How to name the example PDF file?');
+
+    });
+
 
 
 /* ---------------------------------------------Esto tiene que ir despues de la inicializacion de todas las datatales */
 
     $('table.mainTableDiv').DataTable().on( 'select', function () {
-        $(this).closest(".divModuloMain").children(".acciones").children(".btn-editar")
+        $(this).closest(".divModuloMain").children(".acciones").children(".btn-needStelect")
             .prop('disabled', false);
     } );
     $('table.mainTableDiv').DataTable().on( 'deselect', function () {
-        $(this).closest(".divModuloMain").children(".acciones").children(".btn-editar")
+        $(this).closest(".divModuloMain").children(".acciones").children(".btn-needStelect")
             .prop('disabled', true);
     } );
 
