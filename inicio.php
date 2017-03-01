@@ -27,20 +27,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          media="all">
     <link rel="stylesheet"
-          href="./Views/Style/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.13/b-1.2.4/se-1.2.0/datatables.min.css"/>
+          href="./Views/Style/font-awesome-4.7.0/css/font-awesome.min.css"
+          media="all">
+    <link rel="stylesheet"
+          href="https://cdn.datatables.net/v/dt/dt-1.10.13/b-1.2.4/se-1.2.0/datatables.min.css"
+          media="all"/>
 
 
 
-    <link rel="stylesheet" href="./Views/Style/main.css">	                                    <!--Mi hoja de estilo-->
+    <link rel="stylesheet" href="./Views/Style/main.css" media="all">	                        <!--Mi hoja de estilo-->
 
 
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"	                      <!--Librerias jQuery y Boostrap-->
-    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-    crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/b-1.2.4/se-1.2.0/datatables.min.js"></script>
     <script src="./Views/Js/jquery-dateFormat.js"></script>
@@ -1157,8 +1161,6 @@
 
 
     </div>                                          <!--Contenedor Viajes-->
-
-
 
 
 

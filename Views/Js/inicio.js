@@ -31,6 +31,7 @@ $(document).ready(function () {
 
 
 
+
     $(".irAInicio").click( function (evt) {
         irAInicio();
     });                                                       /*Ir al inicio*/
@@ -2075,16 +2076,99 @@ $(document).ready(function () {
 
     theDivViajes.find('.btn-PDF').click(function (evt) {
 
-
         var selected = theDivViajes.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
 
-        console.log(selected);
+        console.log(selected)
 
-        var doc = new jsPDF();
-        doc.text(10, 10, selected.nombre);
-        doc.output('dataurlnewwindow');
+        var myWindow = window.open('','_blank','width=800,height=600');
+        myWindow.document.write('' +
+            '<head>																							            <!-- head-->'+
+            '<meta charset="UTF-8">'+
+            '<meta name="description" content="descripcion">'+
+            '<meta name="keywords" content="keywords">'+
+            '<meta name="author" content="Oscar Camacho Urriolagoitia">'+
+            '<title>Reporte Viaje </title>'+
 
-        var fileName = prompt('How to name the example PDF file?');
+            '<meta name="viewport" content="width=device-width, initial-scale=1">'+
+
+            '<link rel="stylesheet"'+
+                'href="./Views/test/bootstrap/css/bootstrap.css"'+
+                'media="all">'+
+            '<link rel="stylesheet"'+
+                'href="./Views/Style/font-awesome-4.7.0/css/font-awesome.min.css"'+
+                'media="all">'+
+            '<link rel="stylesheet"'+
+                'href="https://cdn.datatables.net/v/dt/dt-1.10.13/b-1.2.4/se-1.2.0/datatables.min.css"'+
+                'media="all"/>'+
+
+            '<link rel="stylesheet" href="./Views/Style/reportes.css" media="all">	                        <!--Mi hoja de estilo-->'+
+
+
+            '<script src="https://code.jquery.com/jquery-3.1.1.min.js"'+
+            'integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="'+
+            'crossorigin="anonymous"></script>'+
+
+            '<script src="./Views/test/bootstrap/js/bootstrap.js"></script>'+
+            '<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.13/b-1.2.4/se-1.2.0/datatables.min.js"></script>'+
+            '<script src="./Views/Js/jquery-dateFormat.js"></script>'+
+            '<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>'+
+
+            '</head>');
+
+        myWindow.document.write('' +
+            '<body class="background-blanco color-negro paddingBotom50">'+
+
+                '<div id="divViajes" class="container"> 				                            <!--Contenedor Viajes-->'+
+                    '<div class="col-xs-12 col-sm-12 paddingCero">                                               <!--Modulo Viajes-->'+
+
+                        '<div class="divModuloEncabezado">'+
+                            '<div class="modulo-icon viajesIcon">'+
+                                '<i class="fa fa-suitcase fa-3x" aria-hidden="true"></i>'+
+                            '</div>'+
+                            '<h2 class="floatLeft margen-izquierda15">Reporte de viaje</h2>'+
+                        '</div>'+
+
+                        '<div class="divModuloMain">' +
+
+                        '<div class="col-sm-12 acciones margen-abajo15">'+
+                            '<div class="panel panel-default">'+
+                                '<div class="panel-heading">' +
+                                    '<div class="panel-title pull-left">Cliente:</div>'+
+                                    '<div class="panel-title pull-right">ID:'+selected.idCliente+'</div>'+
+                                    '<div class="clearfix"></div>' +
+            '                   </div>' +
+                                '<div class="panel-body">' +
+            '                       <div class="col-sm-12 margen-abajo15">Nombre: <small class="nowrap">' +selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno+'</small></div>'+
+            '                       <div class="col-sm-4 nowrap">Telefono Movil: <small>' +selected.telefonoMovil+'</small><br></div>'+
+            '                       <div class="col-sm-4 nowrap">Telefono Local: <small>' +selected.telefonoLocal+'</small></div>'+
+            '                       <div class="col-sm-4 nowrap">Correo electronico: <small>' +selected.email+'</small></div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+
+
+                        '</div>'+
+
+                    '</div>                                  <!--Modulo Viajes-->'+
+
+
+                '</div>                                          <!--Contenedor Viajes-->'+
+
+            '</body>');
+        /*myWindow.print();*/
+
+
+
+        var print = document.createElement("div");
+        $(print).html('<p class="color-blanco">Viajes PDF</p>');
+        console.log(print);
+
+        /*var printDoc = new jsPDF('p','mm','letter');
+
+        printDoc.fromHTML(print, 0, 0, {top: 100, bottom: 100, left: 100, width: 100});
+        printDoc.output('dataurlnewwindow');*/
+
+
 
     });
 

@@ -240,19 +240,21 @@ div.dataTables_wrapper {
 
 
 @media screen and (max-width: 767px) {
-    body{
+    /*body{
         padding-top: 104px;
-    }
+    }*/
 }
 
 @media screen and (min-width: 768px) {
-    body{
+    /*body{
         padding-top: 51px;
-    }
+    }*/
 }
 
 @media print {
     #headerDiv{
         position: inherit;
     }
+
+
 }
