@@ -2082,6 +2082,7 @@ $(document).ready(function () {
 
         var element = $(this);
 
+
         $.ajax({
             url: "./Controllers/Reporte.php",
             type: 'POST',
@@ -2095,8 +2096,7 @@ $(document).ready(function () {
                 console.log(data);
                 if (data.success) {
 
-                    $(this).attr("href", url);
-                    $(this).attr("target", "_blank");
+
 
 
                     /*element.closest(".divMainForm").removeClass("in");
