@@ -2082,6 +2082,9 @@ $(document).ready(function () {
 
         var element = $(this);
 
+/*
+        window.location.href = "./Controllers/Reporte.php";
+*/
 
         $.ajax({
             url: "./Controllers/Reporte.php",
@@ -2099,11 +2102,11 @@ $(document).ready(function () {
 
 
 
-                    /*element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").removeClass("in");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(theDivViajes.find('.mainTableDiv'));*/
+                    actualizatabla(theDivViajes.find('.mainTableDiv'));
                 } else {
 
                     alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
