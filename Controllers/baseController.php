@@ -204,55 +204,6 @@ elseif ($action == "viajeEditar"){
     }
 
 }
-elseif ($action == "viajePDF"){
-
-
-
-    /*$miViaje = new Viaje();
-    $miPunto = new Punto();
-
-    $miViaje->set("idViaje",$_POST["idViaje"]);
-    $miViaje->set("destinoEstado",$_POST["destinoEstado"]);
-    $miViaje->set("destinoLugar",$_POST["destinoLugar"]);
-    $miViaje->set("kilometros",$_POST["kilometros"]);
-    $miViaje->set("idCliente",$_POST["idCliente"]);
-
-    $salida = Viajes::editar($miViaje);
-
-    if ($salida["success"]){
-
-        $miPunto->set("idViaje",$miViaje->get("idViaje"));
-
-        $salida = Puntos::eliminarPorID($miPunto);
-
-        if(!$salida["success"]){
-            echo json_encode($salida);
-        }
-
-        foreach ($_POST["puntos"] as $key => $value) {
-            $miPunto->set("fecha",$value["fecha"]);
-            $miPunto->set("hora",$value["hora"]);
-            $miPunto->set("estadoDireccion",$value["estadoDireccion"]);
-            $miPunto->set("delegacionMunicipioDireccion",$value["delegacionMunicipioDireccion"]);
-            $miPunto->set("codigoPostalDireccion",$value["codigoPostalDireccion"]);
-            $miPunto->set("coloniaDireccion",$value["coloniaDireccion"]);
-            $miPunto->set("calleNumeroDireccion",$value["calleNumeroDireccion"]);
-            $miPunto->set("descripcionDireccion",$value["descripcionDireccion"]);
-            $salida = Puntos::agregar($miPunto);
-            if (!$salida["success"]){
-                echo json_encode($salida);
-            }
-        }
-        echo json_encode($salida);
-
-    }else{
-        echo json_encode($salida);
-    }*/
-
-    echo json_encode(true);
-
-
-}
 
 
 

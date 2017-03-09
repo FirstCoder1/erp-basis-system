@@ -2080,43 +2080,17 @@ $(document).ready(function () {
 
         console.log(selected);
 
-        var element = $(this);
+        var myForm = $('<form id="hereiamtheone" class="" action="./Controllers/baseReporte.php" target="_blank" method="post"></form>');
+        myForm.append('<input type="text" name="action" value="viaje">');
 
-/*
-        window.location.href = "./Controllers/Reporte.php";
-*/
+        var data = $('<input type="text" name="viaje">');
+        data.val(JSON.stringify(selected));
 
-        $.ajax({
-            url: "./Controllers/Reporte.php",
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                action: "viajePDF",
-                viaje: selected
-            }
-        })
-            .done(function (data) {
-                console.log(data);
-                if (data.success) {
+        myForm.append(data);
+        $('body').append(myForm);
+        myForm.submit();
+        myForm.remove();
 
-
-
-
-                    element.closest(".divMainForm").removeClass("in");
-                    element.trigger('reset');
-
-                    alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(theDivViajes.find('.mainTableDiv'));
-                } else {
-
-                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
-
-
-                }
-            })
-            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error: " + errorThrown);
-            });
 
     });
 
