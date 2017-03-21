@@ -7,7 +7,7 @@
 
 	define("SESSIONTIMEOUT", "30"); 				//En minutos
 
-	define("APPNAME", "Sistema");               //TODO - Nombre del sistema.
+	define("APPNAME", "SystemTours");               //TODO - Nombre del sistema.
 
 /*
 COMENTARIOS GENERALES:

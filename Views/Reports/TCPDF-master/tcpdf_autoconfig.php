@@ -110,7 +110,7 @@ if (!defined('PDF_HEADER_LOGO')) {
 
 if (!defined('PDF_HEADER_LOGO_WIDTH')) {
 	if (!empty($tcpdf_header_logo)) {
-		define ('PDF_HEADER_LOGO_WIDTH', 30);
+		define ('PDF_HEADER_LOGO_WIDTH', 40);
 	} else {
 		define ('PDF_HEADER_LOGO_WIDTH', 0);
 	}
