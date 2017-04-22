@@ -73,10 +73,6 @@ class Viajes {
         $miViaje->set("idViaje","NULL");
         $miViaje->set("fechaAlta","CURRENT_TIMESTAMP");
 
-        if ($miViaje->get("kilometros")==""){
-            $miViaje->set("kilometros","NULL");
-        }
-
         $salida = array();
 
         if($miViaje->get("idCliente") == ""){
@@ -109,7 +105,6 @@ class Viajes {
         return $salida;
 
     }
-
     public static function editar( Viaje $miViaje){
 
         $miViaje->set("fechaAlta","NO_INCLUDE");

@@ -6,6 +6,10 @@ require_once __DIR__."/../Autoload.php";                              //InclusiÃ
 \APP\Autoload::run();                                                                                 //Arranca Autoload
 
                                                                                                          //Declaraciones
+use APP\Models\Unidad;
+use APP\Models\Propietario;
+use APP\Models\Chofer;
+use APP\Models\Cotizacion;
 use APP\Models\Punto;
 use APP\Models\Viaje;
 use APP\Models\Cliente;
@@ -15,6 +19,9 @@ use App\Utils\Log;
 
 $_GET   = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);                                        //Limpia entrada
 $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+file_put_contents('php://stderr', print_r($_POST, TRUE));
+
 
 $action = $_POST["action"];
 unset($_POST["action"]);
@@ -129,12 +136,15 @@ elseif ($action == "viajeAgregar"){
     $miViaje->set("idViaje",$_POST["idViaje"]);
     $miViaje->set("destinoEstado",$_POST["destinoEstado"]);
     $miViaje->set("destinoLugar",$_POST["destinoLugar"]);
+    $miViaje->set("salidaFechaHora",$_POST["salidaFechaHora"]);
+    $miViaje->set("regresoFechaHora",$_POST["regresoFechaHora"]);
+    $miViaje->set("diasNum",$_POST["diasNum"]);
     $miViaje->set("kilometros",$_POST["kilometros"]);
+    $miViaje->set("temporada",$_POST["temporada"]);
     $miViaje->set("idCliente",$_POST["idCliente"]);
-
     $salida = Viajes::agregar($miViaje);
 
-    if ($salida["success"]){
+    if ($salida["success"] && isset($_POST["puntos"])){
 
         $miPunto->set("idViaje",$salida["lastId"]);
         foreach ($_POST["puntos"] as $key => $value) {
@@ -168,7 +178,11 @@ elseif ($action == "viajeEditar"){
     $miViaje->set("idViaje",$_POST["idViaje"]);
     $miViaje->set("destinoEstado",$_POST["destinoEstado"]);
     $miViaje->set("destinoLugar",$_POST["destinoLugar"]);
+    $miViaje->set("salidaFechaHora",$_POST["salidaFechaHora"]);
+    $miViaje->set("regresoFechaHora",$_POST["regresoFechaHora"]);
+    $miViaje->set("diasNum",$_POST["diasNum"]);
     $miViaje->set("kilometros",$_POST["kilometros"]);
+    $miViaje->set("temporada",$_POST["temporada"]);
     $miViaje->set("idCliente",$_POST["idCliente"]);
 
     $salida = Viajes::editar($miViaje);
@@ -183,7 +197,10 @@ elseif ($action == "viajeEditar"){
             echo json_encode($salida);
         }
 
-        foreach ($_POST["puntos"] as $key => $value) {
+
+
+        if(isset($_POST["puntos"])){
+            foreach ($_POST["puntos"] as $key => $value) {
             $miPunto->set("fecha",$value["fecha"]);
             $miPunto->set("hora",$value["hora"]);
             $miPunto->set("estadoDireccion",$value["estadoDireccion"]);
@@ -195,9 +212,13 @@ elseif ($action == "viajeEditar"){
             $salida = Puntos::agregar($miPunto);
             if (!$salida["success"]){
                 echo json_encode($salida);
+                }
             }
+
         }
+
         echo json_encode($salida);
+
 
     }else{
         echo json_encode($salida);
@@ -205,7 +226,140 @@ elseif ($action == "viajeEditar"){
 
 }
 
+elseif ($action == "todosCotizacionesViajes"){
 
+    $salida = Cotizaciones::cotizacionesViajes();
+
+    file_put_contents('php://stderr', print_r($salida, TRUE));
+
+    echo json_encode($salida);
+}
+elseif ($action == "cotizacionAgregar"){
+
+    $miCotizacion = new Cotizacion();
+
+    $miCotizacion->set("idCotizacion",$_POST["idCotizacion"]);
+    $miCotizacion->set("tipoUnidad",$_POST["tipoUnidad"]);
+    $miCotizacion->set("precioCombustible",$_POST["precioCombustible"]);
+    $miCotizacion->set("costoCombustible",$_POST["costoCombustible"]);
+    $miCotizacion->set("peaje",$_POST["peaje"]);
+    $miCotizacion->set("sueldoChofer",$_POST["sueldoChofer"]);
+    $miCotizacion->set("hospedajeChofer",$_POST["hospedajeChofer"]);
+    $miCotizacion->set("extras",$_POST["extras"]);
+    $miCotizacion->set("cotizacion",$_POST["cotizacion"]);
+    $miCotizacion->set("idViaje",$_POST["idViaje"]);
+
+    $salida = Cotizaciones::agregar($miCotizacion);
+
+
+    echo json_encode($salida);
+
+}
+elseif ($action == "cotizacionEditar"){
+
+    $miModelo = new Cotizacion();
+
+    foreach ($_POST as $key => $value) {
+        $miModelo->set($key, $value);
+    }
+
+     echo json_encode(Cotizaciones::editar($miModelo));
+
+}
+
+elseif ($action == "choferesTodos"){
+    echo json_encode(Choferes::todosArrelo());
+}
+elseif ($action == "choferAgregar"){
+
+    $miModelo = new Chofer();
+
+    foreach ($_POST as $key => $value) {
+        $miModelo->set($key, $value);
+    }
+
+    echo json_encode(Choferes::agregar($miModelo));
+
+}
+elseif ($action == "choferEditar"){
+
+    $miModelo = new Chofer();
+
+    foreach ($_POST as $key => $value) {
+        $miModelo->set($key, $value);
+    }
+
+    echo json_encode(Choferes::editar($miModelo));
+
+}
+
+elseif ($action == "propietariosTodos"){
+    echo json_encode(Propietarios::todosArrelo());
+}
+elseif ($action == "propietarioAgregar"){
+
+    $miModelo = new Propietario();
+
+    foreach ($_POST as $key => $value) {
+        $miModelo->set($key, $value);
+    }
+
+    echo json_encode(Propietarios::agregar($miModelo));
+
+}
+elseif ($action == "propietarioEditar"){
+
+    $miModelo = new Propietario();
+
+    foreach ($_POST as $key => $value) {
+        $miModelo->set($key, $value);
+    }
+
+    echo json_encode(Propietarios::editar($miModelo));
+
+}
+
+elseif ($action == "todosUnidadesPropietarios"){
+
+    $salida = Unidades::unidadesPropietariosArrelo();
+
+    echo json_encode($salida);
+}
+elseif ($action == "unidadAgregar"){
+
+    $miUnidad = new Unidad();
+
+    $miUnidad->set("idUnidad",$_POST["idUnidad"]);
+    $miUnidad->set("marca",$_POST["marca"]);
+    $miUnidad->set("modelo",$_POST["modelo"]);
+    $miUnidad->set("ano",$_POST["ano"]);
+    $miUnidad->set("personas",$_POST["personas"]);
+    $miUnidad->set("idPropietario",$_POST["idPropietario"]);
+    $salida = Unidades::agregar($miUnidad);
+
+    echo json_encode($salida);
+
+
+
+}
+elseif ($action == "unidadEditar"){
+
+    $miUnidad = new Unidad();
+
+    $miUnidad->set("idUnidad",$_POST["idUnidad"]);
+    $miUnidad->set("marca",$_POST["marca"]);
+    $miUnidad->set("modelo",$_POST["modelo"]);
+    $miUnidad->set("ano",$_POST["ano"]);
+    $miUnidad->set("personas",$_POST["personas"]);
+    $miUnidad->set("idPropietario",$_POST["idPropietario"]);
+
+    $salida = Unidades::editar($miUnidad);
+
+
+    echo json_encode($salida);
+
+
+}
 
 
 else{

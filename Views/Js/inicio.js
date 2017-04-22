@@ -63,7 +63,6 @@ $(document).ready(function () {
         $("body").addClass("background-blanco");
     }
     function actualizatabla(tablaHtml){
-
         $.ajax({
             url     : "./Controllers/baseController.php",
             type    : 'POST',
@@ -1667,18 +1666,30 @@ $(document).ready(function () {
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
             "columns": [
                 { "data": "idViaje" },
-                { "targets": 0,
+                { "targets": 1,
                     "data": function ( row, type, val, meta ) {
                     return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
                 } },
                 { "data": "nombre" },
                 { "data": "apPaterno" },
                 { "data": "apMaterno" },
-                { "targets": 6,
+                { "data": "destinoEstado" },
+                { "targets": 7,
                     "data": function ( row, type, val, meta ) {
-                        return row.destinoEstado+", <br>"+((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
+                        return ((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
                     } },
-                { "targets": 5,
+                { "targets": 8,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.salidaFechaHora, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    }  },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.regresoFechaHora, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "diasNum" },
+                { "data": "kilometros" },
+                { "data": "temporada" },
+                { "targets": 12,
                     "data": function ( row, type, val, meta ) {
 
                         var fecha = "";
@@ -1768,8 +1779,7 @@ $(document).ready(function () {
                         });
                         salida +=  "</table>";
                         return salida;
-                    } },
-                { "data": "kilometros" }
+                    } }
             ]
         });
 
@@ -1808,22 +1818,26 @@ $(document).ready(function () {
         theDivViajes.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
     } );
 
+    theDivViajes.on('click', '.agregarPuntoUno', function (){
+        $(this).closest(".panel").next(".puntos").prepend(panelNuevo).hide().show('fast');
+    });
+
     theDivViajes.on('click', '.agregarPunto', function (){
         $(this).closest(".panel").after( panelNuevo ).next().hide().show('fast');
     });
 
     var panelNuevo = '<div class="panel panel-default margen-arriba15 panelNuevo">'+
         '<div class="panel-heading">'+
-        'Itinerario:'+
+        'Punto de itinerario:'+
         '</div>'+
         '<div class="panel-body">'+
         '<div class="punto">'+
         '<div class="form-group-sm">'+
-        '<label class="control-label col-sm-3">*Fecha:</label>'+
+        '<label class="control-label col-sm-3">Fecha:</label>'+
         '<div class="col-sm-7">'+
         '<input type="date"'+
         'class="form-control fecha"'+
-        'required>'+
+        '>'+
         '</div>'+
         '</div>                                      <!--fecha-->'+
         '<div class="form-group-sm">'+
@@ -1951,8 +1965,8 @@ $(document).ready(function () {
         $(this).closest('.panel').find('.descripcionDireccion').val($(this).closest('.puntos').first('.panel').find('.descripcionDireccion').val());
     });
     theDivViajes.on('click', '.repetirAnterior', function (){
-        $(this).closest('.panel').find('.fecha').val($(this).closest('.puntos').first('.panel').find('.fecha').val());
-        $(this).closest('.panel').find('.hora').val($(this).closest('.puntos').first('.panel').find('.hora').val());
+        $(this).closest('.panel').find('.fecha').val($(this).closest('.panel').prev('.panel').find('.fecha').val());
+        $(this).closest('.panel').find('.hora').val($(this).closest('.panel').prev('.panel').find('.hora').val());
         $(this).closest('.panel').find('.estadoDireccion').val($(this).closest('.panel').prev('.panel').find('.estadoDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.delegacionMunicipioDireccion').val($(this).closest('.panel').prev('.panel').find('.delegacionMunicipioDireccion').val()).trigger('change');
         $(this).closest('.panel').find('.codigoPostalDireccion').val($(this).closest('.panel').prev('.panel').find('.codigoPostalDireccion').val()).trigger('change');
@@ -2004,7 +2018,11 @@ $(document).ready(function () {
                 idViaje: $(this).find('.idViaje').val(),
                 destinoEstado: $(this).find('.destinoEstado').val(),
                 destinoLugar: $(this).find('.destinoLugar').val(),
+                salidaFechaHora: $(this).find('.salidaFechaHora').val(),
+                regresoFechaHora: $(this).find('.regresoFechaHora').val(),
+                diasNum: $(this).find('.diasNum').val(),
                 kilometros: $(this).find('.kilometros').val(),
+                temporada: $(this).find('.temporada').val(),
                 idCliente: $(this).find('.idCliente').val(),
                 puntos: puntosVar
 
@@ -2040,36 +2058,37 @@ $(document).ready(function () {
         theDivViajes.find('.divMainForm form').find('.idViaje').val(selected.idViaje);
         theDivViajes.find('.divMainForm form').find('.destinoEstado').val(selected.destinoEstado);
         theDivViajes.find('.divMainForm form').find('.destinoLugar').val(selected.destinoLugar);
+        theDivViajes.find('.divMainForm form').find('.salidaFechaHora').val($.format.date(selected.salidaFechaHora, "yyyy-MM-ddTHH:mm"));
+        theDivViajes.find('.divMainForm form').find('.regresoFechaHora').val($.format.date(selected.regresoFechaHora, "yyyy-MM-ddTHH:mm"));
+        theDivViajes.find('.divMainForm form').find('.diasNum').val(selected.diasNum);
         theDivViajes.find('.divMainForm form').find('.kilometros').val(selected.kilometros);
+        theDivViajes.find('.divMainForm form').find('.temporada').val(selected.temporada);
         theDivViajes.find('.divMainForm form').find('.idCliente').val(selected.idCliente);
         theDivViajes.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
 
         var table =  selected.puntos;
-        $($(table)).find('tr').each(function( key, value ) {
+
+        $(table).each(function( key, value ) {
             if(key == 0){
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.fecha').val($($(value)).find('.fecha').attr('fecha'));
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.hora').val($($(value)).find('.fecha').attr('hora'));
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.estadoDireccion').val($($(value)).find('.fecha').html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.delegacionMunicipioDireccion').val($($(value)).find('.fecha').next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.codigoPostalDireccion').val($($(value)).find('.fecha').next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.coloniaDireccion').val($($(value)).find('.fecha').next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.calleNumeroDireccion').val($($(value)).find('.fecha').next().next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panelPrimero').find('.descripcionDireccion').val($($(value)).find('.fecha').next().next().next().next().next().html()).trigger('change');
+
+                theDivViajes.find('.divMainForm form').find('.agregarPuntoUno').trigger('click');
             }
-            else{
+            else {
 
                 theDivViajes.find('.divMainForm form .panel').last().find('.agregarPunto').trigger('click');
 
-                theDivViajes.find('.divMainForm form .panel').last().find('.fecha').val($($(value)).find('.fecha').attr('fecha'));
-                theDivViajes.find('.divMainForm form .panel').last().find('.hora').val($($(value)).find('.fecha').attr('hora'));
-                theDivViajes.find('.divMainForm form .panel').last().find('.estadoDireccion').val($($(value)).find('.fecha').html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.delegacionMunicipioDireccion').val($($(value)).find('.fecha').next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.codigoPostalDireccion').val($($(value)).find('.fecha').next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.coloniaDireccion').val($($(value)).find('.fecha').next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.calleNumeroDireccion').val($($(value)).find('.fecha').next().next().next().next().html()).trigger('change');
-                theDivViajes.find('.divMainForm form .panel').last().find('.descripcionDireccion').val($($(value)).find('.fecha').next().next().next().next().next().html()).trigger('change');
-
             }
+
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.fecha').val(value.fecha);
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.hora').val(value.hora);
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.estadoDireccion').val(value.estadoDireccion).trigger('change');
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.delegacionMunicipioDireccion').val(value.delegacionMunicipioDireccion).trigger('change');
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.codigoPostalDireccion').val(value.codigoPostalDireccion).trigger('change');
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.coloniaDireccion').val(value.coloniaDireccion).trigger('change');
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.calleNumeroDireccion').val(value.calleNumeroDireccion).trigger('change');
+            theDivViajes.find('.divMainForm form .panelNuevo').last().find('.descripcionDireccion').val(value.descripcionDireccion).trigger('change');
+
+
         });
 
     });
@@ -2092,10 +2111,556 @@ $(document).ready(function () {
         myForm.remove();
 
 
+    });//TODO
+
+
+    /* --------------------------------------------------------------------------------------     Cotizaciones        */
+
+    var theDivCotizaciones = $('#divCotizaciones');
+
+    theDivCotizaciones.find('.mainTableDiv')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idCotizacion" },
+                { "targets": 1,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "idViaje" },
+                { "data": "destinoEstado" },
+                { "targets": 4,
+                    "data": function ( row, type, val, meta ) {
+                        return ((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
+                    } },
+                { "data": "diasNum" },
+                { "data": "kilometros" },
+                { "data": "temporada" },
+                { "data": "tipoUnidad" },
+                { "data": "precioCombustible" },
+                { "data": "costoCombustible" },
+                { "data": "peaje" },
+                { "data": "sueldoChofer" },
+                { "data": "hospedajeChofer" },
+                { "data": "extras" },
+                { "targets": 15,
+                    "data": function ( row, type, val, meta ) {
+                        total = parseFloat(row.costoCombustible);
+                        total += parseFloat(row.peaje);
+                        total += parseFloat(row.sueldoChofer);
+                        total += parseFloat(row.hospedajeChofer);
+                        total += parseFloat(row.extras);
+                        return total;
+                    } },
+                { "data": "cotizacion" },
+                { "targets": 17,
+                    "data": function ( row, type, val, meta ) {
+                        total2 = parseFloat(row.cotizacion) - total;
+                        return total2;
+                    }  },
+                { "targets": 18,
+                    "data": function ( row, type, val, meta ) {
+                        total3 = (total2/parseFloat(row.cotizacion))*100;
+                        return total3.toFixed(2);
+                    }  }
+            ]
+        });
+
+    theDivCotizaciones.find('.divMainForm form table')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idViaje" },
+                { "targets": 1,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "destinoEstado" },
+                { "targets": 6,
+                    "data": function ( row, type, val, meta ) {
+                        return ((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
+                    } },
+                { "targets": 7,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.salidaFechaHora, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    }  },
+                { "targets": 8,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.regresoFechaHora, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "diasNum" },
+                { "data": "kilometros" },
+                { "data": "temporada" }
+            ]
+        });
+
+
+
+    theDivCotizaciones.find('.btn-agregar').click(function (evt) {
+        actualizatabla(theDivCotizaciones.find('.divMainForm form table'));
+    });
+    theDivCotizaciones.find('.divMainForm form table').DataTable().on( 'select', function () {
+        var selected = theDivCotizaciones.find('.divMainForm form table').DataTable().row( { selected: true } ).data();
+
+        theDivCotizaciones.find('.divMainForm form').find('.idViaje').val(selected.idViaje);
+    } );
+
+    theDivCotizaciones.find('.divMainForm form').submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.attr("accion")=="agregar"){
+            accion = "cotizacionAgregar";
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idCotizacion').val() != "" ){
+            accion = "cotizacionEditar";
+        }
+        else {
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
+            return;
+        }
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idCotizacion: $(this).find('.idCotizacion').val(),
+                tipoUnidad: $(this).find('.tipoUnidad').val(),
+                precioCombustible: $(this).find('.precioCombustible').val(),
+                costoCombustible: $(this).find('.costoCombustible').val(),
+                peaje: $(this).find('.peaje').val(),
+                sueldoChofer: $(this).find('.sueldoChofer').val(),
+                hospedajeChofer: $(this).find('.hospedajeChofer').val(),
+                extras: $(this).find('.extras').val(),
+                cotizacion: $(this).find('.cotizacion').val(),
+                idViaje: $(this).find('.idViaje').val()
+            }
+        })
+            .done(function (data) {
+                if (data.success) {
+
+                    element.closest(".divMainForm").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(theDivCotizaciones.find('.mainTableDiv'));
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+
+    theDivCotizaciones.find('.btn-editar').click(function (evt) {
+        actualizatabla(theDivCotizaciones.find('.divMainForm form table'));
+
+        var selected = theDivCotizaciones.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+
+        theDivCotizaciones.find('.divMainForm form').find('.idCotizacion').val(selected.idCotizacion);
+        theDivCotizaciones.find('.divMainForm form').find('.tipoUnidad').val(selected.tipoUnidad);
+        theDivCotizaciones.find('.divMainForm form').find('.precioCombustible').val(selected.precioCombustible);
+        theDivCotizaciones.find('.divMainForm form').find('.costoCombustible').val(selected.costoCombustible);
+        theDivCotizaciones.find('.divMainForm form').find('.peaje').val(selected.peaje);
+        theDivCotizaciones.find('.divMainForm form').find('.sueldoChofer').val(selected.sueldoChofer);
+        theDivCotizaciones.find('.divMainForm form').find('.hospedajeChofer').val(selected.hospedajeChofer);
+        theDivCotizaciones.find('.divMainForm form').find('.extras').val(selected.extras).trigger("change");
+        theDivCotizaciones.find('.divMainForm form').find('.cotizacion').val(selected.cotizacion).trigger("change");
+        theDivCotizaciones.find('.divMainForm form').find('.idViaje').val(selected.idViaje);
+
+    });
+
+    theDivCotizaciones.on('change',".suma", function() {
+
+        var suma = parseFloat(theDivCotizaciones.find('.divMainForm form').find('.costoCombustible').val())  || 0;
+        suma+= parseFloat(theDivCotizaciones.find('.divMainForm form').find('.peaje').val())  || 0;
+        suma+= parseFloat(theDivCotizaciones.find('.divMainForm form').find('.sueldoChofer').val())  || 0;
+        suma+= parseFloat(theDivCotizaciones.find('.divMainForm form').find('.hospedajeChofer').val())  || 0;
+        suma+= parseFloat(theDivCotizaciones.find('.divMainForm form').find('.extras').val())  || 0;
+
+        theDivCotizaciones.find('.divMainForm form').find('.costosTotal').val(suma);
+    });
+
+    theDivCotizaciones.on('change',".cotizacion", function() {
+
+        var ganancia = (parseFloat(theDivCotizaciones.find('.divMainForm form').find('.cotizacion').val())  || 0)-(parseFloat(theDivCotizaciones.find('.divMainForm form').find('.costosTotal').val())  || 0);
+
+        theDivCotizaciones.find('.divMainForm form').find('.utilidad').val(ganancia);
+        theDivCotizaciones.find('.divMainForm form').find('.utilidadP').val((ganancia/(parseFloat(theDivCotizaciones.find('.divMainForm form').find('.cotizacion').val())  || 0)*100).toFixed(2));
+    });
+
+    theDivCotizaciones.find('.btn-PDF').click(function (evt) {
+
+        var selected = theDivViajes.find('.mainTableDiv').DataTable().row({selected: true}).data();
+
+        console.log(selected);
+
+        var myForm = $('<form id="hereiamtheone" class="" action="./Controllers/baseReporte.php" target="_blank" method="post"></form>');
+        myForm.append('<input type="text" name="action" value="viaje">');
+
+        var data = $('<input type="text" name="viaje">');
+        data.val(JSON.stringify(selected));
+
+        myForm.append(data);
+        $('body').append(myForm);
+        myForm.submit();
+        myForm.remove();
+
+
+    });//TODO
+
+
+    /* ------------------------------------------------------------------------------------------------     Choferes     */
+
+    var theDivChoferes = $('#divChoferes');
+
+    theDivChoferes.find('.mainTableDiv')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "estadoDomicilio" },
+                { "data": "email" },
+                { "data": "telefonoLocal" },
+                { "data": "telefonoMovil" },
+                { "data": "curp" },
+                { "data": "fechaAlta"}
+            ]
+
+        });
+
+    theDivChoferes.find('.divMainForm form').submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.attr("accion")=="agregar"){
+            accion = "choferAgregar";
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idChofer').val() != "" ){
+            accion = "choferEditar";
+        }
+        else {
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
+            return;
+        }
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idChofer: $(this).find('.idChofer').val(),
+                nombre: $(this).find('.nombre').val(),
+                apPaterno: $(this).find('.apPaterno').val(),
+                apMaterno: $(this).find('.apMaterno').val(),
+                fechaDeNacimiento: $(this).find('.fechaDeNacimiento').val(),
+                estadoDomicilio: $(this).find('.direccionSelectEstado').val(),
+                delegacionMunicipioDomicilio: $(this).find('.direccionSelectDelegacionMunicipio').val(),
+                codigoPostalDomicilio: $(this).find('.direccionSelectCodigoPostal').val(),
+                coloniaDomicilio: $(this).find('.coloniaDomicilio').val(),
+                calleNumeroDomicilio: $(this).find('.calleNumeroDomicilio').val(),
+                email: $(this).find('.email').val(),
+                telefonoLocal: $(this).find('.telefonoLocal').val(),
+                telefonoMovil: $(this).find('.telefonoMovil').val(),
+                curp: $(this).find('.curp').val(),
+            }
+        })
+            .done(function (data) {
+
+                if (data.success) {
+
+                    element.closest(".divMainForm").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(theDivChoferes.find('.mainTableDiv'));
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+    theDivChoferes.find('.btn-editar').click(function (evt) {
+
+        var selected = theDivChoferes.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+        $.each(selected, function( key, value ) {
+
+            theDivChoferes.find('.divMainForm form').find('.'+key).val(value).trigger('change');
+
+        });
+
+    })
+
+
+
+    /* ------------------------------------------------------------------------------------------------     Propietarios     */
+
+    var theDivPropietarios = $('#divPropietarios');
+
+    theDivPropietarios.find('.mainTableDiv')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "estadoDomicilio" },
+                { "data": "email" },
+                { "data": "telefonoLocal" },
+                { "data": "telefonoMovil" },
+                { "data": "curp" },
+                { "data": "fechaAlta"}
+            ]
+
+        });
+
+    theDivPropietarios.find('.divMainForm form').submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.attr("accion")=="agregar"){
+            accion = "propietarioAgregar";
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idPropietario').val() != "" ){
+            accion = "propietarioEditar";
+        }
+        else {
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
+            return;
+        }
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idPropietario: $(this).find('.idPropietario').val(),
+                nombre: $(this).find('.nombre').val(),
+                apPaterno: $(this).find('.apPaterno').val(),
+                apMaterno: $(this).find('.apMaterno').val(),
+                fechaDeNacimiento: $(this).find('.fechaDeNacimiento').val(),
+                estadoDomicilio: $(this).find('.direccionSelectEstado').val(),
+                delegacionMunicipioDomicilio: $(this).find('.direccionSelectDelegacionMunicipio').val(),
+                codigoPostalDomicilio: $(this).find('.direccionSelectCodigoPostal').val(),
+                coloniaDomicilio: $(this).find('.coloniaDomicilio').val(),
+                calleNumeroDomicilio: $(this).find('.calleNumeroDomicilio').val(),
+                email: $(this).find('.email').val(),
+                telefonoLocal: $(this).find('.telefonoLocal').val(),
+                telefonoMovil: $(this).find('.telefonoMovil').val(),
+                curp: $(this).find('.curp').val(),
+            }
+        })
+            .done(function (data) {
+
+                if (data.success) {
+
+                    element.closest(".divMainForm").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(theDivPropietarios.find('.mainTableDiv'));
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+    theDivPropietarios.find('.btn-editar').click(function (evt) {
+
+        var selected = theDivPropietarios.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+        $.each(selected, function( key, value ) {
+
+            theDivPropietarios.find('.divMainForm form').find('.'+key).val(value).trigger('change');
+
+        });
+
+    })
+
+
+    /* ------------------------------------------------------------------------------------------------     Unidades        */
+
+    var theDivUnidades = $('#divUnidades');
+
+    theDivUnidades.find('.mainTableDiv')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idUnidad" },
+                { "targets": 1,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "marca" },
+                { "data": "modelo" },
+                { "data": "ano" },
+                { "data": "personas" },
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+            ]
+        });
+
+    theDivUnidades.find('.divMainForm form table')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "telefonoMovil" },
+                { "data": "telefonoLocal" },
+                { "data": "email" },
+                { "data": "estadoDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "curp" },
+                { "data": "fechaAlta"}
+            ]
+
+        });
+
+
+    theDivUnidades.find('.btn-agregar').click(function (evt) {
+        actualizatabla(theDivUnidades.find('.divMainForm form table'));
+    });
+    theDivUnidades.find('.divMainForm form table').DataTable().on( 'select', function () {
+        var selected = theDivUnidades.find('.divMainForm form table').DataTable().row( { selected: true } ).data();
+
+        theDivUnidades.find('.divMainForm form').find('.idPropietario').val(selected.idPropietario);
+        theDivUnidades.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
+    } );
+
+    theDivUnidades.find('.divMainForm form').submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.attr("accion")=="agregar"){
+            accion = "unidadAgregar";
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idUnidad').val() != "" ){
+            accion = "unidadEditar";
+        }
+        else {
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
+            return;
+        }
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idUnidad: $(this).find('.idUnidad').val(),
+                marca: $(this).find('.marca').val(),
+                modelo: $(this).find('.modelo').val(),
+                ano: $(this).find('.ano').val(),
+                personas: $(this).find('.personas').val(),
+                idPropietario: $(this).find('.idPropietario').val(),
+
+            }
+        })
+            .done(function (data) {
+                if (data.success) {
+
+                    element.closest(".divMainForm").removeClass("in");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(theDivUnidades.find('.mainTableDiv'));
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+
+    theDivUnidades.find('.btn-editar').click(function (evt) {
+        actualizatabla(theDivUnidades.find('.divMainForm form table'));
+
+        var selected = theDivUnidades.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+
+        theDivUnidades.find('.divMainForm form').find('.idUnidad').val(selected.idUnidad);
+        theDivUnidades.find('.divMainForm form').find('.marca').val(selected.marca);
+        theDivUnidades.find('.divMainForm form').find('.modelo').val(selected.modelo);
+        theDivUnidades.find('.divMainForm form').find('.ano').val(selected.ano);
+        theDivUnidades.find('.divMainForm form').find('.personas').val(selected.personas);
+        theDivUnidades.find('.divMainForm form').find('.idPropietario').val(selected.idPropietario);
+        theDivUnidades.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
+
     });
 
 
-/* ---------------------------------------------Esto tiene que ir despues de la inicializacion de todas las datatales */
+
+
+    /* ---------------------------------------------Esto tiene que ir despues de la inicializacion de todas las datatales */
 
     $('table.mainTableDiv').DataTable().on( 'select', function () {
         $(this).closest(".divModuloMain").children(".acciones").children(".btn-needStelect")

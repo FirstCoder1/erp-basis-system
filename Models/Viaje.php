@@ -9,7 +9,11 @@ class Viaje extends BaseModel
     protected   $idViaje;
     protected   $destinoEstado;
     protected   $destinoLugar;
+    protected   $salidaFechaHora;
+    protected   $regresoFechaHora;
+    protected   $diasNum;
     protected   $kilometros;
+    protected   $temporada;
     protected   $fechaAlta;
     protected   $idCliente;
 
