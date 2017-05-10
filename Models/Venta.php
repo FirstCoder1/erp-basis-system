@@ -2,27 +2,27 @@
 
 use App\Utils\Log;
 
-class Viaje extends BaseModel
+class Venta extends BaseModel
 {
 
-    protected   $_tableName = "Viajes";
-    protected   $idViaje;
-    protected   $destinoEstado;
-    protected   $destinoLugar;
-    protected   $salidaFechaHora;
-    protected   $regresoFechaHora;
-    protected   $diasNum;
-    protected   $kilometros;
-    protected   $temporada;
+    protected   $_tableName = "Ventas";
+    protected   $idVenta;
+    protected   $idUnidad;
+    protected   $idChofer;
     protected   $fechaAlta;
-    protected   $idCliente;
+    protected   $idCotizacion;
 
-    public function viajesClientes(){
+    public function ventasViajesClientesCotizaciones(){
 
 
-        $sql = "SELECT *
+        $sql = "SELECT Clientes.*, Viajes.* , Cotizaciones.*, Ventas.*, Unidades.*, Ventas.fechaAlta as fechaAltaVenta, Choferes.nombre as nombreCh, Choferes.apPaterno as apPaternoCh
                     FROM Clientes
-                    INNER JOIN Viajes ON Clientes.idCliente = Viajes.idCliente";
+                    INNER JOIN Viajes ON Clientes.idCliente = Viajes.idCliente
+                    INNER JOIN Cotizaciones ON Viajes.idViaje = Cotizaciones.idViaje
+                    INNER JOIN Ventas ON Cotizaciones.idCotizacion = Ventas.idCotizacion
+                    INNER JOIN Choferes ON Ventas.idChofer = Choferes.idChofer
+                    INNER JOIN Unidades ON Ventas.idUnidad = Unidades.idUnidad
+                    ";
 
         $stmt = Conexion::getConnection()->prepare($sql);
 
@@ -35,14 +35,32 @@ class Viaje extends BaseModel
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     }                                 /*mandar la respuesta diractamnete como json*/
-    public function sinCotizarViajesClientes(){
+    public function pendientesVentasViajesClientesCotizacionesPagos(){
 
 
-        $sql = "SELECT V.idViaje, V.fechaAlta, C.nombre, C.apPaterno, C.apMaterno, V.destinoEstado, V.destinoLugar, V.salidaFechaHora, V.regresoFechaHora, V.diasNum, V.kilometros, V.temporada
-                    FROM Clientes C
-                    INNER JOIN Viajes V ON C.idCliente = V.idCliente
-                    LEFT JOIN Cotizaciones K ON V.idViaje = K.idViaje
-                    WHERE K.idViaje IS NULL";
+        $sql = "SELECT Clientes.*, Viajes.* , Cotizaciones.*, Ventas.*, Unidades.*, Ventas.fechaAlta as fechaAltaVenta, Choferes.nombre as nombreCh, Choferes.apPaterno as apPaternoCh
+                    FROM Clientes
+                    INNER JOIN Viajes ON Clientes.idCliente = Viajes.idCliente
+                    INNER JOIN Cotizaciones ON Viajes.idViaje = Cotizaciones.idViaje
+                    INNER JOIN Ventas ON Cotizaciones.idCotizacion = Ventas.idCotizacion
+                    INNER JOIN Choferes ON Ventas.idChofer = Choferes.idChofer
+                    INNER JOIN Unidades ON Ventas.idUnidad = Unidades.idUnidad
+                    INNER JOIN 
+                     
+                          (SELECT S.idVenta
+                              FROM Cotizaciones
+                              INNER JOIN 
+                              
+                                      (SELECT Ventas.idVenta, Ventas.idCotizacion, SUM(Pagos.monto) as pagos
+                                            FROM  Ventas
+                                            INNER JOIN Pagos ON Ventas.idVenta = Pagos.idVenta
+                                            GROUP BY Ventas.idVenta) S 
+                              ON Cotizaciones.idCotizacion = S.idCotizacion
+                              WHERE Cotizaciones.cotizacion = S.pagos)   P 
+                     
+                     ON Ventas.idVenta != P.idVenta
+                    
+                    ";
 
         $stmt = Conexion::getConnection()->prepare($sql);
 
@@ -54,8 +72,47 @@ class Viaje extends BaseModel
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-    }                       /*mandar la respuesta diractamnete como json*/
+    }                                 /*mandar la respuesta diractamnete como json*/
+    public function ventasViajesPuntos(){
 
+
+        $sql = "SELECT *
+                    FROM Viajes
+                    INNER JOIN Cotizaciones ON Viajes.idViaje = Cotizaciones.idViaje
+                    INNER JOIN Ventas ON Cotizaciones.idCotizacion = Ventas.idCotizacion
+                    INNER JOIN Puntos ON Viajes.idViaje = Puntos.idViaje
+                    ";
+
+        $stmt = Conexion::getConnection()->prepare($sql);
+
+        try {
+            $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }                                 /*mandar la respuesta diractamnete como json*/
+    public function ventasPagos(){
+
+
+        $sql = "SELECT *
+                    FROM Ventas
+                    INNER JOIN Pagos ON Ventas.idVenta = Pagos.idVenta
+                    ";
+
+        $stmt = Conexion::getConnection()->prepare($sql);
+
+        try {
+            $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }                                 /*mandar la respuesta diractamnete como json*/
 
 
 }

@@ -29,6 +29,7 @@ $(document).ready(function () {
         }
     } );                   /*Valores por default de las jQuery DataTables*/
 
+    $("#headerDiv").fadeIn(500, function(){  $("#divMain").fadeIn(1500); });
 
 
 
@@ -40,10 +41,12 @@ $(document).ready(function () {
     });                                                   /*Cerrar sesion*/
 
     function irAInicio() {
-        $(".container").removeClass("in");
-        $("#divMain").addClass("in")
-        $("body").removeClass("background-blanco")
-        $("body").addClass("background-morado")
+        $(".container").fadeOut(0, function(){
+            $("body").removeClass("background-blanco");
+            $("body").addClass("background-morado");
+            $("#divMain").fadeIn("fast");
+        });
+
 
     }
     function cerrarSesion() {
@@ -54,39 +57,130 @@ $(document).ready(function () {
         var theDiv = $('#div'+$(this).attr('nombre'));
 
         irModulo(theDiv);
-        actualizatabla($(theDiv.find('.mainTableDiv')));
+        //actualizatabla($(theDiv.find('.mainTableDiv')));
+
+        var tablas = $(theDiv.find('.mainTableDiv'));
+        $.each(tablas, function( key, value ) {
+
+            if(key%2==0){
+                actualizatabla($(tablas[key,key+1]));
+            }
+
+        });
     });
     function irModulo(elementModulo){
-        $("#divMain").removeClass("in");
-        elementModulo.addClass("in");
-        $("body").removeClass("background-morado");
-        $("body").addClass("background-blanco");
+        $("#divMain").fadeOut(0, function(){
+            $("body").removeClass("background-morado");
+            $("body").addClass("background-blanco");
+            elementModulo.fadeIn("fast");
+        });
+
     }
     function actualizatabla(tablaHtml){
-        $.ajax({
-            url     : "./Controllers/baseController.php",
-            type    : 'POST',
-            dataType: 'json',
-            data    : {
-                action: tablaHtml.attr('controller')
-            }
-        })
-            .done(function (data) {
-                if (data.success) {
-                    tablaHtml.DataTable()
-                        .row().deselect()
-                        .clear()
-                        .rows.add(data.todos).draw();
-                }
-                else {
 
-                    alerta(tablaHtml,"error","<strong>¡Error!: </strong>"+data.error);
+        if (tablaHtml.attr('usedata') == 'comparacion'){
+            var selected = theDivCotizaciones.find('.divMainForm form table.viaje').DataTable().row( { selected: true } ).data();
 
+            if(!selected||theDivCotizaciones.find('.divMainForm form').find('.tipoUnidad').val()=="")return;
+
+            $.ajax({
+                url     : "./Controllers/baseController.php",
+                type    : 'POST',
+                dataType: 'json',
+                data    : {
+                    action: tablaHtml.attr('controller'),
+                    destinoEstado: selected.destinoEstado,
+                    destinoLugar: selected.destinoLugar,
+                    diasNum: selected.diasNum,
+                    tipoUnidad: theDivCotizaciones.find('.divMainForm form').find('.tipoUnidad').val()
                 }
             })
-            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
-                alert("Error: " + errorThrown);
-            });
+                .done(function (data) {
+                    if (data.success) {
+                        tablaHtml.DataTable()
+                            .row().deselect()
+                            .clear()
+                            .rows.add(data.todos).draw();
+                    }
+                    else {
+
+                        alerta(tablaHtml,"error","<strong>¡Error!: </strong>"+data.error);
+
+                    }
+                })
+                .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Error: " + errorThrown);
+                });
+
+        }
+        else if (tablaHtml.attr('usedata') == 'comparacion2'){
+
+            var selected = theDivCotizaciones.find('.divMainForm form table.viaje').DataTable().row( { selected: true } ).data();
+
+            if(!selected
+                ||theDivCotizaciones.find('.divMainForm form').find('.tipoUnidad').val()==""
+                ||theDivCotizaciones.find('.divMainForm form').find('.costoCombustible').val()==""
+                ||theDivCotizaciones.find('.divMainForm form').find('.costosTotal').val()==""
+            )return;
+
+            $.ajax({
+                url     : "./Controllers/baseController.php",
+                type    : 'POST',
+                dataType: 'json',
+                data    : {
+                    action: tablaHtml.attr('controller'),
+                    kilometros: selected.kilometros,
+                    tipoUnidad: theDivCotizaciones.find('.divMainForm form').find('.tipoUnidad').val(),
+                    costoCombustible: theDivCotizaciones.find('.divMainForm form').find('.costoCombustible').val(),
+                    costosTotal: theDivCotizaciones.find('.divMainForm form').find('.costosTotal').val()
+                }
+            })
+                .done(function (data) {
+                    if (data.success) {
+                        tablaHtml.DataTable()
+                            .row().deselect()
+                            .clear()
+                            .rows.add(data.todos).draw();
+                    }
+                    else {
+
+                        alerta(tablaHtml,"error","<strong>¡Error!: </strong>"+data.error);
+
+                    }
+                })
+                .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Error: " + errorThrown);
+                });
+
+        }
+        else{
+
+            $.ajax({
+                url     : "./Controllers/baseController.php",
+                type    : 'POST',
+                dataType: 'json',
+                data    : {
+                    action: tablaHtml.attr('controller')
+                }
+            })
+                .done(function (data) {
+                    if (data.success) {
+                        tablaHtml.DataTable()
+                            .row().deselect()
+                            .clear()
+                            .rows.add(data.todos).draw();
+                    }
+                    else {
+
+                        alerta(tablaHtml,"error","<strong>¡Error!: </strong>"+data.error);
+
+                    }
+                })
+                .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert("Error: " + errorThrown);
+                });
+
+        }
 
     }
     function alerta(element,type,mensaje){
@@ -101,7 +195,7 @@ $(document).ready(function () {
                 .addClass("alert-danger")
         }
         element.closest(".divModuloMain").children(".alert")
-            .addClass("in")
+            .fadeIn("fast")
             .children(".alertMensaje")
             .html(mensaje);
         $('html, body').animate({ scrollTop: $('body').offset().top}, 'slow');
@@ -109,28 +203,28 @@ $(document).ready(function () {
     }
 
     $(".collapseDad").click( function (evt) {
-        $(this).parent().removeClass('in');
+        $(this).parent().fadeOut("fast");
     });                                                /*Replegar al padre*/
 
 
     $(".btn-agregar").click(function (evt) {
         $(this).closest('.divModuloMain').find('.divMainForm')
-            .addClass("in")
+            .show("fast")
 
-            .children('form')
+            .find('form')
             .attr("accion","agregar")
             .trigger("reset");
 
     });
     $(".btn-cancelar").click(function (evt) {
-        $(this).closest(".divMainForm").removeClass("in");
+        $(this).closest(".divMainForm").hide("fast");
     });
 
     $(".btn-editar").click(function (evt) {
-        $(this).closest('.divModuloMain').children(".divMainForm")
-            .addClass("in")
+        $(this).closest('.divModuloMain').find(".divMainForm")
+            .show("fast")
             
-            .children('form')
+            .find('form')
             .attr("accion","editar");
     });
     
@@ -1322,6 +1416,8 @@ $(document).ready(function () {
         })
             .done(function (data) {
 
+                console.log(data);
+
                 if (data.success) {
                     $.each(data.codigosPostalesBusqueda, function( key, value ) {
                         element.closest(".form-group-sm").next().find("select").append('' +
@@ -1360,6 +1456,13 @@ $(document).ready(function () {
         });
 
 
+
+    });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        var target = $(e.target).attr("href") // activated tab
+
+        actualizatabla($(target).find('table'));
 
     });
 
@@ -1442,7 +1545,7 @@ $(document).ready(function () {
 
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -1529,7 +1632,7 @@ $(document).ready(function () {
 
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -1627,7 +1730,7 @@ $(document).ready(function () {
             .done(function (data) {
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -2031,7 +2134,7 @@ $(document).ready(function () {
             .done(function (data) {
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -2138,12 +2241,30 @@ $(document).ready(function () {
                 { "data": "kilometros" },
                 { "data": "temporada" },
                 { "data": "tipoUnidad" },
-                { "data": "precioCombustible" },
-                { "data": "costoCombustible" },
-                { "data": "peaje" },
-                { "data": "sueldoChofer" },
-                { "data": "hospedajeChofer" },
-                { "data": "extras" },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.precioCombustible;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.costoCombustible;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.peaje;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.sueldoChofer;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.hospedajeChofer;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.extras;
+                    } },
                 { "targets": 15,
                     "data": function ( row, type, val, meta ) {
                         total = parseFloat(row.costoCombustible);
@@ -2153,11 +2274,14 @@ $(document).ready(function () {
                         total += parseFloat(row.extras);
                         return total;
                     } },
-                { "data": "cotizacion" },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.cotizacion;
+                    } },
                 { "targets": 17,
                     "data": function ( row, type, val, meta ) {
                         total2 = parseFloat(row.cotizacion) - total;
-                        return total2;
+                        return "$ " + total2;
                     }  },
                 { "targets": 18,
                     "data": function ( row, type, val, meta ) {
@@ -2167,7 +2291,7 @@ $(document).ready(function () {
             ]
         });
 
-    theDivCotizaciones.find('.divMainForm form table')
+    theDivCotizaciones.find('.divMainForm form table.viaje')
         .DataTable({
             "select": true,
             "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
@@ -2199,15 +2323,104 @@ $(document).ready(function () {
             ]
         });
 
+    theDivCotizaciones.find('.divMainForm form table.comparacion')
+        .DataTable({
+            "select": true,
+            "bSort": false,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idCotizacion" },
+                { "targets": 1,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "idViaje" },
+                { "data": "destinoEstado" },
+                { "targets": 4,
+                    "data": function ( row, type, val, meta ) {
+                        return ((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
+                    } },
+                { "data": "diasNum" },
+                { "data": "kilometros" },
+                { "data": "temporada" },
+                { "data": "tipoUnidad" },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.precioCombustible;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.costoCombustible;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.peaje;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.sueldoChofer;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.hospedajeChofer;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.extras;
+                    } },
+                { "targets": 15,
+                    "data": function ( row, type, val, meta ) {
+                        total = parseFloat(row.costoCombustible);
+                        total += parseFloat(row.peaje);
+                        total += parseFloat(row.sueldoChofer);
+                        total += parseFloat(row.hospedajeChofer);
+                        total += parseFloat(row.extras);
+                        return total;
+                    } },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.cotizacion;
+                    } },
+                { "targets": 17,
+                    "data": function ( row, type, val, meta ) {
+                        total2 = parseFloat(row.cotizacion) - total;
+                        return "$ " + total2;
+                    }  },
+                { "targets": 18,
+                    "data": function ( row, type, val, meta ) {
+                        total3 = (total2/parseFloat(row.cotizacion))*100;
+                        return total3.toFixed(2);
+                    }  }
+            ]
+        });
+
 
 
     theDivCotizaciones.find('.btn-agregar').click(function (evt) {
-        actualizatabla(theDivCotizaciones.find('.divMainForm form table'));
+
+        var tablas = theDivCotizaciones.find('.divMainForm form table');
+        $.each(tablas, function( key, value ) {
+
+            if(key%2==0){
+                actualizatabla($(tablas[key,key+1]));
+            }
+
+        });
     });
-    theDivCotizaciones.find('.divMainForm form table').DataTable().on( 'select', function () {
-        var selected = theDivCotizaciones.find('.divMainForm form table').DataTable().row( { selected: true } ).data();
+    theDivCotizaciones.find('.divMainForm form table.viaje').DataTable().on( 'select', function () {
+        var selected = theDivCotizaciones.find('.divMainForm form table.viaje').DataTable().row( { selected: true } ).data();
 
         theDivCotizaciones.find('.divMainForm form').find('.idViaje').val(selected.idViaje);
+
+        var tablas = theDivCotizaciones.find('.divMainForm form table.comparacion');
+        $.each(tablas, function( key, value ) {
+
+            if(key%2==0){
+                actualizatabla($(tablas[key,key+1]));
+            }
+
+        });
+
     } );
 
     theDivCotizaciones.find('.divMainForm form').submit(function (evt) {
@@ -2250,7 +2463,7 @@ $(document).ready(function () {
             .done(function (data) {
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -2269,7 +2482,14 @@ $(document).ready(function () {
     });
 
     theDivCotizaciones.find('.btn-editar').click(function (evt) {
-        actualizatabla(theDivCotizaciones.find('.divMainForm form table'));
+        var tablas = theDivCotizaciones.find('.divMainForm form table');
+        $.each(tablas, function( key, value ) {
+
+            if(key%2==0){
+                actualizatabla($(tablas[key,key+1]));
+            }
+
+        });
 
         var selected = theDivCotizaciones.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
 
@@ -2294,7 +2514,7 @@ $(document).ready(function () {
         suma+= parseFloat(theDivCotizaciones.find('.divMainForm form').find('.hospedajeChofer').val())  || 0;
         suma+= parseFloat(theDivCotizaciones.find('.divMainForm form').find('.extras').val())  || 0;
 
-        theDivCotizaciones.find('.divMainForm form').find('.costosTotal').val(suma);
+        theDivCotizaciones.find('.divMainForm form').find('.costosTotal').val(suma).trigger('change');
     });
 
     theDivCotizaciones.on('change',".cotizacion", function() {
@@ -2303,6 +2523,20 @@ $(document).ready(function () {
 
         theDivCotizaciones.find('.divMainForm form').find('.utilidad').val(ganancia);
         theDivCotizaciones.find('.divMainForm form').find('.utilidadP').val((ganancia/(parseFloat(theDivCotizaciones.find('.divMainForm form').find('.cotizacion').val())  || 0)*100).toFixed(2));
+    });
+
+    theDivCotizaciones.on('change',".comparacionForm", function() {
+
+        var tablas = theDivCotizaciones.find('.divMainForm form table.comparacion');
+
+        $.each(tablas, function( key, value ) {
+
+            if(key%2==0){
+                actualizatabla($(tablas[key,key+1]));
+            }
+
+        });
+
     });
 
     theDivCotizaciones.find('.btn-PDF').click(function (evt) {
@@ -2398,7 +2632,7 @@ $(document).ready(function () {
 
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -2500,7 +2734,7 @@ $(document).ready(function () {
 
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -2624,7 +2858,7 @@ $(document).ready(function () {
             .done(function (data) {
                 if (data.success) {
 
-                    element.closest(".divMainForm").removeClass("in");
+                    element.closest(".divMainForm").hide("fast");
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
@@ -2656,6 +2890,546 @@ $(document).ready(function () {
         theDivUnidades.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
 
     });
+
+
+
+    /* ------------------------------------------------------------------------------------------------     Ventas        */
+
+    var theDivVentas = $('#divVentas');
+
+    var pagado = 0;
+
+    theDivVentas.find('.mainTableDiv')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idVenta" },
+                { "targets": 1,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.fechaAltaVenta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "destinoEstado" },
+                { "targets": 6,
+                    "data": function ( row, type, val, meta ) {
+                        return ((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
+                    } },
+                { "targets": 7,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.salidaFechaHora, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    }  },
+                { "targets": 8,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.regresoFechaHora, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "diasNum" },
+                { "data": "kilometros" },
+                { "data": "temporada" },/*
+                { "targets": 12,
+                    "data": function ( row, type, val, meta ) {
+
+                        var fecha = "";
+                        var arregloFechas = [];
+                        var contador = 1;
+                        $.each(row.puntos, function( index, value ) {
+                            if(index == 0){
+                                fecha = value["fecha"];
+                                if(index == (row.puntos.length-1)){
+                                    arregloFechas.push(contador);
+                                }
+                            }else{
+                                if(fecha == value["fecha"]){
+                                    contador++;
+                                    if(index == (row.puntos.length-1)){
+                                        arregloFechas.push(contador);
+                                    }
+                                }else{
+                                    arregloFechas.push(contador);
+                                    contador=1;
+                                }
+                                fecha = value["fecha"];
+                            }
+                        })
+
+                        var diaCount = 1;
+                        var recorreArray = 0;
+                        var interno = 1;
+                        var salida = "<table>";
+                        $.each(row.puntos, function( index, value ) {
+                            var hora = new Date("1970-01-01 "+value["hora"]);
+                            if(index==0){
+                                fecha = value["fecha"];
+                                salida+=
+                                    '<tr>' +
+                                    '<td rowspan="'+arregloFechas[recorreArray]+'">'+(diaCount++)+'</td>'+
+                                    '<td rowspan="'+arregloFechas[recorreArray]+'">'+value["fecha"]+'</td>'+
+                                    '<td>'+((!value["hora"])?'--:--':$.format.date(hora, "HH:mm'h'r's'."))+'</td><td> '+
+                                    '<td>'+value["estadoDireccion"]+'</td><td> '+
+                                    '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
+                                    '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
+                                    '<td>'+value["coloniaDireccion"]+'</td><td> '+
+                                    '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
+                                    '<td>'+value["descripcionDireccion"]+'</td><td> '+
+                                    '</tr>';
+                                interno++;
+                                if(index == (row.puntos.length-1)){
+                                    salida += '</table>';
+                                }
+                            }else{
+                                if(interno <= arregloFechas[recorreArray]){
+                                    salida += '<tr>' +
+                                        '<td>'+((!value["hora"])?'--:--':$.format.date(hora, "HH:mm'h'r's'."))+'</td><td> '+
+                                        '<td>'+value["estadoDireccion"]+'</td><td> '+
+                                        '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
+                                        '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
+                                        '<td>'+value["coloniaDireccion"]+'</td><td> '+
+                                        '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
+                                        '<td>'+value["descripcionDireccion"]+'</td><td> '+
+                                        '</tr>';
+                                    interno++;
+                                    if(index == (row.puntos.length-1)){
+                                        salida += '</table>';
+                                    }
+                                }else {
+                                    recorreArray++;
+                                    salida+=
+                                        '<tr>' +
+                                        '<td rowspan="'+arregloFechas[recorreArray]+'">'+(diaCount++)+'</td>'+
+                                        '<td rowspan="'+arregloFechas[recorreArray]+'">'+value["fecha"]+'</td>'+
+                                        '<td>'+((!value["hora"])?'--:--':$.format.date(hora, "HH:mm'h'r's'."))+'</td><td> '+
+                                        '<td>'+value["estadoDireccion"]+'</td><td> '+
+                                        '<td>'+value["delegacionMunicipioDireccion"]+'</td><td> '+
+                                        '<td>'+value["codigoPostalDireccion"]+'</td><td> '+
+                                        '<td>'+value["coloniaDireccion"]+'</td><td> '+
+                                        '<td>'+value["calleNumeroDireccion"]+'</td><td> '+
+                                        '<td>'+value["descripcionDireccion"]+'</td><td> '+
+                                        '</tr>';
+                                    interno=2;
+                                    if(index == (row.puntos.length-1)){
+                                        salida += '</table>';
+                                    }
+                                }
+
+                            }
+
+                        });
+                        salida +=  "</table>";
+                        return salida;
+                    } },*/
+                { "data": "tipoUnidad" },
+                { "targets": 13,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.precioCombustible;
+                    } },
+                { "targets": 14,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.costoCombustible;
+                    } },
+                { "targets": 15,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.peaje;
+                    } },
+                { "targets": 16,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.sueldoChofer;
+                    } },
+                { "targets": 17,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.hospedajeChofer;
+                    } },
+                { "targets": 18,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.extras;
+                    } },
+                { "targets": 19,
+                    "data": function ( row, type, val, meta ) {
+                        total = parseFloat(row.costoCombustible);
+                        total += parseFloat(row.peaje);
+                        total += parseFloat(row.sueldoChofer);
+                        total += parseFloat(row.hospedajeChofer);
+                        total += parseFloat(row.extras);
+                        return "$ "+total;
+                    } },
+                { "targets": 20,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.cotizacion;
+                    } },
+                { "targets": 21,
+                    "data": function ( row, type, val, meta ) {
+                        total2 = parseFloat(row.cotizacion) - total;
+                        return "$ " + total2;
+                    }  },
+                { "targets": 22,
+                    "data": function ( row, type, val, meta ) {
+                        total3 = (total2/parseFloat(row.cotizacion))*100;
+                        return total3.toFixed(2);
+                    }  },
+                { "targets": 23,
+                    "data": function ( row, type, val, meta ) {
+
+                        pagado = 0;
+                        var salida = "";
+
+                        $.each(row.pagos, function( index, value ) {
+                            pagado+= parseFloat(value["monto"])
+                            salida+= (index+1)+ " - $ "+value["monto"]+" del "+$.format.date(value["fechaAlta"], "yyyy-MM-dd")+"<br>";
+                        })
+
+                        salida+= "Total Pagado: $"+pagado;
+
+                        return salida;
+                    } },
+                { "targets": 24,
+                    "data": function ( row, type, val, meta ) {
+
+                        return "$ "+(parseFloat(row.cotizacion)-pagado);
+                    }  },
+                { "data": "modelo" },
+                { "data": "personas" },
+                { "targets": 27,
+                    "data": function ( row, type, val, meta ) {
+
+                        return row.nombreCh+" "+row.apPaternoCh;
+                    }  }
+            ]
+        });
+
+    theDivVentas.find('.divMainForm form table.cotizacion')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idCotizacion" },
+                { "targets": 1,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "idViaje" },
+                { "data": "destinoEstado" },
+                { "targets": 4,
+                    "data": function ( row, type, val, meta ) {
+                        return ((row.destinoLugar=="")?('Sin especificar'):(row.destinoLugar));
+                    } },
+                { "data": "diasNum" },
+                { "data": "kilometros" },
+                { "data": "temporada" },
+                { "data": "tipoUnidad" },
+                { "targets": 9,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.precioCombustible;
+                    } },
+                { "targets": 10,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.costoCombustible;
+                    } },
+                { "targets": 11,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.peaje;
+                    } },
+                { "targets": 12,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.sueldoChofer;
+                    } },
+                { "targets": 13,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.hospedajeChofer;
+                    } },
+                { "targets": 14,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.extras;
+                    } },
+                { "targets": 15,
+                    "data": function ( row, type, val, meta ) {
+                        total = parseFloat(row.costoCombustible);
+                        total += parseFloat(row.peaje);
+                        total += parseFloat(row.sueldoChofer);
+                        total += parseFloat(row.hospedajeChofer);
+                        total += parseFloat(row.extras);
+                        return total;
+                    } },
+                { "targets": 16,
+                    "data": function ( row, type, val, meta ) {
+                        return "$ " + row.cotizacion;
+                    } },
+                { "targets": 17,
+                    "data": function ( row, type, val, meta ) {
+                        total2 = parseFloat(row.cotizacion) - total;
+                        return "$ " + total2;
+                    }  },
+                { "targets": 18,
+                    "data": function ( row, type, val, meta ) {
+                        total3 = (total2/parseFloat(row.cotizacion))*100;
+                        return total3.toFixed(2);
+                    }  }
+            ]
+        });
+
+    theDivVentas.find('.divMainForm form table.unidad')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idUnidad" },
+                { "targets": 1,
+                    "data": function ( row, type, val, meta ) {
+                        return $.format.date(row.fechaAlta, "yyyy-MM-dd E '<br>' HH:mm'h'r's'.");
+                    } },
+                { "data": "marca" },
+                { "data": "modelo" },
+                { "data": "ano" },
+                { "data": "personas" },
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+            ]
+        });
+
+    theDivVentas.find('.divMainForm form table.chofer')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "estadoDomicilio" },
+                { "data": "email" },
+                { "data": "telefonoLocal" },
+                { "data": "telefonoMovil" },
+                { "data": "curp" },
+                { "data": "fechaAlta"}
+            ]
+
+        });
+
+
+
+    theDivVentas.find('.btn-agregar').click(function (evt) {
+        var tablas = theDivVentas.find('.divMainForm form table');
+        $.each(tablas, function( key, value ) {
+
+            if(key%2==0){
+                actualizatabla($(tablas[key,key+1]));
+            }
+
+        });
+        theDivVentas.find('.divMainForm form').find(".panelNuevo").remove();
+    });
+    theDivVentas.find('.divMainForm form table.cotizacion').DataTable().on( 'select', function () {
+        var selected = theDivVentas.find('.divMainForm form table.cotizacion').DataTable().row( { selected: true } ).data();
+        theDivVentas.find('.divMainForm form').find('.idCotizacion').val(selected.idCotizacion);
+        theDivVentas.find('.divMainForm form').find('.cotizacion').val(selected.cotizacion);
+
+        ventas_suma();
+
+    } );
+    theDivVentas.find('.divMainForm form table.unidad').DataTable().on( 'select', function () {
+        var selected = theDivVentas.find('.divMainForm form table.unidad').DataTable().row( { selected: true } ).data();
+        theDivVentas.find('.divMainForm form').find('.idUnidad').val(selected.idUnidad);
+    } );
+    theDivVentas.find('.divMainForm form table.chofer').DataTable().on( 'select', function () {
+        var selected = theDivVentas.find('.divMainForm form table.chofer').DataTable().row( { selected: true } ).data();
+        theDivVentas.find('.divMainForm form').find('.idChofer').val(selected.idChofer);
+    } );
+
+    theDivVentas.on('click', '.agregarPagosUno', function (){
+        $(this).closest(".panel").next(".pagos").prepend(panelNuevo).hide().show('fast');
+    });
+
+    var panelNuevo = '<div class="panel panel-default margen-arriba15 panelNuevo">'+
+        '<div class="panel-heading">'+
+        'Pago:'+
+        '</div>'+
+        '<div class="panel-body">'+
+        '<div class="pago">'+
+        '<div class="form-group-sm collapse">'+
+        '<label class="control-label col-sm-3">ID:</label>'+
+        '<div class="col-sm-7">'+
+        '<input type="text"'+
+        'class="form-control idPago"'+
+        'placeholder="XX"'+
+        'maxlength="35"'+
+        'title="Id, no modificable por el usuario."'+
+        'disabled'+
+        '>'+
+        '</div>'+
+        '</div>                           <!--idVenta-->'+
+        '<div class="form-group-sm">'+
+        '<label class="control-label col-sm-3">Monto:</label>'+
+        '<div class="col-sm-7">'+
+        '<input type="text"'+
+        'class="form-control monto"'+
+        'placeholder="$$$"'+
+        'maxlength="35"'+
+        'pattern="[0-9.]{1,70}"'+
+        'title="Solo números y punto decimal(no espacios), 1 - 70 caracteres."'+
+        'required>'+
+        '</div>'+
+        '</div>                                      <!--monto-->'+
+        '</div>'+
+        '</div>'+
+        '<div class="panel-footer text-right">'+
+        '<button type="button" class="btn btn-danger btn-xs eliminarPago margen-izquierda5">Eliminar</button>'+
+        '</div>'+
+        '</div>';
+
+    theDivVentas.on('click', '.eliminarPago', function (){
+        $(this).closest(".panel").hide('fast', function(){ $(this).closest(".panel").remove(); ventas_suma();});
+
+    });
+
+    theDivVentas.on('change',".monto", function() {
+
+        ventas_suma();
+
+    });
+
+    function ventas_suma() {
+        var montos = theDivVentas.find('.divMainForm form').find('.monto');
+        var suma = 0;
+
+        $.each(montos, function( key, value ) {
+
+            suma += parseFloat($(montos[key]).val()) || 0;
+
+        });
+
+        theDivVentas.find('.divMainForm form').find('.tPagado').val(suma);
+
+        if(theDivVentas.find('.divMainForm form').find('.cotizacion').val()!=""){
+
+            theDivVentas.find('.divMainForm form').find('.deuda').val(theDivVentas.find('.divMainForm form').find('.cotizacion').val()-suma);
+
+        }else{
+            theDivVentas.find('.divMainForm form').find('.deuda').val("");
+        }
+    }
+
+    theDivVentas.find('.divMainForm form').submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+        var accion;
+
+        if (element.attr("accion")=="agregar"){
+            accion = "ventaAgregar";
+        }
+        else if (element.attr("accion")=="editar" && element.find('.idVenta').val() != "" ){
+            accion = "ventaEditar";
+        }
+        else {
+
+            alerta(element,"error","<strong>¡Error!: </strong>Acción desconocida o sin selección para editar");
+
+            return;
+        }
+
+        var pagosVar = [];
+        $(this).find(".pago").each( function() {
+            var pago= {
+                idPago: $(this).find('.idPago').val(),
+                monto: $(this).find('.monto').val(),
+            }
+            pagosVar.push(pago);
+        });
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: accion,
+                idVenta: $(this).find('.idVenta').val(),
+                idCotizacion: $(this).find('.idCotizacion').val(),
+                idUnidad: $(this).find('.idUnidad').val(),
+                idChofer: $(this).find('.idChofer').val(),
+                pagos: pagosVar
+
+            }
+        })
+            .done(function (data) {
+                if (data.success) {
+
+                    element.closest(".divMainForm").hide("fast");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(theDivVentas.find('.mainTableDiv'));
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+
+    theDivVentas.find('.btn-editar').click(function (evt) {
+        var tablas = theDivVentas.find('.divMainForm form table');
+        $.each(tablas, function( key, value ) {
+
+            if(key%2==0){
+                actualizatabla($(tablas[key,key+1]));
+            }
+
+        });
+        theDivVentas.find('.divMainForm form').find(".panelNuevo").remove();
+
+        var selected = theDivVentas.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+
+        theDivVentas.find('.divMainForm form').find('.idVenta').val(selected.idVenta);
+        theDivVentas.find('.divMainForm form').find('.idCotizacion').val(selected.idCotizacion);
+        theDivVentas.find('.divMainForm form').find('.idUnidad').val(selected.idUnidad);
+        theDivVentas.find('.divMainForm form').find('.idChofer').val(selected.idChofer);
+        theDivVentas.find('.divMainForm form').find('.cotizacion').val(selected.cotizacion);
+
+        var table =  selected.pagos;
+
+
+
+        $(table).each(function( key, value ) {
+
+            theDivVentas.find('.divMainForm form').find('.agregarPagosUno').trigger('click');
+
+            theDivVentas.find('.divMainForm form .panelNuevo').first().find('.idPago').val(value.idPago);
+            theDivVentas.find('.divMainForm form .panelNuevo').first().find('.monto').val(value.monto).prop( "disabled", true );
+            ventas_suma();
+
+        });
+
+    });
+
+    theDivVentas.find('.btn-PDF').click(function (evt) {
+
+        var selected = theDivVentas.find('.mainTableDiv').DataTable().row({selected: true}).data();
+
+        console.log(selected);
+
+        var myForm = $('<form id="hereiamtheone" class="" action="./Controllers/baseReporte.php" target="_blank" method="post"></form>');
+        myForm.append('<input type="text" name="action" value="viaje">');
+
+        var data = $('<input type="text" name="viaje">');
+        data.val(JSON.stringify(selected));
+
+        myForm.append(data);
+        $('body').append(myForm);
+        myForm.submit();
+        myForm.remove();
+
+
+    });//TODO
 
 
 

@@ -6,6 +6,8 @@ require_once __DIR__."/../Autoload.php";                              //InclusiÃ
 \APP\Autoload::run();                                                                                 //Arranca Autoload
 
                                                                                                          //Declaraciones
+use APP\Models\Venta;
+use APP\Models\Pago;
 use APP\Models\Unidad;
 use APP\Models\Propietario;
 use APP\Models\Chofer;
@@ -128,6 +130,32 @@ elseif ($action == "todosViajesClientesPuntos"){
 
     echo json_encode($salida);
 }
+elseif ($action == "sinCotizarViajesClientesPuntos"){
+
+    $salida = Viajes::sinCotizarViajesClientesArrelo();
+
+    if ($salida["success"]){
+        $viajes = array();
+        foreach ($salida["todos"] as $viaje){
+            $viaje["puntos"] = array();
+            $viajes[$viaje["idViaje"]] = $viaje;
+        }
+
+        /*$salida = Puntos::todosArrelo();
+        if ($salida["success"]){
+            foreach ($salida["todos"] as $punto){
+                array_push($viajes[$punto["idViaje"]]["puntos"],$punto);
+            }
+            $salida["todos"] = array();
+            foreach ($viajes as $viaje){
+                array_push($salida["todos"],$viaje);
+            }
+        }*/
+
+    }
+
+    echo json_encode($salida);
+}
 elseif ($action == "viajeAgregar"){
 
     $miViaje = new Viaje();
@@ -230,7 +258,48 @@ elseif ($action == "todosCotizacionesViajes"){
 
     $salida = Cotizaciones::cotizacionesViajes();
 
-    file_put_contents('php://stderr', print_r($salida, TRUE));
+    echo json_encode($salida);
+}
+elseif ($action == "vendidasCotizacionesViajes"){
+
+    $salida = Cotizaciones::vendidasCotizacionesViajes();
+
+    echo json_encode($salida);
+}
+elseif ($action == "noVentaCotizacionesViajes"){
+
+    $salida = Cotizaciones::noVentaCotizacionesViajes();
+
+    echo json_encode($salida);
+}
+elseif ($action == "estadoLugarDiasTipoCotizacionesViajes"){
+
+    $miViaje = new Viaje();
+
+    $miViaje->set("destinoEstado",$_POST["destinoEstado"]);
+    $miViaje->set("destinoLugar",$_POST["destinoLugar"]);
+    $miViaje->set("diasNum",$_POST["diasNum"]);
+
+    $miCotizacion = new Cotizacion();
+
+    $miCotizacion->set("tipoUnidad",$_POST["tipoUnidad"]);
+
+    $salida = Cotizaciones::estadoLugarDiasTipoCotizacionesViajes( $miViaje, $miCotizacion);
+
+    echo json_encode($salida);
+}
+elseif ($action == "tipoKmTCombustibleTCostosCotizacionesViajes"){
+
+    $miViaje = new Viaje();
+
+    $miViaje->set("kilometros",$_POST["kilometros"]);
+
+    $miCotizacion = new Cotizacion();
+
+    $miCotizacion->set("tipoUnidad",$_POST["tipoUnidad"]);
+    $miCotizacion->set("costoCombustible",$_POST["costoCombustible"]);
+
+    $salida = Cotizaciones::tipoKmTCombustibleTCostosCotizacionesViajes( $miViaje, $miCotizacion, $_POST["costosTotal"]);
 
     echo json_encode($salida);
 }
@@ -358,6 +427,193 @@ elseif ($action == "unidadEditar"){
 
     echo json_encode($salida);
 
+
+}
+
+elseif ($action == "todosVentasViajesClientesCotizacionesPagos"){
+
+    $salida = Ventas::ventasViajesClientesCotizaciones();
+
+    if ($salida["success"]){
+        $ventas = array();
+        foreach ($salida["todos"] as $venta){
+            $venta["puntos"] = array();
+            $venta["pagos"] = array();
+            $ventas[$venta["idVenta"]] = $venta;
+        }
+
+        $salida = Ventas::ventasViajesPuntos();;
+        if ($salida["success"]){
+            foreach ($salida["todos"] as $punto){
+                array_push($ventas[$punto["idVenta"]]["puntos"],$punto);
+            }
+            $salida["todos"] = array();
+            foreach ($ventas as $venta){
+                array_push($salida["todos"],$venta);
+            }
+        }
+
+        $salida = Ventas::ventasPagos();;
+        if ($salida["success"]){
+            foreach ($salida["todos"] as $pago){
+                array_push($ventas[$pago["idVenta"]]["pagos"],$pago);
+            }
+            $salida["todos"] = array();
+            foreach ($ventas as $venta){
+                array_push($salida["todos"],$venta);
+            }
+        }
+
+    }
+
+    echo json_encode($salida);
+}
+elseif ($action == "pendientesVentasViajesClientesCotizacionesPagos"){
+
+    $salida = Ventas::pendientesVentasViajesClientesCotizacionesPagos();
+
+    if ($salida["success"]){
+        $ventas = array();
+        foreach ($salida["todos"] as $venta){
+            $venta["puntos"] = array();
+            $venta["pagos"] = array();
+            $ventas[$venta["idVenta"]] = $venta;
+        }
+
+        $salida = Ventas::ventasViajesPuntos();
+        if ($salida["success"]){
+            foreach ($salida["todos"] as $punto){
+                array_push($ventas[$punto["idVenta"]]["puntos"],$punto);
+            }
+            $salida["todos"] = array();
+            foreach ($ventas as $venta){
+                array_push($salida["todos"],$venta);
+            }
+        }
+
+
+        $salida = Ventas::ventasPagos();
+
+
+        if ($salida["success"]){
+            foreach ($salida["todos"] as $pago){
+
+                file_put_contents('php://stderr', print_r($salida, TRUE));
+                file_put_contents('php://stderr', print_r($pago, TRUE));
+
+                if(isset($ventas[$pago["idVenta"]])){
+                    array_push($ventas[$pago["idVenta"]]["pagos"],$pago);
+                }
+
+                file_put_contents('php://stderr', print_r($ventas, TRUE));
+
+            }
+            $salida["todos"] = array();
+            foreach ($ventas as $venta){
+                array_push($salida["todos"],$venta);
+            }
+        }
+
+    }
+
+
+
+    echo json_encode($salida);
+}
+elseif ($action == "ventaAgregar"){
+
+    $miVenta = new Venta();
+    $miPago = new Pago();
+
+    $miVenta->set("idVenta",$_POST["idVenta"]);
+    $miVenta->set("idCotizacion",$_POST["idCotizacion"]);
+    $miVenta->set("idUnidad",$_POST["idUnidad"]);
+    $miVenta->set("idChofer",$_POST["idChofer"]);
+    $salida = Ventas::agregar($miVenta);
+
+    if ($salida["success"] && isset($_POST["pagos"])){
+
+        $miPago->set("idVenta",$salida["lastId"]);
+        foreach ($_POST["pagos"] as $key => $value) {
+            $miPago->set("monto",$value["monto"]);
+            $salida = Pagos::agregar($miPago);
+            if (!$salida["success"]){
+                echo json_encode($salida);
+            }
+        }
+        echo json_encode($salida);
+
+    }else{
+        echo json_encode($salida);
+    }
+
+
+
+}
+elseif ($action == "ventaEditar"){
+
+    $miVenta = new Venta();
+    $miPago = new Pago();
+
+    $miVenta->set("idVenta",$_POST["idVenta"]);
+    $miVenta->set("idCotizacion",$_POST["idCotizacion"]);
+    $miVenta->set("idUnidad",$_POST["idUnidad"]);
+    $miVenta->set("idChofer",$_POST["idChofer"]);
+
+    $salida = Ventas::editar($miVenta);
+
+    if ($salida["success"]){
+
+        $miPago->set("idVenta",$miVenta->get("idVenta"));
+
+        $salida = Pagos::pagosVentaID($miPago);
+
+        if(!$salida["success"]){
+            echo json_encode($salida);
+        }
+
+
+
+        $oldPagos = array();
+        foreach ($salida["todos"] as $pago){
+            $oldPagos[$pago["idPago"]]=$pago;
+        }
+
+
+        if(isset($_POST["pagos"])){
+            $miPago->set("idVenta",$_POST["idVenta"]);
+            foreach ($_POST["pagos"] as $key => $value) {
+
+                if($value["idPago"]==""){
+                    $miPago->set("monto",$value["monto"]);
+                    $salida = Pagos::agregar($miPago);
+                    if (!$salida["success"]){
+                        echo json_encode($salida);
+                    }
+                }else{
+
+                    unset($oldPagos[$value["idPago"]]);
+
+                }
+            }
+
+        }
+
+        foreach ($oldPagos as $pago){
+            $miPago->set('idPago',$pago['idPago']);
+            $salida = Pagos::eliminar($miPago);
+            if (!$salida["success"]){
+                echo json_encode($salida);
+            }
+        }
+
+
+        echo json_encode($salida);
+
+
+    }else{
+        echo json_encode($salida);
+    }
 
 }
 

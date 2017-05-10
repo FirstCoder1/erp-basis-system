@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    $("#loginDiv").fadeIn(1000);
+
     $("#loginForm").submit(function (evt) {                                                       /*Accion Boton Login*/
         evt.preventDefault();
 
@@ -22,7 +24,8 @@ $(document).ready(function () {
 */
             if (data.success) {
 
-                window.top.location.href = "./inicio.php";
+                $("#loginDiv").fadeOut(500, function(){ window.top.location.href = "./inicio.php"; });
+
 
             } else {						                                        //En caso de error, mensaje de error
 

@@ -155,6 +155,25 @@ class Viajes {
         return $salida;
     }
 
+    public static function sinCotizarViajesClientesArrelo(){
+
+        $miViaje = new Viaje();
+        $viajes = $miViaje->sinCotizarViajesClientes();
+
+        /*$salida = array();
+        if (count($viajes) > 0){*/
+
+            $salida["success"] = true ;
+            $salida["todos"] = $viajes ;
+
+        /*}else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando viajes.";
+        }*/
+
+        return $salida;
+    }
+
 }
 
 /*

@@ -5,12 +5,12 @@ require_once __DIR__."/../Autoload.php";        //Inclusión de archivo para Aut
 
 \APP\Autoload::run();                        //Arranca Autoload
 
-use APP\Models\Cliente;
+use APP\Models\Pago;
 use APP\Models\Punto;
-use \APP\Models\Viaje;
+use \APP\Models\Venta;
 use App\Utils\Log;
 
-class Puntos {
+class Pagos {
 
     public static function todosArrelo(){
 
@@ -49,89 +49,71 @@ class Puntos {
         return $salida;
     }
 
-    public static function agregar( Punto $miPunto){
+    public static function agregar( Pago $miPago){
 
-        $miPunto->set("idPunto","NULL");
+        $miPago->set("idPago","NULL");
+        $miPago->set("fechaAlta","CURRENT_TIMESTAMP");
 
-        if ($miPunto->get("hora")==""){
-            $miPunto->set("hora","NULL");
-        }
-
-        $viajeValidate = new Viaje();
-        $viajeValidate->set("idViaje",$miPunto->get("idViaje"));
-        $viajes = $viajeValidate->buscarClase();
+        $ventaValidate = new Venta();
+        $ventaValidate->set("idVenta",$miPago->get("idVenta"));
+        $ventas = $ventaValidate->buscarClase();
 
         $salida = array();
 
-        if(count($viajes)==0){
+        if(count($ventas)==0){
             $salida["success"] = false;
-            $salida["error"] = "Viaje invalido";
+            $salida["error"] = "Venta invalida";
             return $salida;
         }
 
-        if ($miPunto->agregar()){
+        if ($miPago->agregar()){
             $salida["success"] = true ;
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error agregando punto.";
+            $salida["error"] = "Error agregando pago.";
+        }
+
+        return $salida;
+
+    }
+    public static function eliminar( Pago $miPago){
+
+        $miPago->set('monto','NO_INCLUDE');
+        $miPago->set('fechaAlta','NO_INCLUDE');
+        $miPago->set('idVenta','NO_INCLUDE');
+
+        if ($miPago->eliminar()){
+            $salida["success"] = true ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error eliminando pago.";
         }
 
         return $salida;
 
     }
 
-    public static function editar( Punto $miPunto){
+    public static function pagosVentaID(Pago $miPago){
 
-        if ($miPunto->get("hora")==""){
-            $miPunto->set("hora","NULL");
-        }
-
-        $viajeValidate = new Viaje();
-        $viajeValidate->set("idViaje",$miPunto->get("idViaje"));
-        $viajes = $viajeValidate->buscarClase();
+        $pagos = $miPago->pagosVentaID();
 
         $salida = array();
+        /*if (count($ventas) > 0){*/
 
-        if(count($viajes)==0){
-            $salida["success"] = false;
-            $salida["error"] = "Viaje invalido";
-            return $salida;
-        }
+        $salida["success"] = true ;
+        $salida["todos"] = $pagos ;
 
-        if ($miPunto->editar("idPunto")){
-            $salida["success"] = true ;
-        }else{
+        /*}else{
             $salida["success"] = false;
-            $salida["error"] = "Error editando punto.";
-        }
+            $salida["error"] = "Error cargando ventas.";
+        }*/
 
         return $salida;
-
     }
 
-    public static function eliminarPorID( Punto $miPunto){
 
-        $miPunto->set('idPunto','NO_INCLUDE');
-        $miPunto->set('fecha','NO_INCLUDE');
-        $miPunto->set('hora','NO_INCLUDE');
-        $miPunto->set('estadoDireccion','NO_INCLUDE');
-        $miPunto->set('delegacionMunicipioDireccion','NO_INCLUDE');
-        $miPunto->set('codigoPostalDireccion','NO_INCLUDE');
-        $miPunto->set('calleNumeroDireccion','NO_INCLUDE');
-        $miPunto->set('descripcionDireccion','NO_INCLUDE');
 
-        $salida = array();
 
-        if ($miPunto->eliminar()){
-            $salida["success"] = true ;
-        }else{
-            $salida["success"] = false;
-            $salida["error"] = "Error eliminando punto.";
-        }
-
-        return $salida;
-
-    }
 
 }
 

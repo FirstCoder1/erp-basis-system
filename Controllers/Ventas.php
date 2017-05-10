@@ -6,173 +6,200 @@ require_once __DIR__."/../Autoload.php";        //Inclusión de archivo para Aut
 \APP\Autoload::run();                        //Arranca Autoload
 
 use APP\Models\Cliente;
-use APP\Models\Viaje;
+use APP\Models\Cotizacion;
+use APP\Models\Venta;
 use APP\Models\Conexion;
 use App\Utils\Log;
 
-class Viajes {
+class Ventas {
 
     public static function todosArrelo(){
 
-        $miViaje = new Viaje();
-        $viajes = $miViaje->buscarArreglo();
+        $miVenta = new Venta();
+        $ventas = $miVenta->buscarArreglo();
 
         $salida = array();
-        if (count($viajes) > 0){
+        if (count($ventas) > 0){
 
             $salida["success"] = true ;
-            $salida["todos"] = $viajes ;
+            $salida["todos"] = $ventas ;
 
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error cargando viajes.";
+            $salida["error"] = "Error cargando ventas.";
         }
 
         return $salida;
     }
     public static function todosClase(){
 
-        $miViaje = new Viaje();
-        $viajes = $miViaje->buscarClase();
+        $miVenta = new Venta();
+        $ventas = $miVenta->buscarClase();
 
         $salida = array();
-        if (count($viajes) > 0){
+        if (count($ventas) > 0){
 
             $salida["success"] = true ;
-            $salida["todos"] = $viajes ;
+            $salida["todos"] = $ventas ;
 
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error cargando viajes.";
+            $salida["error"] = "Error cargando ventas.";
         }
 
         return $salida;
     }
 
-    public static function todosViajesClientesPuntosArreglo(){
+    public static function ventasViajesClientesCotizaciones(){
 
-        $miViaje = new Viaje();
-        $viajes = $miViaje->viajesClientesPuntos();
+        $miVenta = new Venta();
+        $ventas = $miVenta->ventasViajesClientesCotizaciones();
 
         $salida = array();
-        if (count($viajes) > 0){
+        if (count($ventas) > 0){
 
             $salida["success"] = true ;
-            $salida["todos"] = $viajes ;
+            $salida["todos"] = $ventas ;
 
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error cargando viajes.";
+            $salida["error"] = "Error cargando ventas.";
         }
 
         return $salida;
     }
+    public static function pendientesVentasViajesClientesCotizacionesPagos(){
 
-    public static function agregar( Viaje $miViaje){
+        $miVenta = new Venta();
+        $ventas = $miVenta->pendientesVentasViajesClientesCotizacionesPagos();
 
-        $miViaje->set("idViaje","NULL");
-        $miViaje->set("fechaAlta","CURRENT_TIMESTAMP");
+        /*$salida = array();
+        if (count($ventas) > 0){*/
+
+            $salida["success"] = true ;
+            $salida["todos"] = $ventas ;
+
+        /*}else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando ventas.";
+        }*/
+
+        return $salida;
+    }
+    public static function ventasViajesPuntos(){
+
+        $miVenta = new Venta();
+        $ventas = $miVenta->ventasViajesPuntos();
+
+        $salida = array();
+        /*if (count($ventas) > 0){*/
+
+            $salida["success"] = true ;
+            $salida["todos"] = $ventas ;
+
+        /*}else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando ventas.";
+        }*/
+
+        return $salida;
+    }
+    public static function ventasPagos(){
+
+        $miVenta = new Venta();
+        $ventas = $miVenta->ventasPagos();
+
+        $salida = array();
+        /*if (count($ventas) > 0){*/
+
+            $salida["success"] = true ;
+            $salida["todos"] = $ventas ;
+
+        /*}else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando ventas.";
+        }*/
+
+        return $salida;
+    }
+
+    public static function agregar( Venta $miVenta){
+
+        $miVenta->set("idVenta","NULL");
+        $miVenta->set("fechaAlta","CURRENT_TIMESTAMP");
 
         $salida = array();
 
-        if($miViaje->get("idCliente") == ""){
+        if($miVenta->get("idCotizacion") == ""){
             $salida["success"] = false;
-            $salida["error"] = "Cliente invalido";
+            $salida["error"] = "Cotización invalida";
             return $salida;
         }
 
-        $clienteValidate = new Cliente();
-        $clienteValidate->set("idCliente",$miViaje->get("idCliente"));
+        $cotizacionValidate = new Cotizacion();
+        $cotizacionValidate->set("idCotizacion",$miVenta->get("idCotizacion"));
 
-        $clientes = $clienteValidate->buscarClase();
+        $cotizaciones = $cotizacionValidate->buscarClase();
 
-        if(count($clientes)!=1){
+        if(count($cotizaciones)!=1){
             $salida["success"] = false;
-            $salida["error"] = "Cliente invalido";
+            $salida["error"] = "Cotización invalida";
             return $salida;
         }
 
-        if ($miViaje->agregar()){
+        if ($miVenta->agregar()){
 
             $salida["success"] = true ;
             $salida["lastId"] = Conexion::getConnection()->lastInsertId();
 
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error agregando viaje.";
+            $salida["error"] = "Error agregando cotización.";
         }
 
         return $salida;
 
     }
-    public static function editar( Viaje $miViaje){
+    public static function editar( Venta $miVenta){
 
-        $miViaje->set("fechaAlta","NO_INCLUDE");
+        $miVenta->set("fechaAlta","NO_INCLUDE");
 
-        if ($miViaje->get("kilometros")==""){
-            $miViaje->set("kilometros","NULL");
-        }
-
-        $clienteValidate = new Cliente();
-        $clienteValidate->set("idCliente",$miViaje->get("idCliente"));
-        $clientes = $clienteValidate->buscarClase();
-
-        $salida = array();
-
-        if(count($clientes)==0){
+        if($miVenta->get("idCotizacion") == ""){
             $salida["success"] = false;
-            $salida["error"] = "Cliente invalido";
+            $salida["error"] = "Cotización invalida";
             return $salida;
         }
 
-        if ($miViaje->editar("idViaje")){
-            $salida["success"] = true ;
-        }else{
-            $salida["success"] = false;
-            $salida["error"] = "Error editando viaje.";
-        }
-
-        return $salida;
-
-    }
-
-    public static function viajesClientesArrelo(){
-
-        $miViaje = new Viaje();
-        $viajes = $miViaje->viajesClientes();
+        $cotizacionValidate = new Cotizacion();
+        $cotizacionValidate->set("idCotizacion",$miVenta->get("idCotizacion"));
+        $cotizaciones = $cotizacionValidate->buscarClase();
 
         $salida = array();
-        if (count($viajes) > 0){
 
+        if(count($cotizaciones)!=1){
+            $salida["success"] = false;
+            $salida["error"] = "Cotización invalida";
+            return $salida;
+        }
+
+        if ($miVenta->editar("idVenta")){
             $salida["success"] = true ;
-            $salida["todos"] = $viajes ;
-
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error cargando viajes.";
+            $salida["error"] = "Error editando venta.";
         }
 
         return $salida;
+
     }
 
-    public static function sinCotizarViajesClientesArrelo(){
 
-        $miViaje = new Viaje();
-        $viajes = $miViaje->sinCotizarViajesClientes();
 
-        /*$salida = array();
-        if (count($viajes) > 0){*/
 
-            $salida["success"] = true ;
-            $salida["todos"] = $viajes ;
 
-        /*}else{
-            $salida["success"] = false;
-            $salida["error"] = "Error cargando viajes.";
-        }*/
 
-        return $salida;
-    }
+
+
 
 }
 
