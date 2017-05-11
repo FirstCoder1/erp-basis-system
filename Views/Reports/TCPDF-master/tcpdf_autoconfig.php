@@ -102,15 +102,15 @@ if (!defined('K_PATH_IMAGES')) {
 
 if (!defined('PDF_HEADER_LOGO')) {
 	$tcpdf_header_logo = '';
-	if (@file_exists(K_PATH_IMAGES.'tcpdf_logo.jpg')) {
-		$tcpdf_header_logo = 'tcpdf_logo.jpg';
+	if (@file_exists(K_PATH_IMAGES.'my_bus.jpg')) {
+		$tcpdf_header_logo = 'my_bus.jpg';
 	}
 	define ('PDF_HEADER_LOGO', $tcpdf_header_logo);
 }
 
 if (!defined('PDF_HEADER_LOGO_WIDTH')) {
 	if (!empty($tcpdf_header_logo)) {
-		define ('PDF_HEADER_LOGO_WIDTH', 40);
+		define ('PDF_HEADER_LOGO_WIDTH', 30);
 	} else {
 		define ('PDF_HEADER_LOGO_WIDTH', 0);
 	}

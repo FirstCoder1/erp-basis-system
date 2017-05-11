@@ -8,6 +8,8 @@ require_once __DIR__."/../Autoload.php";                              //Inclusi�
 $_GET   = filter_input_array(INPUT_GET, FILTER_UNSAFE_RAW);                                        //Limpia entrada
 $_POST  = filter_input_array(INPUT_POST, FILTER_UNSAFE_RAW);
 
+file_put_contents('php://stderr', print_r($_POST, TRUE));
+
 $action = $_POST["action"];
 unset($_POST["action"]);
 
@@ -18,18 +20,40 @@ if ($action == "viaje"){
     // Include the main TCPDF library (search for installation path).
         require_once( __DIR__."/../Views/Reports/TCPDF-master/tcpdf.php");
 
+    class MYPDF extends TCPDF {
+        public function Header() {
+            $headerData = $this->getHeaderData();
+            $this->SetFont('helvetica', 'B', 10);
+            $this->writeHTML($headerData['string']);
+        }
+    }
+
+
+
+    $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
     // create new PDF document
-        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
     // set document information
         $pdf->SetCreator(PDF_CREATOR);
         $pdf->SetAuthor(APPNAME);
-        $pdf->SetTitle('Reporte Viaje: '.$_POST['viaje']['idViaje']);
+        $pdf->SetTitle('Reporte de Viaje, ID: '.$_POST['viaje']['idViaje']);
         $pdf->SetSubject('Reporte');
         $pdf->SetKeywords(APPNAME.', PDF, reporte, viaje');
 
     // set default header data
-        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, 'RENTA DE AUTOBUSES DENTRO Y FUERA DE LA REPUBLICA.', "Turismo Pantoja S.A. de C.V. y/o Camacho Nieto Oscar \nTels.: 51-19-45-91 ,55-59-30-96-86, 55-38-99-13-49 \nwww.camachotours.com.mx \nCuzco 860, Col. Lindavista, Deleg. Gustavo A. Madero C.P. 07300 México, D.F.", array(0,0,0), array(0,0,0));
+    $pdf->setHeaderData($ln='', $lw=0, $ht='', $hs='
+                   <div>
+                    <table cellspacing="0" cellpadding="1" style="border-bottom:1pt solid black;">
+                        <tr>
+                            <td width="100"><img src="../Views/Reports/TCPDF-master/examples/images/my_bus.jpg"/></td>
+                            <td width=""><h3 style="text-align:right;">'.APPNAME.'</h3><span style="text-align:right;">Trabajo Terminal <br> ERP Para la gestión de operaciones de renta de transporte turistico.</span></td>
+                        </tr>
+                    </table>             
+                  </div>', $tc=array(0,0,0), $lc=array(0,0,0));
+    //$pdf->setHeaderData(PDF_HEADER_LOGO, 25, $ht='', $hs='<h2 style="text-align:right;">'.APPNAME.'</h2> Trabajo Terminal: ERP Para la gestión de operaciones de renta de transporte turistico. \n\n Reporte de Viaje, ID: ".$_POST[\'viaje\']["idViaje"]', $tc=array(0,0,0), $lc=array(0,0,0));
+        //$pdf->SetHeaderData(PDF_HEADER_LOGO, 25, APPNAME, "Trabajo Terminal: ERP Para la gestión de operaciones de renta de transporte turistico. \n\n Reporte de Viaje, ID: ".$_POST['viaje']["idViaje"], array(0,0,0), array(0,0,0));
         $pdf->setFooterData(array(0,0,0), array(0,0,0));
 
     // set header and footer fonts
@@ -40,7 +64,7 @@ if ($action == "viaje"){
         $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
     // set margins
-        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetMargins(PDF_MARGIN_LEFT, 28, PDF_MARGIN_RIGHT);
         $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
         $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -65,23 +89,21 @@ if ($action == "viaje"){
     // dejavusans is a UTF-8 Unicode font, if you only need to
     // print standard ASCII chars, you can use core fonts like
     // helvetica or times to reduce file size.
-        $pdf->SetFont('dejavusans', '', 14, '', true);
+        $pdf->SetFont('helvetica', '', 12, '', true);
 
     // Add a page
     // This method has several options, check the source code documentation for more information.
         $pdf->AddPage();
 
     // set text shadow effect
-        $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+        //$pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
 
     // Set some content to print
-        $html = <<<EOD
-    <h1>Welcome to <a href="http://www.tcpdf.org" style="text-decoration:none;background-color:#CC0000;color:black;">&nbsp;<span style="color:black;">TC</span><span style="color:white;">PDF</span>&nbsp;</a>!</h1>
-    <i>This is the first example of TCPDF library.</i>
-    <p>This text is printed using the <i>writeHTMLCell()</i> method but you can also use: <i>Multicell(), writeHTML(), Write(), Cell() and Text()</i>.</p>
-    <p>Please check the source code documentation and other examples for further information.</p>
-    <p style="color:#CC0000;">TO IMPROVE AND EXPAND TCPDF I NEED YOUR SUPPORT, PLEASE <a href="http://sourceforge.net/donate/index.php?group_id=128076">MAKE A DONATION!</a></p>
-EOD;
+        $html = '
+    <font size="8" style="text-align:right;">['.date("F j, Y").']</font>
+    <h3>Cliente</h3>
+    '.print_r($_POST['viaje'], TRUE).'
+';
 
     // Print text using writeHTMLCell()
         $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
