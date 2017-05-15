@@ -23,7 +23,30 @@ class Cotizacion extends BaseModel
 
         $sql = "SELECT *
                     FROM Viajes
-                    INNER JOIN Cotizaciones ON Viajes.idViaje = Cotizaciones.idViaje";
+                    INNER JOIN Cotizaciones ON Viajes.idViaje = Cotizaciones.idViaje
+                    INNER JOIN Clientes ON Viajes.idCliente = Clientes.idCliente";
+
+        $stmt = Conexion::getConnection()->prepare($sql);
+
+        try {
+            $stmt->execute();
+        } catch (\PDOException $e) {
+            Log::error('Error' . $e->getMessage());
+        }
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+    }                                  /*mandar la respuesta diractamnete como json*/
+
+    public function vendidasCotizacionesViajes(){
+
+
+        $sql = "SELECT *
+                    FROM Viajes V
+                    INNER JOIN Cotizaciones K ON V.idViaje = K.idViaje
+                    INNER JOIN Ventas Y ON K.idCotizacion = Y.idCotizacion
+                    INNER JOIN Clientes C ON V.idCliente = C.idCliente
+                    ";
 
         $stmt = Conexion::getConnection()->prepare($sql);
 
@@ -39,9 +62,10 @@ class Cotizacion extends BaseModel
     public function noVentaCotizacionesViajes(){
 
 
-        $sql = "SELECT V.idViaje, K.fechaAlta, V.destinoEstado, V.destinoLugar, V.salidaFechaHora, V.regresoFechaHora, V.diasNum, V.kilometros, V.temporada, K.*
+        $sql = "SELECT V.*,K.*,C.*
                     FROM Viajes V
                     INNER JOIN Cotizaciones K ON V.idViaje = K.idViaje
+                    INNER JOIN Clientes C ON V.idCliente = C.idCliente
                     LEFT JOIN Ventas Y ON K.idCotizacion = Y.idCotizacion
                     WHERE Y.idCotizacion IS NULL
                     ";
@@ -57,26 +81,7 @@ class Cotizacion extends BaseModel
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
     }                                  /*mandar la respuesta diractamnete como json*/
-    public function vendidasCotizacionesViajes(){
 
-
-        $sql = "SELECT V.idViaje, K.fechaAlta, V.destinoEstado, V.destinoLugar, V.salidaFechaHora, V.regresoFechaHora, V.diasNum, V.kilometros, V.temporada, K.idCotizacion, K.tipoUnidad , K.precioCombustible , K.costoCombustible, K.peaje, K.sueldoChofer ,K.hospedajeChofer , K.extras, K.cotizacion
-                    FROM Viajes V
-                    INNER JOIN Cotizaciones K ON V.idViaje = K.idViaje
-                    INNER JOIN Ventas Y ON K.idCotizacion = Y.idCotizacion
-                    ";
-
-        $stmt = Conexion::getConnection()->prepare($sql);
-
-        try {
-            $stmt->execute();
-        } catch (\PDOException $e) {
-            Log::error('Error' . $e->getMessage());
-        }
-
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
-    }                                  /*mandar la respuesta diractamnete como json*/
 
     public function estadoLugarDiasTipoCotizacionesViajes($destinoEstado, $destinoLugar, $diasNum){
 

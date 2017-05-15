@@ -53,12 +53,12 @@ class Venta extends BaseModel
                               
                                       (SELECT Ventas.idVenta, Ventas.idCotizacion, SUM(Pagos.monto) as pagos
                                             FROM  Ventas
-                                            INNER JOIN Pagos ON Ventas.idVenta = Pagos.idVenta
+                                            LEFT JOIN Pagos ON Ventas.idVenta = Pagos.idVenta
                                             GROUP BY Ventas.idVenta) S 
                               ON Cotizaciones.idCotizacion = S.idCotizacion
-                              WHERE Cotizaciones.cotizacion = S.pagos)   P 
+                              WHERE Cotizaciones.cotizacion != S.pagos OR S.pagos IS NULL)   P 
                      
-                     ON Ventas.idVenta != P.idVenta
+                     ON Ventas.idVenta = P.idVenta
                     
                     ";
 
@@ -76,7 +76,7 @@ class Venta extends BaseModel
     public function ventasViajesPuntos(){
 
 
-        $sql = "SELECT *
+        $sql = "SELECT Puntos.*,Ventas.idVenta
                     FROM Viajes
                     INNER JOIN Cotizaciones ON Viajes.idViaje = Cotizaciones.idViaje
                     INNER JOIN Ventas ON Cotizaciones.idCotizacion = Ventas.idCotizacion
@@ -97,7 +97,7 @@ class Venta extends BaseModel
     public function ventasPagos(){
 
 
-        $sql = "SELECT *
+        $sql = "SELECT Pagos.*,Ventas.idVenta
                     FROM Ventas
                     INNER JOIN Pagos ON Ventas.idVenta = Pagos.idVenta
                     ";

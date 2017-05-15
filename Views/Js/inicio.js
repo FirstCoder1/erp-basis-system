@@ -1416,7 +1416,6 @@ $(document).ready(function () {
         })
             .done(function (data) {
 
-                console.log(data);
 
                 if (data.success) {
                     $.each(data.codigosPostalesBusqueda, function( key, value ) {
@@ -1922,14 +1921,14 @@ $(document).ready(function () {
     } );
 
     theDivViajes.on('click', '.agregarPuntoUno', function (){
-        $(this).closest(".panel").next(".puntos").prepend(panelNuevo).hide().show('fast');
+        $(this).closest(".panel").next(".puntos").prepend(panelNuevo1).hide().show('fast');
     });
 
     theDivViajes.on('click', '.agregarPunto', function (){
-        $(this).closest(".panel").after( panelNuevo ).next().hide().show('fast');
+        $(this).closest(".panel").after( panelNuevo1 ).next().hide().show('fast');
     });
 
-    var panelNuevo = '<div class="panel panel-default margen-arriba15 panelNuevo">'+
+    var panelNuevo1 = '<div class="panel panel-default margen-arriba15 panelNuevo">'+
         '<div class="panel-heading">'+
         'Punto de itinerario:'+
         '</div>'+
@@ -2200,8 +2199,6 @@ $(document).ready(function () {
 
         var selected = theDivViajes.find('.mainTableDiv').DataTable().row({selected: true}).data();
 
-        console.log(selected);
-
         var myForm = $('<form id="hereiamtheone" class="" action="./Controllers/baseReporte.php" target="_blank" method="post"></form>');
         myForm.append('<input type="text" name="action" value="viaje">');
 
@@ -2214,7 +2211,7 @@ $(document).ready(function () {
         myForm.remove();
 
 
-    });//TODO
+    });
 
 
     /* --------------------------------------------------------------------------------------     Cotizaciones        */
@@ -2467,7 +2464,14 @@ $(document).ready(function () {
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(theDivCotizaciones.find('.mainTableDiv'));
+                    var tablas = theDivCotizaciones.find('.mainTableDiv');
+                    $.each(tablas, function( key, value ) {
+
+                        if(key%2==0){
+                            actualizatabla($(tablas[key,key+1]));
+                        }
+
+                    });
                 } else {
 
                     alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
@@ -2541,12 +2545,10 @@ $(document).ready(function () {
 
     theDivCotizaciones.find('.btn-PDF').click(function (evt) {
 
-        var selected = theDivViajes.find('.mainTableDiv').DataTable().row({selected: true}).data();
-
-        console.log(selected);
+        var selected = theDivCotizaciones.find('.mainTableDiv').DataTable().row({selected: true}).data();
 
         var myForm = $('<form id="hereiamtheone" class="" action="./Controllers/baseReporte.php" target="_blank" method="post"></form>');
-        myForm.append('<input type="text" name="action" value="viaje">');
+        myForm.append('<input type="text" name="action" value="cotizacion">');
 
         var data = $('<input type="text" name="viaje">');
         data.val(JSON.stringify(selected));
@@ -2557,7 +2559,7 @@ $(document).ready(function () {
         myForm.remove();
 
 
-    });//TODO
+    });
 
 
     /* ------------------------------------------------------------------------------------------------     Choferes     */
@@ -3362,7 +3364,14 @@ $(document).ready(function () {
                     element.trigger('reset');
 
                     alerta(element,"success","<strong> Operación Exitosa </strong>");
-                    actualizatabla(theDivVentas.find('.mainTableDiv'));
+                    var tablas = theDivVentas.find('.mainTableDiv');
+                    $.each(tablas, function( key, value ) {
+
+                        if(key%2==0){
+                            actualizatabla($(tablas[key,key+1]));
+                        }
+
+                    });
                 } else {
 
                     alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
@@ -3415,10 +3424,8 @@ $(document).ready(function () {
 
         var selected = theDivVentas.find('.mainTableDiv').DataTable().row({selected: true}).data();
 
-        console.log(selected);
-
         var myForm = $('<form id="hereiamtheone" class="" action="./Controllers/baseReporte.php" target="_blank" method="post"></form>');
-        myForm.append('<input type="text" name="action" value="viaje">');
+        myForm.append('<input type="text" name="action" value="venta">');
 
         var data = $('<input type="text" name="viaje">');
         data.val(JSON.stringify(selected));
@@ -3429,7 +3436,166 @@ $(document).ready(function () {
         myForm.remove();
 
 
-    });//TODO
+    });
+
+
+
+    /* ------------------------------------------------------------------------------------------------     Configuracion   */
+
+    var theDivConfiguracion = $('#divConfiguracion');
+
+    theDivConfiguracion.find('.mainTableDiv')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "nombre" },
+                { "data": "apPaterno" },
+                { "data": "apMaterno" },
+                { "data": "fechaDeNacimiento" },
+                { "data": "calleNumeroDomicilio" },
+                { "data": "delegacionMunicipioDomicilio" },
+                { "data": "codigoPostalDomicilio" },
+                { "data": "coloniaDomicilio" },
+                { "data": "estadoDomicilio" },
+                { "data": "email" },
+                { "data": "telefonoLocal" },
+                { "data": "telefonoMovil" },
+                { "data": "curp" },
+                { "data": "fechaAlta"},
+                { "data": "estadoSistema",
+                    "render": function ( data, type, full, meta ) {
+                        return data==1?"Activo":"Inactivo";
+                    } },
+                { "data": "userName" }
+            ]
+
+        });
+
+    theDivConfiguracion.find('.divMainForm form').submit(function (evt) {
+        evt.preventDefault();
+
+        var element = $(this);
+
+        if (element.find('.idEmpleado').val() == "" ){
+
+            alerta(element,"error","<strong>¡Error!: </strong>Sin selección para editar");
+
+            return;
+        }
+
+        $.ajax({
+            url: "./Controllers/baseController.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                action: "empleadoModulos",
+                idEmpleado: $(this).find('.idEmpleado').val(),
+                empleados: $(this).find('.empleados').is(':checked') ? 1 : 0,
+                contraseñas: $(this).find('.contraseñas').is(':checked') ? 1 : 0,
+                clientes: $(this).find('.clientes').is(':checked') ? 1 : 0,
+                viajes: $(this).find('.viajes').is(':checked') ? 1 : 0,
+                cotizaciones: $(this).find('.cotizaciones').is(':checked') ? 1 : 0,
+                ventas: $(this).find('.ventas').is(':checked') ? 1 : 0,
+                unidades: $(this).find('.unidades').is(':checked') ? 1 : 0,
+                choferes: $(this).find('.choferes').is(':checked') ? 1 : 0,
+                propietarios: $(this).find('.propietarios').is(':checked') ? 1 : 0,
+                registros: $(this).find('.registros').is(':checked') ? 1 : 0,
+                configuracion: $(this).find('.configuracion').is(':checked') ? 1 : 0,
+            }
+        })
+            .done(function (data) {
+
+                if (data.success) {
+
+                    element.closest(".divMainForm").hide("fast");
+                    element.trigger('reset');
+
+                    alerta(element,"success","<strong> Operación Exitosa </strong>");
+                    actualizatabla(theDivConfiguracion.find('.mainTableDiv'));
+                } else {
+
+                    alerta(element,"error","<strong>¡Error!: </strong>"+data.error);
+
+
+                }
+            })
+            .fail(function(XMLHttpRequest, textStatus, errorThrown) {
+                alert("Error: " + errorThrown);
+            });
+
+    });
+    theDivConfiguracion.find('.btn-editar').click(function (evt) {
+
+        theDivConfiguracion.find('.divMainForm form input').attr('checked', false);
+
+        var selected = theDivConfiguracion.find('.mainTableDiv').DataTable().row( { selected: true } ).data();
+
+        theDivConfiguracion.find('.divMainForm form').find('.idEmpleado').val(selected.idEmpleado);
+        theDivConfiguracion.find('.divMainForm form').find('.nombre').val(selected.nombre+" "+selected.apPaterno+" "+selected.apMaterno);
+
+        if(selected.modulos.charAt(0)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.empleados').attr('checked', true);
+        }
+        if(selected.modulos.charAt(1)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.contraseñas').attr('checked', true);
+        }
+        if(selected.modulos.charAt(2)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.clientes').attr('checked', true);
+        }
+        if(selected.modulos.charAt(3)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.viajes').attr('checked', true);
+        }
+        if(selected.modulos.charAt(4)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.cotizaciones').attr('checked', true);
+        }
+        if(selected.modulos.charAt(5)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.ventas').attr('checked', true);
+        }
+        if(selected.modulos.charAt(6)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.unidades').attr('checked', true);
+        }
+        if(selected.modulos.charAt(7)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.choferes').attr('checked', true);
+        }
+        if(selected.modulos.charAt(8)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.propietarios').attr('checked', true);
+        }
+        if(selected.modulos.charAt(9)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.registros').attr('checked', true);
+        }
+        if(selected.modulos.charAt(10)==1){
+            theDivConfiguracion.find('.divMainForm form').find('.configuracion').attr('checked', true);
+        }
+
+
+
+
+    })
+
+
+
+
+
+
+
+   /* ------------------------------------------------------------------------------------------------     Registros   */
+
+    var theDivRegistros = $('#divRegistros');
+
+    theDivRegistros.find('.mainTableDiv')
+        .DataTable({
+            "select": true,
+            "dom": '<"small"<"tableFilter"f><l>>rt<"small"ip>',
+            "columns": [
+                { "data": "idRegistro" },
+                { "data": "fechaAlta" },
+                { "data": "idEmpleado" },
+                { "data": "descripcion" },
+            ]
+
+        });
+
 
 
 

@@ -132,6 +132,62 @@ class Puntos {
         return $salida;
 
     }
+    public static function puntosViajesCotizaciones(){
+
+        $miPunto = new Punto();
+        $puntos = $miPunto->puntosViajesCotizaciones();
+
+        $salida = array();
+
+        if (count($puntos)>0){
+            $salida["success"] = true ;
+            $salida["todos"] = $puntos ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando puntos.";
+        }
+
+        return $salida;
+
+    }
+    public static function puntosViajesCotizacionesVentas(){
+
+        $miPunto = new Punto();
+        $puntos = $miPunto->puntosViajesCotizacionesVentas();
+
+        $salida = array();
+
+        if (count($puntos)>0){
+            $salida["success"] = true ;
+            $salida["todos"] = $puntos ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando puntos.";
+        }
+
+        return $salida;
+
+    }
+    public static function puntosViajesCotizacionesNoVentas(){
+
+        $miPunto = new Punto();
+        $puntos = $miPunto->puntosViajesCotizacionesNoVentas();
+
+        $salida = array();
+
+        if (count($puntos)>0){
+            $salida["success"] = true ;
+            $salida["todos"] = $puntos ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error cargando puntos.";
+        }
+
+        return $salida;
+
+    }
+
+
 
 }
 

@@ -12,7 +12,6 @@
     $miEmpleado->set("idEmpleado",$_SESSION["idEmpleado"]);
     $empleados = $miEmpleado->buscarClase();
     $miEmpleado = $empleados[0];
-
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +87,7 @@
 
     <div id="divMain" class="container"> 								              <!--Contenedor Main-->
 
-
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[0]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Modulo Empleados-->
 
             <div class="acceso-icon empleadosIcon" nombre="Empleados">
@@ -99,7 +98,9 @@
             </div>
 
         </div>                                            <!--Acceso Empleados-->
+        <?php endif; ?>
 
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[1]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Contraseñas-->
 
             <div class="acceso-icon contraseñasIcon" nombre="Contraseñas">
@@ -110,7 +111,9 @@
             </div>
 
         </div>                                             <!--Acceso Contraseñas-->
+        <?php endif; ?>
 
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[2]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Clientes-->
 
             <div class="acceso-icon clientesIcon" nombre="Clientes">
@@ -121,7 +124,9 @@
             </div>
 
         </div>                                             <!--Acceso Clientes-->
+        <?php endif; ?>
 
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[3]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                                  <!--Acceso Viajes-->
 
             <div class="acceso-icon viajesIcon" nombre="Viajes">
@@ -131,7 +136,9 @@
             </div>
 
         </div>                                               <!--Acceso Viajes-->
+        <?php endif; ?>
 
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[4]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                            <!--Acceso Cotizaciones-->
 
             <div class="acceso-icon cotizacionesIcon" nombre="Cotizaciones">
@@ -142,7 +149,9 @@
             </div>
 
         </div>                                         <!--Acceso Cotizaciones-->
+        <?php endif; ?>
 
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[5]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                                  <!--Acceso Ventas-->
 
             <div class="acceso-icon ventasIcon" nombre="Ventas">
@@ -153,18 +162,9 @@
             </div>
 
         </div>                                               <!--Acceso Ventas-->
+        <?php endif; ?>
 
-        <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Registros-->
-
-            <div class="acceso-icon registrosIcon" nombre="Registros">
-                <i class="fa fa-hdd-o fa-3x" aria-hidden="true"></i>
-            </div>
-            <div class="acceso-nombre">
-                Registros
-            </div>
-
-        </div>                                            <!--Acceso Registros-->
-
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[6]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                                <!--Acceso Unidades-->
 
             <div class="acceso-icon unidadesIcon" nombre="Unidades">
@@ -175,7 +175,9 @@
             </div>
 
         </div>                                             <!--Acceso Unidades-->
+        <?php endif; ?>
 
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[7]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                                <!--Acceso Choferes-->
 
             <div class="acceso-icon choferesIcon" nombre="Choferes">
@@ -186,7 +188,9 @@
             </div>
 
         </div>                                             <!--Acceso Choferes-->
+        <?php endif; ?>
 
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[8]==1) : ?>
         <div class="col-xs-6 col-sm-2 acceso">                                            <!--Acceso Propietarios-->
 
             <div class="acceso-icon propietariosIcon" nombre="Propietarios">
@@ -197,6 +201,34 @@
             </div>
 
         </div>                                         <!--Acceso Propietarios-->
+        <?php endif; ?>
+
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[9]==1) : ?>
+        <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Registros-->
+
+            <div class="acceso-icon registrosIcon" nombre="Registros">
+                <i class="fa fa-hdd-o fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="acceso-nombre">
+                Registros
+            </div>
+
+        </div>                                            <!--Acceso Registros-->
+        <?php endif; ?>
+
+        <?php if($miEmpleado->get('modulos')!=""&&$miEmpleado->get('modulos')[10]==1) : ?>
+        <div class="col-xs-6 col-sm-2 acceso">                                               <!--Acceso Configuracion-->
+
+
+            <div class="acceso-icon configuracionIcon" nombre="Configuracion">
+                <i class="fa fa-cogs fa-3x" aria-hidden="true"></i>
+            </div>
+            <div class="acceso-nombre">
+                Configuración
+            </div>
+
+        </div>                                            <!--Acceso Configuracion-->
+        <?php endif; ?>
 
 
     </div>                                                       <!--Contenedor Main-->
@@ -2864,7 +2896,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+
 
                     </div>
                 </div>
@@ -2875,6 +2907,351 @@
 
 
     </div>                                                   <!--Contenedor Ventas-->
+
+
+
+
+    <div id="divConfiguracion" class="container"> 				                   <!--Contenedor Configuracion-->
+
+        <div class="col-xs-12 col-sm-12 paddingCero">                                          <!--Modulo Configuracion-->
+
+            <div class="divModuloEncabezado">
+                <div class="modulo-icon configuracionIcon">
+                    <i class="fa fa-cogs fa-3x" aria-hidden="true"></i>
+                </div>
+                <h2 class="floatLeft margen-izquierda15">Configuración Módulos</h2>
+            </div>
+
+            <div class="divModuloMain">
+
+                <div class="alert alert-danger alert-dismissable hiden margen-arriba15 text-left">
+                    <a class="close collapseDad">×</a>
+                    <span class="alertMensaje"></span>
+                </div>
+
+                <div class="col-sm-12 acciones margen-abajo15">
+                    <button id="configuracionEditar" type="button" class="btn-editar btn-needStelect btn btn-default btn-md" disabled>Configurar modulos</button>
+                </div>
+
+
+                <div class="col-sm-12">
+                    <div class="panel panel-default divMainForm hiden">
+                        <div class="panel-heading">
+                            Móduos activos:
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" autocomplete="off">
+
+                                <div class="form-group-sm collapse">
+                                    <label class="control-label col-sm-3">ID:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text"
+                                               class="form-control idEmpleado"
+                                               placeholder="XX"
+                                               maxlength="35"
+                                               title="Id, no modificable por el usuario."
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group-sm">
+                                    <label class="control-label col-sm-3">Nombre completo:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text"
+                                               class="form-control nombre"
+                                               placeholder="Nombre completo"
+                                               maxlength="35"
+                                               pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                               title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                               disabled
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Empleados:
+                                        <input type="checkbox" class="form-check-input empleados">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Contraseñas:
+                                        <input type="checkbox" class="form-check-input contraseñas">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Clientes:
+                                        <input type="checkbox" class="form-check-input clientes">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Viajes:
+                                        <input type="checkbox" class="form-check-input viajes">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Cotizaciones:
+                                        <input type="checkbox" class="form-check-input cotizaciones">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Ventas:
+                                        <input type="checkbox" class="form-check-input ventas">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Unidades:
+                                        <input type="checkbox" class="form-check-input unidades">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Choferes:
+                                        <input type="checkbox" class="form-check-input choferes">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Propietarios:
+                                        <input type="checkbox" class="form-check-input propietarios">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Registros:
+                                        <input type="checkbox" class="form-check-input registros">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Configuración:
+                                        <input type="checkbox" class="form-check-input configuracion">
+                                    </label>
+                                </div>
+
+
+                                <div class="col-sm-12 margen-arriba15 margen-abajo15">
+                                    <button type="submit" class="btn .btn-lg btn-block btn-success">Guardar</button>
+                                    <button type="reset" class="btn .btn-lg btn-block btn-danger btn-cancelar">Cancelar</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Todos los empleados:
+                        </div>
+                        <div class="panel-body">
+                            <table class="display nowrap compact table-bordered mainTableDiv" cellspacing="0" width="100%" controller="empleadosTodos">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">Nombre</th>
+                                    <th colspan="2">Apellido</th>
+                                    <th rowspan="2">Fecha nacimiento</th>
+                                    <th colspan="5">Dirección</th>
+                                    <th rowspan="2">Email</th>
+                                    <th colspan="2">Teléfono</th>
+                                    <th rowspan="2">CURP</th>
+                                    <th colspan="3">Sistema</th>
+                                </tr>
+                                <tr>
+                                    <th>Paterno</th>
+                                    <th>Materno</th>
+                                    <th>Calle y número</th>
+                                    <th>Delegación</th>
+                                    <th>C.P.</th>
+                                    <th>Colonia</th>
+                                    <th>Estado</th>
+                                    <th>Local</th>
+                                    <th>Movil</th>
+                                    <th>Alta</th>
+                                    <th>Estado</th>
+                                    <th>Usuario</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>                                  <!--Modulo Configuracion-->
+
+
+    </div>                                         <!--Contenedor Configuracion-->
+
+    <div id="divRegistros" class="container"> 				                   <!--Contenedor Registros-->
+
+        <div class="col-xs-12 col-sm-12 paddingCero">                                          <!--Modulo Registros-->
+
+            <div class="divModuloEncabezado">
+                <div class="modulo-icon registrosIcon">
+                    <i class="fa fa-hdd-o fa-3x" aria-hidden="true"></i>
+                </div>
+                <h2 class="floatLeft margen-izquierda15">Registros</h2>
+            </div>
+
+            <div class="divModuloMain">
+
+                <div class="alert alert-danger alert-dismissable hiden margen-arriba15 text-left">
+                    <a class="close collapseDad">×</a>
+                    <span class="alertMensaje"></span>
+                </div>
+
+                <!--<div class="col-sm-12 acciones margen-abajo15">
+                    <button id="configuracionEditar" type="button" class="btn-editar btn-needStelect btn btn-default btn-md" disabled>Configurar modulos</button>
+                </div>-->
+
+
+                <!--<div class="col-sm-12">
+                    <div class="panel panel-default divMainForm hiden">
+                        <div class="panel-heading">
+                            Móduos activos:
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" autocomplete="off">
+
+                                <div class="form-group-sm collapse">
+                                    <label class="control-label col-sm-3">ID:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text"
+                                               class="form-control idEmpleado"
+                                               placeholder="XX"
+                                               maxlength="35"
+                                               title="Id, no modificable por el usuario."
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group-sm">
+                                    <label class="control-label col-sm-3">Nombre completo:</label>
+                                    <div class="col-sm-7">
+                                        <input type="text"
+                                               class="form-control nombre"
+                                               placeholder="Nombre completo"
+                                               maxlength="35"
+                                               pattern="[A-ZÑÁÉÍÓÚ]{1}[a-zñáéíóú]{1}[a-zñáéíóú]*([ ][A-ZÑÁÉÍÓÚ][a-zñáéíóú]*)*"
+                                               title="Iniciales en mayúsculas, solo letras y espacios, no espacios al final, 2 - 35 caracteres. "
+                                               disabled
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Empleados:
+                                        <input type="checkbox" class="form-check-input empleados">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Contraseñas:
+                                        <input type="checkbox" class="form-check-input contraseñas">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Clientes:
+                                        <input type="checkbox" class="form-check-input clientes">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Viajes:
+                                        <input type="checkbox" class="form-check-input viajes">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Cotizaciones:
+                                        <input type="checkbox" class="form-check-input cotizaciones">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Ventas:
+                                        <input type="checkbox" class="form-check-input ventas">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Unidades:
+                                        <input type="checkbox" class="form-check-input unidades">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Choferes:
+                                        <input type="checkbox" class="form-check-input choferes">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Propietarios:
+                                        <input type="checkbox" class="form-check-input propietarios">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Registros:
+                                        <input type="checkbox" class="form-check-input registros">
+                                    </label>
+                                </div>
+                                <div class="form-group-sm form-check">
+                                    <label class="form-check-label control-label col-sm-7">
+                                        Configuración:
+                                        <input type="checkbox" class="form-check-input configuracion">
+                                    </label>
+                                </div>
+
+
+                                <div class="col-sm-12 margen-arriba15 margen-abajo15">
+                                    <button type="submit" class="btn .btn-lg btn-block btn-success">Guardar</button>
+                                    <button type="reset" class="btn .btn-lg btn-block btn-danger btn-cancelar">Cancelar</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="col-sm-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Todos los registros:
+                        </div>
+                        <div class="panel-body">
+                            <table class="display nowrap compact table-bordered mainTableDiv" cellspacing="0" width="100%" controller="registrosTodos">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Fecha</th>
+                                    <th>Empleado ID</th>
+                                    <th>Descripción</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>                                  <!--Modulo Registros-->
+
+
+    </div>                                         <!--Contenedor Registros-->
 
 
     <script src="./Views/Js/inicio.js"></script>

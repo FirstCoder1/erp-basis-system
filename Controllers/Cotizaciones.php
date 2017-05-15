@@ -132,10 +132,11 @@ class Cotizaciones {
 
         return $salida;
     }
-    public static function noVentaCotizacionesViajes(){
+
+    public static function vendidasCotizacionesViajes(){
 
         $miCotización = new Cotizacion();
-        $cotizaciones = $miCotización->noVentaCotizacionesViajes();
+        $cotizaciones = $miCotización->vendidasCotizacionesViajes();
 
         $salida = array();
         if (count($cotizaciones) > 0){
@@ -145,15 +146,15 @@ class Cotizaciones {
 
         }else{
             $salida["success"] = false;
-            $salida["error"] = "Error cargando cotizaciones2.";
+            $salida["error"] = "Error cargando cotizaciones.";
         }
 
         return $salida;
     }
-    public static function vendidasCotizacionesViajes(){
+    public static function noVentaCotizacionesViajes(){
 
         $miCotización = new Cotizacion();
-        $cotizaciones = $miCotización->vendidasCotizacionesViajes();
+        $cotizaciones = $miCotización->noVentaCotizacionesViajes();
 
         $salida = array();
         if (count($cotizaciones) > 0){

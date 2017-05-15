@@ -24,6 +24,7 @@ class Empleado extends BaseModel
     protected   $estadoSistema;
     protected   $userName;
     protected   $password;
+    protected   $modulos;
 
 
 }

@@ -103,6 +103,7 @@ class Empleados {
 
         $miEmpleado->set("fechaAlta","NO_INCLUDE");
         $miEmpleado->set("password","NO_INCLUDE");
+        $miEmpleado->set("modulos","NO_INCLUDE");
 
         if ($miEmpleado->get("fechaDeNacimiento")==""){
             $miEmpleado->set("fechaDeNacimiento","NULL");
@@ -151,6 +152,7 @@ class Empleados {
         $miEmpleado->set("fechaAlta","NO_INCLUDE");
         $miEmpleado->set("estadoSistema","NO_INCLUDE");
         $miEmpleado->set("userName","NO_INCLUDE");
+        $miEmpleado->set("modulos","NO_INCLUDE");
 
         $miEmpleado->set("password",password_hash($miEmpleado->get("password"), PASSWORD_DEFAULT));
 
@@ -161,6 +163,38 @@ class Empleados {
         }else{
             $salida["success"] = false;
             $salida["error"] = "Error modificando contraseña.";
+        }
+
+        return $salida;
+
+    }
+    public static function editarModulos( Empleado $miEmpleado){
+
+        $miEmpleado->set("nombre","NO_INCLUDE");
+        $miEmpleado->set("apPaterno","NO_INCLUDE");
+        $miEmpleado->set("apMaterno","NO_INCLUDE");
+        $miEmpleado->set("fechaDeNacimiento","NO_INCLUDE");
+        $miEmpleado->set("estadoDomicilio","NO_INCLUDE");
+        $miEmpleado->set("delegacionMunicipioDomicilio","NO_INCLUDE");
+        $miEmpleado->set("codigoPostalDomicilio","NO_INCLUDE");
+        $miEmpleado->set("coloniaDomicilio","NO_INCLUDE");
+        $miEmpleado->set("calleNumeroDomicilio","NO_INCLUDE");
+        $miEmpleado->set("email","NO_INCLUDE");
+        $miEmpleado->set("telefonoLocal","NO_INCLUDE");
+        $miEmpleado->set("telefonoMovil","NO_INCLUDE");
+        $miEmpleado->set("curp","NO_INCLUDE");
+        $miEmpleado->set("fechaAlta","NO_INCLUDE");
+        $miEmpleado->set("estadoSistema","NO_INCLUDE");
+        $miEmpleado->set("userName","NO_INCLUDE");
+        $miEmpleado->set("password","NO_INCLUDE");
+
+        $salida = array();
+
+        if ($miEmpleado->editar("idEmpleado")){
+            $salida["success"] = true ;
+        }else{
+            $salida["success"] = false;
+            $salida["error"] = "Error modificando módulos.";
         }
 
         return $salida;

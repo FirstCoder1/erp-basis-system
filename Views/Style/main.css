@@ -219,6 +219,10 @@ div.dataTables_wrapper {
     background-color: #7f8c8d;
 }
 
+.configuracionIcon{
+    background-color: #383838;
+}
+
 .unidadesIcon{
     background-color: #4aa3df;
 }

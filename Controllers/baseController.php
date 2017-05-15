@@ -6,6 +6,7 @@ require_once __DIR__."/../Autoload.php";                              //Inclusi�
 \APP\Autoload::run();                                                                                 //Arranca Autoload
 
                                                                                                          //Declaraciones
+use APP\Models\Registro;
 use APP\Models\Venta;
 use APP\Models\Pago;
 use APP\Models\Unidad;
@@ -22,8 +23,15 @@ use App\Utils\Log;
 $_GET   = filter_input_array(INPUT_GET, FILTER_SANITIZE_STRING);                                        //Limpia entrada
 $_POST  = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-file_put_contents('php://stderr', print_r($_POST, TRUE));
+session_start();
 
+/*file_put_contents('php://stderr', print_r($_POST, TRUE));
+file_put_contents('php://stderr', print_r($_GET, TRUE));*/
+
+$miModelo = new Registro();
+$miModelo->set("idEmpleado", $_SESSION['idEmpleado']);
+$miModelo->set("descripcion", substr(print_r($_POST, TRUE),7,-2));
+Registros::agregar($miModelo);
 
 $action = $_POST["action"];
 unset($_POST["action"]);
@@ -75,6 +83,28 @@ elseif ($action == "empleadoContraseña"){
     }
 
     echo json_encode(Empleados::editarContraseña($miModelo));
+
+}
+elseif ($action == "empleadoModulos"){
+
+    $miModelo = new Empleado();
+    $miModelo->set('idEmpleado', $_POST['idEmpleado']);
+
+    $modulos=$_POST['empleados'];
+    $modulos.=$_POST['contraseñas'];
+    $modulos.=$_POST['clientes'];
+    $modulos.=$_POST['viajes'];
+    $modulos.=$_POST['cotizaciones'];
+    $modulos.=$_POST['ventas'];
+    $modulos.=$_POST['unidades'];
+    $modulos.=$_POST['choferes'];
+    $modulos.=$_POST['propietarios'];
+    $modulos.=$_POST['registros'];
+    $modulos.=$_POST['configuracion'];
+
+    $miModelo->set('modulos', $modulos);
+
+    echo json_encode(Empleados::editarModulos($miModelo));
 
 }
 
@@ -258,17 +288,80 @@ elseif ($action == "todosCotizacionesViajes"){
 
     $salida = Cotizaciones::cotizacionesViajes();
 
+    if ($salida["success"]){
+        $viajes = array();
+        foreach ($salida["todos"] as $viaje){
+            $viaje["puntos"] = array();
+            $viajes[$viaje["idCotizacion"]] = $viaje;
+        }
+
+        $salida2 = Puntos::puntosViajesCotizaciones();
+
+        if ($salida2["success"]){
+            foreach ($salida2["todos"] as $punto){
+                array_push($viajes[$punto["idCotizacion"]]["puntos"],$punto);
+            }
+            $salida["todos"] = array();
+            foreach ($viajes as $viaje){
+                array_push($salida["todos"],$viaje);
+            }
+        }
+
+    }
+
     echo json_encode($salida);
 }
 elseif ($action == "vendidasCotizacionesViajes"){
 
     $salida = Cotizaciones::vendidasCotizacionesViajes();
 
+    if ($salida["success"]){
+        $viajes = array();
+        foreach ($salida["todos"] as $viaje){
+            $viaje["puntos"] = array();
+            $viajes[$viaje["idCotizacion"]] = $viaje;
+        }
+
+        $salida2 = Puntos::puntosViajesCotizacionesVentas();
+
+        if ($salida2["success"]){
+            foreach ($salida2["todos"] as $punto){
+                array_push($viajes[$punto["idCotizacion"]]["puntos"],$punto);
+            }
+            $salida["todos"] = array();
+            foreach ($viajes as $viaje){
+                array_push($salida["todos"],$viaje);
+            }
+        }
+
+    }
+
     echo json_encode($salida);
 }
 elseif ($action == "noVentaCotizacionesViajes"){
 
     $salida = Cotizaciones::noVentaCotizacionesViajes();
+
+    if ($salida["success"]){
+        $viajes = array();
+        foreach ($salida["todos"] as $viaje){
+            $viaje["puntos"] = array();
+            $viajes[$viaje["idCotizacion"]] = $viaje;
+        }
+
+        $salida2 = Puntos::puntosViajesCotizacionesNoVentas();
+
+        if ($salida2["success"]){
+            foreach ($salida2["todos"] as $punto){
+                array_push($viajes[$punto["idCotizacion"]]["puntos"],$punto);
+            }
+            $salida["todos"] = array();
+            foreach ($viajes as $viaje){
+                array_push($salida["todos"],$viaje);
+            }
+        }
+
+    }
 
     echo json_encode($salida);
 }
@@ -498,14 +591,11 @@ elseif ($action == "pendientesVentasViajesClientesCotizacionesPagos"){
         if ($salida["success"]){
             foreach ($salida["todos"] as $pago){
 
-                file_put_contents('php://stderr', print_r($salida, TRUE));
-                file_put_contents('php://stderr', print_r($pago, TRUE));
 
                 if(isset($ventas[$pago["idVenta"]])){
                     array_push($ventas[$pago["idVenta"]]["pagos"],$pago);
                 }
 
-                file_put_contents('php://stderr', print_r($ventas, TRUE));
 
             }
             $salida["todos"] = array();
@@ -616,6 +706,11 @@ elseif ($action == "ventaEditar"){
     }
 
 }
+
+elseif ($action == "registrosTodos"){
+    echo json_encode(Registros::todosArrelo());
+}
+
 
 
 else{
