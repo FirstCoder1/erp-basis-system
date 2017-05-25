@@ -34,6 +34,10 @@ $miModelo->set("descripcion", substr(print_r($_POST, TRUE),7,-2));
 Registros::agregar($miModelo);
 
 $action = $_POST["action"];
+if($action == ""){
+    $action = $_GET["action"];
+
+}
 unset($_POST["action"]);
 
 if ($action == "codigosPostales_de_Estado_y_DelegacionMunicipio"){

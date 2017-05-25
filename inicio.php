@@ -2234,12 +2234,11 @@
                                     <div class="col-sm-7">
                                         <input type="text"
                                                class="form-control utilidadP"
-                                               placeholder="Autogenerado"
+                                               placeholder="Autogenerado opcional"
                                                maxlength="35"
                                                pattern="[0-9]{1,70}"
                                                title="Solo números (no espacios), 1 - 70 caracteres."
                                                required
-                                               disabled
                                         >
                                     </div>
                                 </div>                                          <!--utilidadP-->
@@ -2254,7 +2253,7 @@
 
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a data-toggle="tab" href="#CotizacionesForm_estadoLugarDiasTipoCotizacionesViajes">| Estado + Lugar + #Días + Tipo |</a></li>
-                                    <li><a data-toggle="tab" href="#CotizacionesForm_tipoKmTCombustibleTCostosCotizacionesViajes">| Tipo + Km + TCombustible + TCostos |</a></li>
+                                    <!--<li><a data-toggle="tab" href="#CotizacionesForm_tipoKmTCombustibleTCostosCotizacionesViajes">| Tipo + Km + TCombustible + TCostos |</a></li>-->
                                     <li><a data-toggle="tab" href="#CotizacionesForm_todosCotizacionesViajes">Todas las cotizaciones</a></li>
                                 </ul>
 
@@ -2302,7 +2301,7 @@
 
                                     </div>
 
-                                    <div id="CotizacionesForm_tipoKmTCombustibleTCostosCotizacionesViajes" class="tab-pane fade">
+                                    <!--<div id="CotizacionesForm_tipoKmTCombustibleTCostosCotizacionesViajes" class="tab-pane fade">
 
                                         <div class="panel panel-default">
                                             <div class="panel-body">
@@ -2342,7 +2341,7 @@
                                         </div>
 
 
-                                    </div>
+                                    </div>-->
 
                                     <div id="CotizacionesForm_todosCotizacionesViajes" class="tab-pane fade">
 

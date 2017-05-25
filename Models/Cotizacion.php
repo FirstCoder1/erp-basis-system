@@ -189,6 +189,8 @@ class Cotizacion extends BaseModel
                     AND Cotizaciones.tipoUnidad LIKE '%".$this->tipoUnidad."%'
                     ";
 
+
+
         $stmt = Conexion::getConnection()->prepare($sql);
 
         try {

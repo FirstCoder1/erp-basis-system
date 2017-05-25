@@ -41,7 +41,8 @@
 				<div class="col-xs-1 col-sm-3"></div>
 
 				<div class="col-xs-10 col-sm-6">
-                    <h1><i class="fa fa-id-card-o fa-4x sombra" aria-hidden="true"></i></h1>
+                    <!--<h1><i class="fa fa-id-card-o fa-4x sombra" aria-hidden="true"></i></h1>-->
+                    <img class="sombra" src="./Views/Reports/TCPDF-master/examples/images/my_bus2.png" alt="Buss View" style="width:400px;">
                     <h1 class="sombra">
                         Iniciar Sesión
                     </h1>
