@@ -2236,9 +2236,10 @@
                                                class="form-control utilidadP"
                                                placeholder="Autogenerado opcional"
                                                maxlength="35"
-                                               pattern="[0-9]{1,70}"
+                                               pattern="[0-9.]{1,70}"
                                                title="Solo números (no espacios), 1 - 70 caracteres."
                                                required
+                                               disabled
                                         >
                                     </div>
                                 </div>                                          <!--utilidadP-->

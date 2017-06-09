@@ -2528,14 +2528,14 @@ $(document).ready(function () {
         theDivCotizaciones.find('.divMainForm form').find('.utilidad').val(ganancia);
         theDivCotizaciones.find('.divMainForm form').find('.utilidadP').val((ganancia/(parseFloat(theDivCotizaciones.find('.divMainForm form').find('.cotizacion').val())  || 0)*100).toFixed(2));
     });
-    theDivCotizaciones.on('change',".utilidadP", function() {
+    /*theDivCotizaciones.on('change',".utilidadP", function() {
 
         var costos = parseFloat(theDivCotizaciones.find('.divMainForm form').find('.costosTotal').val())  || 0;
         var cotizacion  = costos/(100-(parseFloat(theDivCotizaciones.find('.divMainForm form').find('.utilidadP').val())  || 0))*100;
 
         theDivCotizaciones.find('.divMainForm form').find('.cotizacion').val(cotizacion.toFixed(2));
         theDivCotizaciones.find('.divMainForm form').find('.utilidad').val((cotizacion-costos).toFixed(2));
-    });
+    });*/
 
     theDivCotizaciones.on('change',".comparacionForm", function() {
 
